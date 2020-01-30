@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="form" :model="form" label-width="120px" >
+  <el-form ref="form" :model="form" label-width="120px">
     <el-form-item label="Activity name">
       <el-input v-model="form.name"></el-input>
     </el-form-item>
@@ -20,7 +20,11 @@
       </el-col>
       <el-col class="line" :span="2">-</el-col>
       <el-col :span="11">
-        <el-time-picker placeholder="Pick a time" v-model="form.date2" style="width: 100%;"></el-time-picker>
+        <el-time-picker
+          placeholder="Pick a time"
+          v-model="form.date2"
+          style="width: 100%;"
+        ></el-time-picker>
       </el-col>
     </el-form-item>
     <el-form-item label="Instant delivery">
@@ -40,17 +44,19 @@
         <el-radio label="Venue"></el-radio>
       </el-radio-group>
     </el-form-item>
-    <el-form-item label="Activity form">
-      <el-input type="textarea" v-model="form.desc"></el-input>
-    </el-form-item>
-    <el-form-item>
+   <Tinymce></Tinymce>
+    <el-form-item class="form-action">
       <el-button type="primary" @click="onSubmit">Create</el-button>
       <el-button>Cancel</el-button>
     </el-form-item>
   </el-form>
 </template>
 <script>
+import Tinymce from '@/components/Tinymce'
 export default {
+components : {
+  Tinymce
+},
   data() {
     return {
       form: {
@@ -67,8 +73,16 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log("submit!");
+      
     }
   }
 };
 </script>
+<style lang="scss">
+.form-action {
+.el-form-item__content {
+  margin-left: 0 !important;
+  margin-top: 20px;
+}
+}
+</style>

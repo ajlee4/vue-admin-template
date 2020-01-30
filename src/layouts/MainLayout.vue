@@ -1,17 +1,19 @@
 <template>
   <div class="main">
     <el-container>
-      <Sidebar></Sidebar>
-      <el-container direction="vertical">
-        <Navbar></Navbar>
+      <Sidebar :sidebarVisible="sidebarVisible"></Sidebar>
+      <el-container
+        direction="vertical"
+        class="content"
+        :class="sidebarVisible ? 'openSidebar' : 'hideSidebar'"
+      >
+        <Navbar @sidebarShow="sidebarShow"></Navbar>
 
-       
-          <el-main>
-               <transition name="fade-transform" mode="out-in">
+        <el-main>
+          <transition name="fade-transform" mode="out-in">
             <router-view></router-view>
-               </transition>
-          </el-main>
-     
+          </transition>
+        </el-main>
       </el-container>
     </el-container>
   </div>
@@ -26,6 +28,23 @@ export default {
   components: {
     Sidebar,
     Navbar
+  },
+  data() {
+    return {
+      sidebarVisible: true
+    };
+  },
+  methods: {
+    sidebarShow() {
+      this.sidebarVisible = !this.sidebarVisible;
+    
+    }
   }
 };
 </script>
+
+<style lang="scss">
+.el-main {
+  overflow-x: hidden !important;
+}
+</style>

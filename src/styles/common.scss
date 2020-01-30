@@ -1,0 +1,18 @@
+body {
+    margin: 0;
+    font-family: "Helvetica";
+  }
+
+  .content { 
+      min-height: 100vh;
+      position: relative;
+      padding-left: 215px;
+      transition: 0.3s;
+      
+      &.hideSidebar {
+          width: 100%;
+          height: 100%;
+          padding-left: 55px;
+          
+      }
+  }

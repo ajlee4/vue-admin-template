@@ -15,22 +15,85 @@ const routes = [
     path: "/about",
     name: "about",
     meta: { layout: "auth" },
-    component: () =>
-      import( "../views/About.vue")
+    component: () => import("../views/About.vue")
+  },
+  {
+    path: "/pages",
+    name: "pages",
+    meta: { layout: "main" },
+    component: () => import("../views/Pages.vue")
+  },
+  {
+    path: "/news",
+    name: "news",
+    meta: { layout: "main" },
+    component: () => import("../views/NewsList.vue")
+  },
+  {
+    path: "/news/create",
+    name: "news-edit",
+    component: () => import("../views/NewsAdd.vue"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/news/:id/edit",
+    name: "news-single",
+    component: () => import("../views/News.vue"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/layout-components",
+    name: "layout-components",
+    component: () => import("../views/views-components/LayoutComponents"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/buttons",
+    name: "buttons",
+    component: () => import("../views/views-components/Buttons"),
+    meta: { layout: "main" }
   },
   {
     path: "/form",
     name: "form",
     meta: { layout: "main" },
-    component: () =>
-      import("../views/Form.vue")
+    component: () => import("../views/views-components/Form.vue")
+  },
+  {
+    path: "/tabs",
+    name: "tabs",
+    meta: { layout: "main" },
+    component: () => import("../views/views-components/Tabs.vue")
   },
   {
     path: "/table",
     name: "table",
     meta: { layout: "main" },
-    component: () =>
-      import("../views/Table.vue")
+    component: () => import("../views/views-components/Table.vue")
+  },
+  {
+    path: "/messages",
+    name: "messages",
+    meta: { layout: "main" },
+    component: () => import("../views/views-components/Messages.vue")
+  },
+  {
+    path: "/breadcrumb",
+    name: "breadcrumb",
+    meta: { layout: "main" },
+    component: () => import("../views/views-components/Breadcrumb.vue")
+  },
+  {
+    path: "/dialog",
+    name: "dialog",
+    meta: { layout: "main" },
+    component: () => import("../views/views-components/Dialog.vue")
+  },
+  {
+    path: "/pagination",
+    name: "pagination",
+    meta: { layout: "main" },
+    component: () => import("../views/views-components/Pagination.vue")
   }
 ];
 
