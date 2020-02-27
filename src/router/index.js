@@ -94,7 +94,50 @@ const routes = [
     name: "pagination",
     meta: { layout: "main" },
     component: () => import("../views/views-components/Pagination.vue")
-  }
+  },
+  {
+    path: "/course",
+    name: "general-course-section",
+    meta: { layout: "main" },
+    component: () => import("../views/views-course/Course/Course.vue")
+  },
+  {
+    path: "/course/create",
+    name: "course-add",
+    component: () => import("../views/views-course/Course/CourseAdd.vue"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/course/:id/edit",
+    name: "course-edit",
+    component: () => import("../views/views-course/Course/CourseEdit.vue"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/subcourse",
+    name: "subcourse",
+    component: () => import("../views/views-course/SubCourse/SubCourse.vue"),
+    meta: { layout: "main" }
+  },
+
+  {
+    path: "/subcourse/create",
+    name: "subcourse-add",
+    component: () => import("../views/views-course/SubCourse/SubCourseAdd.vue"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/subcourse/:id/edit",
+    name: "subcourse-edit",
+    component: () => import("../views/views-course/SubCourse/SubCourseEdit.vue"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/course-single",
+    name: "course-single",
+    component: () => import("../views/views-course/CourseSingle/CourseSingle.vue"),
+    meta: { layout: "main" }
+  },
 ];
 
 const router = new VueRouter({

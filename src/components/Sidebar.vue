@@ -48,7 +48,22 @@
           <span>Страницы</span>
         </el-menu-item>
       </router-link>
+      <el-submenu index="1">
+        <template slot="title">
+          <i class="el-icon-s-platform"></i>
+          <span>Курсы</span>
+        </template>
+        <router-link to="/course">
+          <el-menu-item index="1-1">Общие разделы</el-menu-item>
+        </router-link>
+        <router-link to="/subcourse">
+          <el-menu-item index="1-2">Направления</el-menu-item>
+        </router-link>
 
+        <router-link to="/course-single">
+          <el-menu-item index="1-3">Курсы</el-menu-item>
+        </router-link>
+      </el-submenu>
       <el-menu-item index="4">
         <i class="el-icon-setting"></i>
         <span>Navigator Four</span>
@@ -124,7 +139,7 @@ export default {
   top: 0;
   left: 0;
   bottom: 0;
-  
+
   z-index: 9999;
   width: 215px !important;
   transition: 0.3s;

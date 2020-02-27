@@ -97,7 +97,7 @@
 import pagination from "@/components/Pagination";
 import { fetchNewsList } from "@/api/news";
 import { deleteNews } from "@/api/news";
-import {searchNews} from '@/api/news'
+import { searchNews } from "@/api/news";
 export default {
   components: {
     pagination
@@ -176,9 +176,7 @@ export default {
       });
     },
     searchNews() {
-     
-      searchNews(this.searchData)
-
+      searchNews(this.searchData);
       console.log(this.searchData);
     }
   },

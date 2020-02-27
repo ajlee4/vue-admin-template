@@ -33,7 +33,9 @@
         <el-dialog :visible.sync="dialogVisible">
           <img width="100%" :src="dialogImageUrl" alt="" />
         </el-dialog>
-        <el-button type="success" class="succes-btn" @click="handleUpdateNews">Изменить</el-button>
+        <el-button type="success" class="succes-btn" @click="handleUpdateNews"
+          >Изменить</el-button
+        >
       </el-form>
     </el-tab-pane>
     <el-tab-pane label="SEO">
@@ -45,17 +47,17 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="H1">
-              <el-input ></el-input>
+              <el-input></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="Title">
-              <el-input ></el-input>
+              <el-input></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item label="Description">
-              <el-input ></el-input>
+              <el-input></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -73,7 +75,7 @@
         <el-dialog :visible.sync="dialogVisible">
           <img width="100%" :src="dialogImageUrl" alt="" />
         </el-dialog>
-        <el-button type="success" class="succes-btn" >Изменить</el-button>
+        <el-button type="success" class="succes-btn">Изменить</el-button>
       </el-form>
     </el-tab-pane>
   </el-tabs>
@@ -81,7 +83,7 @@
 
 <script>
 import Tinymce from "@/components/Tinymce";
-import {updateNews} from '@/api/news';
+import { updateNews } from "@/api/news";
 export default {
   components: {
     Tinymce
@@ -94,8 +96,8 @@ export default {
       dialogVisible: false,
       news: {
         title: "",
-        slug: '',
-        description: "",
+        slug: "",
+        description: ""
       }
     };
   },
@@ -105,14 +107,13 @@ export default {
       this.dialogVisible = true;
     },
     handleUpdateNews() {
-  
-      updateNews(this.$route.params.id).then(()=>{
-            this.$message({
-            type: "success",
-            message: "Новость изменена",
-            showClose: true
-          });
-      })
+      updateNews(this.$route.params.id).then(() => {
+        this.$message({
+          type: "success",
+          message: "Новость изменена",
+          showClose: true
+        });
+      });
     }
   }
 };

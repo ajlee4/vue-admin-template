@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function fetchNewsList(query) {
   return request({
-    url: "http://grizzly-dev.site/api/products",
+    url: "https://jsonplaceholder.typicode.com/posts",
     method: "get",
     params: query
   });
@@ -17,24 +17,24 @@ export function createNews(data) {
 }
 
 export function deleteNews(id) {
-    return request({
-      url: "https://jsonplaceholder.typicode.com/posts",
-      method: "delete",
-      params: { id }
-    });
-  }
+  return request({
+    url: "https://jsonplaceholder.typicode.com/posts",
+    method: "delete",
+    params: { id }
+  });
+}
 
-  export function searchNews(data) {
-    return request({
-      url: "https://jsonplaceholder.typicode.com/posts",
-      method: "get",
-      params: { data }
-    });
-  }
-  export function updateNews(id) {
-    return request({
-      url: "https://jsonplaceholder.typicode.com/posts",
-      method: "put",
-      params: { id }
-    });
-  }
+export function searchNews(data) {
+  return request({
+    url: "https://jsonplaceholder.typicode.com/posts",
+    method: "get",
+    params: { data }
+  });
+}
+export function updateNews(id) {
+  return request({
+    url: "https://jsonplaceholder.typicode.com/posts",
+    method: "put",
+    params: { id }
+  });
+}
