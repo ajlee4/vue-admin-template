@@ -1,13 +1,15 @@
-import { fetchCourse , fetchSubCourse } from "@/api/course";
+import { fetchCourse, fetchSubCourse,fetchSingleCourse } from "@/api/course";
 
 export default {
   state: {
     currentCourse: [],
-    currentSubCourse:[]
+    currentSubCourse: [],
+    currentSingleCourse: []
   },
   getters: {
     currentCourse: state => state.currentCourse,
-    currentSubCourse: state => state.currentSubCourse
+    currentSubCourse: state => state.currentSubCourse,
+    currentSingleCourse: state => state.currentSingleCourse
   },
   mutations: {
     setCurrentCourse: (state, data) => {
@@ -15,6 +17,9 @@ export default {
     },
     setCurrentSubCourse: (state, data) => {
       state.currentSubCourse = data;
+    },
+    setCurrentSingleCourse: (state, data) => {
+      state.currentSingleCourse = data;
     }
   },
   actions: {
@@ -25,8 +30,12 @@ export default {
     },
     getCurrentSubCourse({ commit }, id) {
       return fetchSubCourse(id).then(res => {
-       
-        commit("setCurrentSubCourse", res.data);
+        commit("setCurrentSubCourse", res);
+      });
+    },
+    getCurrentSingleCourse({ commit }, id) {
+      return fetchSingleCourse(id).then(res => {
+        commit("setCurrentSingleCourse", res);
       });
     }
   }

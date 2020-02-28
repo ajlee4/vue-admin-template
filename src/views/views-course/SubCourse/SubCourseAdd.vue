@@ -1,19 +1,30 @@
 <template>
   <div class="course-add-container">
     <h2>Страница создания</h2>
-    <el-tabs type="card">
-      <el-tab-pane label="Ресурс">
-        <div style="margin: 20px;"></div>
-        <el-form
-          :model="course"
-          :label-position="labelPosition"
-          label-width="100px"
-          ref="courseForm"
-        >
+    <el-form
+      
+      :label-position="labelPosition"
+      label-width="100px"
+      ref="courseForm"
+    >
+      <el-tabs type="card">
+        <el-tab-pane label="Ресурс">
+          <div style="margin: 20px;"></div>
+
           <el-row>
             <el-col :span="12">
-              <el-form-item label="Заголовок">
+              <el-form-item
+                label="Заголовок"
+                :class="{
+                  'is-error': $v.course.name.$dirty && !$v.course.name.required
+                }"
+              >
                 <el-input v-model="course.name"></el-input>
+                <small
+                  v-if="$v.course.name.$dirty && !$v.course.name.required"
+                  class="error-text"
+                  >Поле заголовок не должно быть пустым</small
+                >
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -23,7 +34,12 @@
             </el-col>
 
             <el-col :span="12">
-              <el-form-item label="Выбор раздела">
+              <el-form-item
+                label="Выбор раздела"
+                :class="{
+                  'is-error': $v.value.$dirty && !$v.value.required
+                }"
+              >
                 <el-select
                   ref="select"
                   v-model="value"
@@ -38,6 +54,11 @@
                   >
                   </el-option>
                 </el-select>
+                <small
+                  v-if="$v.value.$dirty && !$v.value.required"
+                  class="error-text"
+                  >Поле заголовок не должно быть пустым</small
+                >
               </el-form-item>
             </el-col>
           </el-row>
@@ -45,44 +66,38 @@
           <el-form-item label="Контент">
             <Tinymce v-model="course.content"></Tinymce>
           </el-form-item>
-        </el-form>
-        <div class="banner-info">
-          <h3>Создание баннера</h3>
 
-          <el-row :gutter="20">
-            <el-col :span="6"
-              ><div class="grid-content ">
-                <h4>Загрузите изображение</h4>
-                <el-upload
-                  name="banner"
-                  action="http://sandbox.alkonosthim.ru/ih/api/courses/category/store"
-                  list-type="picture-card"
-                  :on-preview="handlePictureCardPreview"
-                  :auto-upload="false"
-                  :on-change="changeUpload"
-                >
-                  <i class="el-icon-plus"></i>
-                </el-upload>
-                <el-dialog :visible.sync="dialogVisible">
-                  <img width="100%" :src="dialogImageUrl" alt="" />
-                </el-dialog></div
-            ></el-col>
-            <el-col :span="18"
-              ><div class="grid-content ">
-                <h4>Введите текст баннера</h4>
-                <Tinymce v-model="banner.text"></Tinymce>
-              </div>
-            </el-col>
-          </el-row>
-        </div>
-      </el-tab-pane>
-      <el-tab-pane label="SEO">
-        <el-form
-          :model="seo"
-          :label-position="labelPosition"
-          label-width="100px"
-          ref="seoForm"
-        >
+          <div class="banner-info">
+            <h3>Создание баннера</h3>
+
+            <el-row :gutter="20">
+              <el-col :span="6"
+                ><div class="grid-content ">
+                  <h4>Загрузите изображение</h4>
+                  <el-upload
+                    name="banner"
+                    action="http://sandbox.alkonosthim.ru/ih/api/courses/category/store"
+                    list-type="picture-card"
+                    :on-preview="handlePictureCardPreview"
+                    :auto-upload="false"
+                    :on-change="changeUpload"
+                  >
+                    <i class="el-icon-plus"></i>
+                  </el-upload>
+                  <el-dialog :visible.sync="dialogVisible">
+                    <img width="100%" :src="dialogImageUrl" alt="" />
+                  </el-dialog></div
+              ></el-col>
+              <el-col :span="18"
+                ><div class="grid-content ">
+                  <h4>Введите текст баннера</h4>
+                  <Tinymce v-model="banner.text"></Tinymce>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="SEO">
           <el-row>
             <el-col :span="12">
               <el-form-item label="H1">
@@ -104,12 +119,12 @@
           <el-form-item label="SEO-текст">
             <Tinymce v-model="seo.text"></Tinymce>
           </el-form-item>
-        </el-form>
-      </el-tab-pane>
-    </el-tabs>
-    <el-button type="success" class="succes-btn" @click="handleAddCourse"
-      >Создать</el-button
-    >
+        </el-tab-pane>
+      </el-tabs>
+      <el-button type="success" class="succes-btn" @click="handleAddCourse"
+        >Создать</el-button
+      >
+    </el-form>
   </div>
 </template>
 
@@ -117,10 +132,18 @@
 import Tinymce from "@/components/Tinymce";
 import { addSubCourse, fetchCourseList } from "@/api/course";
 import { Message } from "element-ui";
+import { required } from "vuelidate/lib/validators";
 export default {
   components: {
     Tinymce
   },
+   validations: {
+    course: {
+      name: { required }
+    },
+    value: { required }
+  },
+
   data() {
     return {
       activeName: "first",
@@ -170,42 +193,23 @@ export default {
         banner: this.image.raw,
         category_id: this.$refs.select.value
       };
-
-      if (this.course.name && this.$refs.select.value) {
-        addSubCourse(formData).then(() => {
-          this.$router.push({ name: "subcourse" });
-          Message({
-            message: "ресурс создан",
-            type: "success",
-            showClose: true
-          });
-        });
-      }
-      if (!this.course.name && !this.$refs.select.value) {
+      if (this.$v.$invalid) {
         Message({
-          message: "Выберите раздел и заполните заголовок",
+          message: "Заполните обязательные поля",
           type: "error",
           showClose: true
         });
+        this.$v.$touch();
         return;
       }
-
-      if (!this.course.name) {
+      addSubCourse(formData).then(() => {
+        this.$router.push({ name: "subcourse" });
         Message({
-          message: "Заголовок не может быть пустой",
-          type: "error",
+          message: "ресурс создан",
+          type: "success",
           showClose: true
         });
-        return;
-      }
-      if (!this.$refs.select.value) {
-        Message({
-          message: "Выберите раздел",
-          type: "error",
-          showClose: true
-        });
-        return;
-      }
+      });
     },
     successUploadImg(res, file) {
       console.log(res);

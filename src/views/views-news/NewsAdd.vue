@@ -11,13 +11,42 @@
         >
           <el-row>
             <el-col :span="12">
-              <el-form-item label="Заголовок">
-                <el-input v-model="newsData.slug"></el-input>
+              <el-form-item
+                label="Заголовок"
+                :class="{
+                  'is-error':
+                    $v.newsData.page_title.$dirty &&
+                    !$v.newsData.page_title.required
+                }"
+              >
+                <el-input v-model="newsData.page_title"></el-input>
+                <small
+                  v-if="
+                    $v.newsData.page_title.$dirty &&
+                      !$v.newsData.page_title.required
+                  "
+                  class="error-text"
+                  >Поле заголовок не должно быть пустым</small
+                >
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="Псевдоним">
                 <el-input v-model="newsData.title"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="Вводный текст">
+                <el-input
+                
+                class='textarea'
+                  type="textarea"
+                  :rows="5"
+                  placeholder="Введите текст"
+                  v-model="newsData.intro_text"
+                  resize='none'
+                >
+                </el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -49,23 +78,23 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="H1">
-                <el-input v-model="newsData.h"></el-input>
+                <el-input v-model="seo.h1"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="Title">
-                <el-input v-model="newsData.title"></el-input>
+                <el-input v-model="seo.title"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24">
               <el-form-item label="Description">
-                <el-input v-model="newsData.description"></el-input>
+                <el-input v-model="seo.description"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
 
           <el-form-item label="SEO-текст">
-            <Tinymce></Tinymce>
+            <Tinymce v-model='seo.seo_text'></Tinymce>
           </el-form-item>
           <el-upload
             action="https://jsonplaceholder.typicode.com/posts/"
@@ -88,9 +117,15 @@
 import Tinymce from "@/components/Tinymce";
 import { Message } from "element-ui";
 import { createNews } from "@/api/news";
+import { required } from "vuelidate/lib/validators";
 export default {
   components: {
     Tinymce
+  },
+  validations: {
+    newsData: {
+      page_title: { required }
+    }
   },
   data() {
     return {
@@ -100,8 +135,16 @@ export default {
       dialogVisible: false,
       newsData: {
         slug: null,
-        title: null,
-        description: null
+        page_title: "",
+        intro_text: "",
+        description: '',
+      },
+      seo: {
+           title: "",
+        description: "",
+        seo_text: "",
+        h1: ""
+
       }
     };
   },
@@ -112,30 +155,37 @@ export default {
     },
 
     addNews() {
-      if (
-        !this.newsData.slug &&
-        !this.newsData.title &&
-        !this.newsData.description
-      ) {
+      if (this.$v.$invalid) {
         Message({
-          message: "Поля для заполнения не должны быть пустыми",
+          message: "Заполните обязательные поля",
           type: "error",
           showClose: true
         });
-      } else {
-        createNews(this.newsData).then(() => {
-          Message({
-            message: "Страница создана",
-            type: "success",
-            showClose: true
-          });
-        });
+        this.$v.$touch();
+        return;
       }
+      const formData = {
+        page_title: this.newsData.page_title,
+        intro_text: this.newsData.intro_text,
+        content:this.newsData.description,
+        h1:this.seo.h1,
+        title:this.seo.title,
+        description:this.seo.description,
+        seo_text:this.seo_text
+      };
+
+      createNews(formData).then(() => {
+        Message({
+          message: "Новость создана",
+          type: "success",
+          showClose: true
+        });
+      });
     }
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .el-row {
   margin-bottom: 20px;
   &:last-child {
@@ -153,4 +203,6 @@ export default {
 .succes-btn {
   margin-top: 25px;
 }
+
+
 </style>

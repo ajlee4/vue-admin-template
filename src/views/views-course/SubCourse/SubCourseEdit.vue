@@ -1,30 +1,72 @@
 <template>
   <div class="course-edit-container">
     <h2>Страница редактирования</h2>
-    <el-tabs type="card">
-      <el-tab-pane label="Ресурс">
-        <div style="margin: 20px;"></div>
-        <el-form
-          :label-position="labelPosition"
-          label-width="100px"
-          @submit.prevent="submitHandler"
-          v-loading="listLoading"
-        >
+    <el-form
+      :label-position="labelPosition"
+      label-width="100px"
+      @submit.prevent="submitHandler"
+      v-loading="listLoading"
+    >
+      <el-tabs type="card">
+        <el-tab-pane label="Ресурс">
+          <div style="margin: 20px;"></div>
+
           <el-row>
             <el-col :span="12">
-              <el-form-item label="Заголовок">
-                <el-input v-model="currentSubCourse.name"></el-input>
+              <el-form-item
+                label="Заголовок"
+                :class="{
+                  'is-error': $v.data.name.$dirty && !$v.data.name.required
+                }"
+              >
+                <el-input v-model="data.name"></el-input>
+                <small
+                  v-if="$v.data.name.$dirty && !$v.data.name.required"
+                  class="error-text"
+                  >Поле заголовок не должно быть пустым</small
+                >
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="Псевдоним">
-                <el-input v-model="currentSubCourse.slug"></el-input>
+                <el-input v-model="data.slug"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item
+                label="Выбор раздела"
+                :class="{
+                  'is-error':
+                    $v.data.category_id.$dirty && !$v.data.category_id.required
+                }"
+              >
+                <el-select
+                  ref="select"
+                  v-model="data.category_id"
+                  placeholder="Select"
+                  class="course-select"
+                >
+                  <el-option
+                    v-for="item in categories"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id"
+                  >
+                  </el-option>
+                </el-select>
+                <small
+                  v-if="
+                    $v.data.category_id.$dirty && !$v.data.category_id.required
+                  "
+                  class="error-text"
+                  >Поле 'Выбор раздела' не должно быть пустым</small
+                >
               </el-form-item>
             </el-col>
           </el-row>
 
           <el-form-item label="Контент">
-            <Tinymce v-model="currentSubCourse.content"></Tinymce>
+            <Tinymce v-model="data.content"></Tinymce>
           </el-form-item>
           <div class="img-edit">
             <h3>Редактирование изображения</h3>
@@ -48,45 +90,43 @@
               <el-col :span="18"
                 ><div class="grid-content ">
                   <h4>Введите текст баннера</h4>
-                  <Tinymce v-model="currentSubCourse.banner_text"></Tinymce>
+                  <Tinymce v-model="data.banner_text"></Tinymce>
                 </div>
               </el-col>
             </el-row>
           </div>
-        </el-form>
-      </el-tab-pane>
-      <el-tab-pane label="SEO">
-        <el-form :label-position="labelPosition" label-width="100px">
+        </el-tab-pane>
+        <el-tab-pane label="SEO">
           <el-row>
             <el-col :span="12">
               <el-form-item label="H1">
-                <el-input v-model="currentSubCourse.h1"></el-input>
+                <el-input v-model="data.h1"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="Title">
-                <el-input v-model="currentSubCourse.title"></el-input>
+                <el-input v-model="data.title"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24">
               <el-form-item label="Description">
-                <el-input v-model="currentSubCourse.description"></el-input>
+                <el-input v-model="data.description"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
 
           <el-form-item label="SEO-текст">
-            <Tinymce v-model="currentSubCourse.seo_text"></Tinymce>
+            <Tinymce v-model="data.seo_text"></Tinymce>
           </el-form-item>
-        </el-form>
-      </el-tab-pane>
-    </el-tabs>
-    <el-button
-      type="success"
-      class="succes-btn"
-      @click="handleCourseEdit(currentSubCourse.id)"
-      >Изменить</el-button
-    >
+        </el-tab-pane>
+      </el-tabs>
+      <el-button
+        type="success"
+        class="succes-btn"
+        @click="handleCourseEdit(data.id)"
+        >Изменить</el-button
+      >
+    </el-form>
   </div>
 </template>
 
@@ -94,48 +134,48 @@
 import Tinymce from "@/components/Tinymce";
 import { Message } from "element-ui";
 import { editSubCourse } from "@/api/course";
+import { required } from "vuelidate/lib/validators";
 export default {
   components: {
     Tinymce
   },
-
+  validations: {
+    data: {
+      name: { required },
+      category_id: { required }
+    }
+  },
   data() {
     return {
+      data: [],
       activeName: "first",
       labelPosition: "top",
       dialogImageUrl: "",
       dialogVisible: false,
-      listLoading: true
+      listLoading: true,
+      categories: []
     };
   },
 
   methods: {
     handleCourseEdit(id) {
       console.log(this.currentSubCourse);
-      const formData = {
-        name: this.currentSubCourse.name,
-        content: this.currentSubCourse.content,
-        title: this.currentSubCourse.title,
-        description: this.currentSubCourse.description,
-        seo_text: this.currentSubCourse.text,
-        h1: this.currentSubCourse.h1
-      };
-     if (this.currentSubCourse.name){
-        editSubCourse(id, formData).then(() => {
+      if (this.$v.$invalid) {
+        Message({
+          message: "Заполните обязательные поля",
+          type: "error",
+          showClose: true
+        });
+        this.$v.$touch();
+        return;
+      }
+      editSubCourse(id, this.data).then(() => {
         Message({
           message: "Ресурс изменен",
           type: "success",
           showClose: true
         });
       });
-     }
-     else {
-        Message({
-          message: "Заголовок не может быть пустой",
-          type: "error",
-          showClose: true
-        });
-     }
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
@@ -146,10 +186,14 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("getCurrentSubCourse", this.$route.params.id).then(() => {
-      console.log(this.currentSubCourse)
-      this.listLoading = false;
-    });
+    this.$store
+      .dispatch("getCurrentSubCourse", this.$route.params.id)
+      .then(() => {
+        this.listLoading = false;
+        this.data = this.currentSubCourse.data;
+        this.categories = this.currentSubCourse.categories;
+        console.log(this.data);
+      });
   },
   computed: {
     currentSubCourse() {
@@ -191,5 +235,8 @@ export default {
     padding-left: 10px;
     padding-right: 10px;
   }
+}
+.course-select {
+  width: 100%;
 }
 </style>

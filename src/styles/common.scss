@@ -16,3 +16,22 @@ body {
           
       }
   }
+  input[type='number'] {
+    -moz-appearance:textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+.error-text {
+    color: #f56c6c;
+  }
+  .el-row {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }

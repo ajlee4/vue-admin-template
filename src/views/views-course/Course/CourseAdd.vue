@@ -12,8 +12,18 @@
         >
           <el-row>
             <el-col :span="12">
-              <el-form-item label="Заголовок">
+              <el-form-item
+                label="Заголовок"
+                :class="{
+                  'is-error': $v.course.name.$dirty && !$v.course.name.required
+                }"
+              >
                 <el-input v-model="course.name"></el-input>
+                <small
+                  v-if="$v.course.name.$dirty && !$v.course.name.required"
+                  class="error-text"
+                  >Поле заголовок не должно быть пустым</small
+                >
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -35,7 +45,6 @@
               ><div class="grid-content ">
                 <h4>Загрузите изображение</h4>
                 <el-upload
-              
                   name="banner"
                   action="http://sandbox.alkonosthim.ru/ih/api/courses/category/store"
                   list-type="picture-card"
@@ -99,9 +108,15 @@
 import Tinymce from "@/components/Tinymce";
 import { addCourse } from "@/api/course";
 import { Message } from "element-ui";
+import { required } from "vuelidate/lib/validators";
 export default {
   components: {
     Tinymce
+  },
+  validations: {
+    course: {
+      name: { required }
+    }
   },
   data() {
     return {
@@ -129,7 +144,7 @@ export default {
   methods: {
     changeUpload(file) {
       this.image = file;
-      console.log(file)
+      console.log(file);
     },
 
     handlePictureCardPreview(file) {
@@ -138,6 +153,15 @@ export default {
       console.log(file);
     },
     handleAddCourse() {
+      if (this.$v.$invalid) {
+        Message({
+          message: "Заполните обязательные поля",
+          type: "error",
+          showClose: true
+        });
+        this.$v.$touch();
+        return;
+      }
       const formData = {
         name: this.course.name,
         content: this.course.content,
@@ -148,23 +172,14 @@ export default {
         banner_text: this.banner.text,
         banner: this.image.raw
       };
-      console.log(formData);
-      if (this.course.name) {
-        addCourse(formData).then(() => {
-          this.$router.push({ name: "general-course-section" });
-          Message({
-            message: "ресурс создан",
-            type: "success",
-            showClose: true
-          });
-        });
-      } else {
+      addCourse(formData).then(() => {
+        this.$router.push({ name: "general-course-section" });
         Message({
-          message: "Заголовок не может быть пустой",
-          type: "error",
+          message: "ресурс создан",
+          type: "success",
           showClose: true
         });
-      }
+      });
     },
     successUploadImg(res, file) {
       console.log(res);

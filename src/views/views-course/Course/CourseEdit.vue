@@ -1,30 +1,38 @@
 <template>
   <div class="course-edit-container">
     <h2>Страница редактирования</h2>
-    <el-tabs type="card">
-      <el-tab-pane label="Ресурс">
-        <div style="margin: 20px;"></div>
         <el-form
           :label-position="labelPosition"
           label-width="100px"
           @submit.prevent="submitHandler"
           v-loading="listLoading"
         >
+    <el-tabs type="card">
+      <el-tab-pane label="Ресурс">
+        <div style="margin: 20px;"></div>
+    
           <el-row>
             <el-col :span="12">
-              <el-form-item label="Заголовок">
-                <el-input v-model="currentCourse.name"></el-input>
+              <el-form-item label="Заголовок"  :class="{
+                  'is-error': $v.data.name.$dirty && !$v.data.name.required
+                }">
+                <el-input v-model="data.name"></el-input>
+                 <small
+                  v-if="$v.data.name.$dirty && !$v.data.name.required"
+                  class="error-text"
+                  >Поле заголовок не должно быть пустым</small
+                >
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="Псевдоним">
-                <el-input v-model="currentCourse.slug"></el-input>
+                <el-input v-model="data.slug"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
 
           <el-form-item label="Контент">
-            <Tinymce v-model="currentCourse.content"></Tinymce>
+            <Tinymce v-model="data.content"></Tinymce>
           </el-form-item>
           <div class="img-edit">
             <h3>Редактирование изображения</h3>
@@ -48,45 +56,46 @@
               <el-col :span="18"
                 ><div class="grid-content ">
                   <h4>Введите текст баннера</h4>
-                  <Tinymce v-model="currentCourse.banner_text"></Tinymce>
+                  <Tinymce v-model="data.banner_text"></Tinymce>
                 </div>
               </el-col>
             </el-row>
           </div>
-        </el-form>
+        
       </el-tab-pane>
       <el-tab-pane label="SEO">
-        <el-form :label-position="labelPosition" label-width="100px">
+      
           <el-row>
             <el-col :span="12">
               <el-form-item label="H1">
-                <el-input v-model="currentCourse.h1"></el-input>
+                <el-input v-model="data.h1"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="Title">
-                <el-input v-model="currentCourse.title"></el-input>
+                <el-input v-model="data.title"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24">
               <el-form-item label="Description">
-                <el-input v-model="currentCourse.description"></el-input>
+                <el-input v-model="data.description"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
 
           <el-form-item label="SEO-текст">
-            <Tinymce v-model="currentCourse.seo_text"></Tinymce>
+            <Tinymce v-model="data.seo_text"></Tinymce>
           </el-form-item>
-        </el-form>
+       
       </el-tab-pane>
     </el-tabs>
     <el-button
       type="success"
       class="succes-btn"
-      @click="handleCourseEdit(currentCourse.id)"
+      @click="handleCourseEdit(data.id)"
       >Изменить</el-button
     >
+     </el-form>
   </div>
 </template>
 
@@ -94,48 +103,48 @@
 import Tinymce from "@/components/Tinymce";
 import { Message } from "element-ui";
 import { editCourse } from "@/api/course";
+import { required } from "vuelidate/lib/validators";
 export default {
   components: {
     Tinymce
   },
-
+  validations: {
+    data: {
+      name: { required },
+      
+    }
+  },
   data() {
     return {
       activeName: "first",
       labelPosition: "top",
       dialogImageUrl: "",
       dialogVisible: false,
-      listLoading: true
+      listLoading: true,
+      data:[]
     };
   },
 
   methods: {
     handleCourseEdit(id) {
       console.log(this.currentCourse);
-      const formData = {
-        name: this.currentCourse.name,
-        content: this.currentCourse.content,
-        title: this.currentCourse.title,
-        description: this.currentCourse.description,
-        seo_text: this.currentCourse.text,
-        h1: this.currentCourse.h1
-      };
-     if (this.currentCourse.name){
-        editCourse(id, formData).then(() => {
+  
+     if (this.$v.$invalid) {
+        Message({
+          message: "Заполните обязательные поля",
+          type: "error",
+          showClose: true
+        });
+        this.$v.$touch();
+        return;
+      }
+       editCourse(id, this.data).then(() => {
         Message({
           message: "Ресурс изменен",
           type: "success",
           showClose: true
         });
       });
-     }
-     else {
-        Message({
-          message: "Заголовок не может быть пустой",
-          type: "error",
-          showClose: true
-        });
-     }
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
@@ -148,6 +157,8 @@ export default {
   created() {
     this.$store.dispatch("getCurrentCourse", this.$route.params.id).then(() => {
       this.listLoading = false;
+      this.data = this.currentCourse
+      console.log(this.data)
     });
   },
   computed: {

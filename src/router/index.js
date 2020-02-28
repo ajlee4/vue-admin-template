@@ -25,20 +25,20 @@ const routes = [
   },
   {
     path: "/news",
-    name: "news",
+    name: "news-list",
     meta: { layout: "main" },
-    component: () => import("../views/NewsList.vue")
+    component: () => import("../views/views-news/NewsList.vue")
   },
   {
     path: "/news/create",
-    name: "news-edit",
-    component: () => import("../views/NewsAdd.vue"),
+    name: "news-add",
+    component: () => import("../views/views-news/NewsAdd.vue"),
     meta: { layout: "main" }
   },
   {
     path: "/news/:id/edit",
-    name: "news-single",
-    component: () => import("../views/News.vue"),
+    name: "news-edit",
+    component: () => import("../views/views-news/NewsEdit.vue"),
     meta: { layout: "main" }
   },
   {
@@ -136,6 +136,18 @@ const routes = [
     path: "/course-single",
     name: "course-single",
     component: () => import("../views/views-course/CourseSingle/CourseSingle.vue"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/course-single/create",
+    name: "course-single-create",
+    component: () => import("../views/views-course/CourseSingle/CourseSingleAdd.vue"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/course-single/:id/edit",
+    name: "course-single-edit",
+    component: () => import("../views/views-course/CourseSingle/CourseSingleEdit.vue"),
     meta: { layout: "main" }
   },
 ];
