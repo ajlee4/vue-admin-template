@@ -7,6 +7,13 @@ export function fetchNewsList(query) {
     params: query
   });
 }
+export function fetchNews(id) {
+  return request({
+    url: `http://sandbox.alkonosthim.ru/ih/api/news/${id}/edit`,
+    method: "get"
+  });
+}
+
 
 export function createNews(data) {
   return request({
@@ -18,23 +25,16 @@ export function createNews(data) {
 
 export function deleteNews(id) {
   return request({
-    url: "https://jsonplaceholder.typicode.com/posts",
+    url: `http://sandbox.alkonosthim.ru/ih/api/news/${id}/destroy`,
     method: "delete",
     params: { id }
   });
 }
 
-export function searchNews(data) {
+export function updateNews(id, data) {
   return request({
-    url: "https://jsonplaceholder.typicode.com/posts",
-    method: "get",
-    params: { data }
-  });
-}
-export function updateNews(id) {
-  return request({
-    url: "https://jsonplaceholder.typicode.com/posts",
+    url: `http://sandbox.alkonosthim.ru/ih/api/news/${id}/update`,
     method: "put",
-    params: { id }
+    data
   });
 }

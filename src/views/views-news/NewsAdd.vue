@@ -1,14 +1,15 @@
 <template>
   <div>
     <h2>Создание товара</h2>
-    <el-tabs type="card">
-      <el-tab-pane label="Ресурс">
-        <div style="margin: 20px;"></div>
-        <el-form
+      <el-form
           :label-position="labelPosition"
           label-width="100px"
           :model="newsData"
         >
+    <el-tabs type="card">
+      <el-tab-pane label="Ресурс">
+        <div style="margin: 20px;"></div>
+      
           <el-row>
             <el-col :span="12">
               <el-form-item
@@ -64,17 +65,11 @@
           <el-dialog :visible.sync="dialogVisible">
             <img width="100%" :src="dialogImageUrl" alt="" />
           </el-dialog>
-          <el-button type="success" class="succes-btn" @click="addNews"
-            >Создать</el-button
-          >
-        </el-form>
+       
+      
       </el-tab-pane>
       <el-tab-pane label="SEO">
-        <el-form
-          :label-position="labelPosition"
-          label-width="100px"
-          :model="newsData"
-        >
+      
           <el-row>
             <el-col :span="12">
               <el-form-item label="H1">
@@ -106,10 +101,14 @@
           <el-dialog :visible.sync="dialogVisible">
             <img width="100%" :src="dialogImageUrl" alt="" />
           </el-dialog>
-          <el-button type="success" class="succes-btn">Создать</el-button>
-        </el-form>
+          
+     
       </el-tab-pane>
     </el-tabs>
+       <el-button type="success" class="succes-btn" @click="addNews"
+            >Создать</el-button
+          >
+       </el-form>
   </div>
 </template>
 
@@ -175,6 +174,7 @@ export default {
       };
 
       createNews(formData).then(() => {
+        this.$router.push({ name: "news-list" });
         Message({
           message: "Новость создана",
           type: "success",

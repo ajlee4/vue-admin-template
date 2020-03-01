@@ -196,7 +196,7 @@ C844.968,127.845,848.247,137.233,859.103,137.233z"
         <el-menu
           default-active="0"
           class="el-menu-vertical-demo"
-          background-color="#393942"
+          background-color="#1f2d3d"
           text-color="#fff"
           active-text-color="#ffd04b"
           :collapse="isCollapse"

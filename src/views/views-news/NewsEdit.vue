@@ -1,27 +1,54 @@
 <template>
+    <el-form
+        :label-position="labelPosition"
+        label-width="100px"
+       
+      >
   <el-tabs type="card">
     <el-tab-pane label="Ресурс">
       <div style="margin: 20px;"></div>
-      <el-form
-        :label-position="labelPosition"
-        label-width="100px"
-        :model="news"
-      >
+  
         <el-row>
           <el-col :span="12">
-            <el-form-item label="Заголовок">
-              <el-input v-model="news.title"></el-input>
+            <el-form-item label="Заголовок"      :class="{
+                  'is-error':
+                    $v.data.page_title.$dirty &&
+                    !$v.data.page_title.required
+                }">
+              <el-input v-model="data.page_title"></el-input>
+                <small
+                  v-if="
+                    $v.data.page_title.$dirty &&
+                      !$v.data.page_title.required
+                  "
+                  class="error-text"
+                  >Поле заголовок не должно быть пустым</small
+                >
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="Псевдоним">
-              <el-input v-model="news.slug"></el-input>
+              <el-input v-model="data.slug"></el-input>
             </el-form-item>
           </el-col>
+                 <el-col :span="12">
+              <el-form-item label="Вводный текст">
+                <el-input
+                
+                class='textarea'
+                  type="textarea"
+                  :rows="5"
+                  placeholder="Введите текст"
+                  v-model="data.intro_text"
+                  resize='none'
+                >
+                </el-input>
+              </el-form-item>
+            </el-col>
         </el-row>
 
         <el-form-item label="Контент">
-          <Tinymce v-model="news.description"></Tinymce>
+          <Tinymce v-model="data.content"></Tinymce>
         </el-form-item>
         <el-upload
           action="https://jsonplaceholder.typicode.com/posts/"
@@ -33,37 +60,30 @@
         <el-dialog :visible.sync="dialogVisible">
           <img width="100%" :src="dialogImageUrl" alt="" />
         </el-dialog>
-        <el-button type="success" class="succes-btn" @click="handleUpdateNews"
-          >Изменить</el-button
-        >
-      </el-form>
+  
     </el-tab-pane>
     <el-tab-pane label="SEO">
-      <el-form
-        :label-position="labelPosition"
-        label-width="100px"
-        :model="news"
-      >
+   
         <el-row>
           <el-col :span="12">
             <el-form-item label="H1">
-              <el-input></el-input>
+              <el-input  v-model="data.h1"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="Title">
-              <el-input></el-input>
+              <el-input  v-model="data.title"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item label="Description">
-              <el-input></el-input>
+              <el-input v-model="data.description"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
 
         <el-form-item label="SEO-текст">
-          <Tinymce></Tinymce>
+          <Tinymce  v-model="data.seo_text"></Tinymce>
         </el-form-item>
         <el-upload
           action="https://jsonplaceholder.typicode.com/posts/"
@@ -75,21 +95,33 @@
         <el-dialog :visible.sync="dialogVisible">
           <img width="100%" :src="dialogImageUrl" alt="" />
         </el-dialog>
-        <el-button type="success" class="succes-btn">Изменить</el-button>
-      </el-form>
+  
+  
     </el-tab-pane>
   </el-tabs>
+    <el-button type="success" class="succes-btn" @click="handleUpdateNews(data.id)"
+          >Изменить</el-button
+        >
+      </el-form>
 </template>
 
 <script>
 import Tinymce from "@/components/Tinymce";
 import { updateNews } from "@/api/news";
+import { required } from "vuelidate/lib/validators";
+import { Message } from "element-ui";
 export default {
   components: {
     Tinymce
   },
+    validations: {
+    data: {
+      page_title: { required }
+    }
+  },
   data() {
     return {
+      data: [],
       activeName: "first",
       labelPosition: "top",
       dialogImageUrl: "",
@@ -106,14 +138,35 @@ export default {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
-    handleUpdateNews() {
-      updateNews(this.$route.params.id).then(() => {
+    handleUpdateNews(id) {
+           if (this.$v.$invalid) {
+        Message({
+          message: "Заполните обязательные поля",
+          type: "error",
+          showClose: true
+        });
+        this.$v.$touch();
+        return;
+      }
+      updateNews(id,this.data).then(() => {
         this.$message({
           type: "success",
           message: "Новость изменена",
           showClose: true
         });
       });
+    }
+  },
+    created() {
+    this.$store.dispatch("getCurrentNews", this.$route.params.id).then(() => {
+      this.listLoading = false;
+      this.data = this.currentNews
+      console.log(this.data)
+    });
+  },
+    computed: {
+    currentNews() {
+      return this.$store.getters.currentNews;
     }
   }
 };

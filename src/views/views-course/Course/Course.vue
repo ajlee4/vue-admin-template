@@ -8,6 +8,7 @@
           >Создать продукт</el-button
         >
       </router-link>
+     
       <el-table :data="data" border style="width: 100%" v-loading="listLoading">
         <el-table-column label="Название курса">
           <template slot-scope="scope">
@@ -64,6 +65,7 @@ export default {
     return {
       data: [],
       listLoading: true,
+      search:'',
       listQuery: {
         page: 1,
         limit: 20

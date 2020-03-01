@@ -6,65 +6,28 @@
         <el-col :span="6"
           ><div class="grid-content ">
             <el-form-item label="Поле для поиска">
-              <el-input v-model="searchData.text"></el-input>
+              <el-input v-model="search"></el-input>
             </el-form-item></div
         ></el-col>
-        <el-col :span="6"
-          ><div class="grid-content ">
-            <el-form-item>
-              <el-form-item label="Поле для фильтрации">
-                <el-select
-                  v-model="searchData.category"
-                  clearable
-                  placeholder="Select"
-                >
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  >
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-form-item></div
-        ></el-col>
-        <el-col :span="6"
-          ><div class="grid-content ">
-            <el-form-item label="Поле для фильтрации">
-              <el-select
-                v-model="searchData.multipleCategory"
-                multiple
-                placeholder="Select"
-              >
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item></div
-        ></el-col>
-        <el-col :span="6"><div class="grid-content "></div></el-col>
+       
       </el-row>
-      <el-button type="primary" @click="searchNews">Найти</el-button>
+     
     </el-form>
     <router-link to="/news/create">
       <el-button type="primary" class="add-news-button"
         >Создать продукт</el-button
-      >
+      >  
     </router-link>
-    <el-table :data="data" border style="width: 100%" v-loading="listLoading">
+ <div class="table-wrap">
+      <el-table :data="filteredData" border style="width: 100%" v-loading="listLoading">
       <el-table-column label="Дата">
         <template slot-scope="scope">
-          {{ scope.row.name }}
+          {{ scope.row.updated_at | parseTime('{d}-{m}-{y} {h}:{i}') }}
         </template>
       </el-table-column>
       <el-table-column label="Название новости">
         <template slot-scope="scope">
-          {{ scope.row.alias }}
+          {{ scope.row.page_title }}
         </template>
       </el-table-column>
       <el-table-column align="right">
@@ -90,14 +53,15 @@
       :limit.sync="listQuery.limit"
       @pagination="getDataNews(listQuery.limit)"
     ></pagination>
+ </div>
+
   </div>
 </template>
 
 <script>
 import pagination from "@/components/Pagination";
-import { fetchNewsList } from "@/api/news";
-import { deleteNews } from "@/api/news";
-import { searchNews } from "@/api/news";
+import { fetchNewsList,deleteNews } from "@/api/news";
+import { Message } from "element-ui";
 export default {
   components: {
     pagination
@@ -105,51 +69,30 @@ export default {
   data() {
     return {
       id: "",
-      searchData: {
-        text: "",
-        category: "",
-        multipleCategory: ""
-      },
+      search:'',
       data: [],
       listLoading: true,
       listQuery: {
         page: 1,
         limit: 20
       },
-      options: [
-        {
-          value: "Option1",
-          label: "Option1"
-        },
-        {
-          value: "Option2",
-          label: "Option2"
-        },
-        {
-          value: "Option3",
-          label: "Option3"
-        },
-        {
-          value: "Option4",
-          label: "Option4"
-        },
-        {
-          value: "Option5",
-          label: "Option5"
-        }
-      ],
+  
       total: 0
     };
   },
   computed: {
     newsLink() {
       return `/news/${this.id}/edit`;
+    },
+    filteredData(){
+
+      return this.data.filter(news => {
+        return news.page_title.toLowerCase().includes(this.search.toLowerCase())
+      })
+    
     }
   },
   methods: {
-    handleEdit(id) {
-      this.id = id;
-    },
     handleDelete(id) {
       this.$confirm("Вы хотите удалить этот элемент?", "Warning", {
         confirmButtonText: "OK",
@@ -157,7 +100,16 @@ export default {
         type: "warning"
       })
         .then(() => {
-          deleteNews(id);
+
+              deleteNews(id).then(() => {
+            this.data = this.data.filter(item => item.id !== id);
+            Message({
+              message: "ресурс удален",
+              type: "success",
+              showClose: true
+            });
+          });
+          ;
         })
         .catch(() => {
           this.$message({
@@ -170,15 +122,16 @@ export default {
     getDataNews() {
       this.listLoading = true;
       fetchNewsList(this.listQuery).then(response => {
-        this.data = response.data.items;
+        this.data = response.data.data;
         this.total = response.data.total;
         this.listLoading = false;
+        console.log(this.data)
       });
     },
-    searchNews() {
-      searchNews(this.searchData);
-      console.log(this.searchData);
-    }
+    // searchNews() {
+    //   searchNews(this.searchData);
+    //   console.log(this.searchData);
+    // }
   },
 
   mounted() {
