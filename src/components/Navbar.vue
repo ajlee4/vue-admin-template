@@ -16,6 +16,7 @@ import Dropdown from "./Dropdown";
 import Hamburger from "@/components/Hamburger";
 export default {
   components: {
+
     Dropdown,
     Hamburger
   },

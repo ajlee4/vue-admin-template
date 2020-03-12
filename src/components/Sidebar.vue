@@ -194,106 +194,127 @@ C844.968,127.845,848.247,137.233,859.103,137.233z"
         </router-link>
 
         <el-menu
-          default-active="0"
+          :default-active="activeMenu"
           class="el-menu-vertical-demo"
           background-color="#1f2d3d"
           text-color="#fff"
           active-text-color="#ffd04b"
           :collapse="isCollapse"
         >
-          <li class="sidebar-list-item-title">
-            Основное
-          </li>
-          <router-link to="/">
-            <el-menu-item index="0">
-              <i
-                class="el-icon-s-home
+          <div>
+            <router-link to="/">
+              <el-menu-item index="0" class="submenu-title-noDropdown">
+                <i
+                  class="el-icon-s-home
 "
-              ></i>
-              <span>Главная</span>
-            </el-menu-item>
-          </router-link>
-          <router-link to="/news">
-            <el-menu-item index="6">
-              <i
-                class="el-icon-s-promotion
+                ></i>
+                <span>Главная</span>
+              </el-menu-item>
+            </router-link>
+          </div>
+          <div>
+            <router-link to="/news">
+              <el-menu-item index="6" class="submenu-title-noDropdown">
+                <i
+                  class="el-icon-s-promotion
 "
-              ></i>
-              <span>Новости</span>
-            </el-menu-item>
-          </router-link>
-          <router-link to="/pages">
-            <el-menu-item index="1">
-              <i
-                class="el-icon-document-copy
+                ></i>
+                <span>Новости</span>
+              </el-menu-item>
+            </router-link>
+          </div>
+          <div>
+            <router-link to="/pages">
+              <el-menu-item index="1" class="submenu-title-noDropdown">
+                <i
+                  class="el-icon-document-copy
 "
-              ></i>
-              <span>Страницы</span>
-            </el-menu-item>
-          </router-link>
-          <el-submenu index="1">
-            <template slot="title">
-              <i class="el-icon-s-platform"></i>
-              <span>Курсы</span>
-            </template>
-            <router-link to="/course">
-              <el-menu-item index="1-1">Общие разделы</el-menu-item>
+                ></i>
+                <span>Страницы</span>
+              </el-menu-item>
             </router-link>
-            <router-link to="/subcourse">
-              <el-menu-item index="1-2">Направления</el-menu-item>
+          </div>
+                 <div>
+            <router-link to="/reviews">
+              <el-menu-item index="10" class="submenu-title-noDropdown">
+                <i
+                  class="el-icon-s-comment
+"
+                ></i>
+                <span>Отзывы</span>
+              </el-menu-item>
             </router-link>
+          </div>
+          <div>
+            <el-submenu index="1" class="submenu-title-noDropdown">
+              <template slot="title">
+                <i class="el-icon-s-platform"></i>
+                <span>Курсы</span>
+              </template>
+              <router-link to="/course">
+                <el-menu-item index="1-1">Общие разделы</el-menu-item>
+              </router-link>
+              <router-link to="/subcourse">
+                <el-menu-item index="1-2">Направления</el-menu-item>
+              </router-link>
 
-            <router-link to="/course-single">
-              <el-menu-item index="1-3">Курсы</el-menu-item>
+              <router-link to="/course-single">
+                <el-menu-item index="1-3">Курсы</el-menu-item>
+              </router-link>
+            </el-submenu>
+          </div>
+          <div>
+                <router-link to="/resourse">
+              <el-menu-item index="10" class="submenu-title-noDropdown">
+                <i
+                  class="el-icon-folder
+"
+                ></i>
+                <span>Ресурсы</span>
+              </el-menu-item>
             </router-link>
-          </el-submenu>
-          <el-menu-item index="4">
-            <i class="el-icon-setting"></i>
-            <span>Navigator Four</span>
-          </el-menu-item>
+          </div>
 
-          <li class="sidebar-list-item-title">
-            Дополнительно
-          </li>
+          <div>
+            <el-submenu index="21" class="submenu-title-noDropdown">
+              <template slot="title">
+                <i class="el-icon-setting"></i>
+                <span>Компоненты</span>
+              </template>
 
-          <el-submenu index="21">
-            <template slot="title">
-              <i class="el-icon-setting"></i>
-              <span>Компоненты</span>
-            </template>
+              <router-link to="/layout-components">
+                <el-menu-item index="8"
+                  ><span>Layout components</span></el-menu-item
+                >
+              </router-link>
+              <router-link to="/buttons">
+                <el-menu-item index="9"><span>Buttons</span></el-menu-item>
+              </router-link>
 
-            <router-link to="/layout-components">
-              <el-menu-item index="8"
-                ><span>Layout components</span></el-menu-item
-              >
-            </router-link>
-            <router-link to="/buttons">
-              <el-menu-item index="9"><span>Buttons</span></el-menu-item>
-            </router-link>
+              <router-link to="/form">
+                <el-menu-item index="10"><span>Form</span></el-menu-item>
+              </router-link>
+              <router-link to="/tabs">
+                <el-menu-item index="11"><span>Tabs</span></el-menu-item>
+              </router-link>
+              <router-link to="/table">
+                <el-menu-item index="12"><span>Table</span></el-menu-item>
+              </router-link>
+              <router-link to="/messages">
+                <el-menu-item index="13"><span>Messages</span></el-menu-item>
+              </router-link>
+              <router-link to="/breadcrumb">
+                <el-menu-item index="14"><span>Breadcrumb</span></el-menu-item>
+              </router-link>
+              <router-link to="/dialog">
+                <el-menu-item index="15"><span>Dialog</span></el-menu-item>
+              </router-link>
 
-            <router-link to="/form">
-              <el-menu-item index="10"><span>Form</span></el-menu-item>
-            </router-link>
-            <router-link to="/tabs">
-              <el-menu-item index="11"><span>Tabs</span></el-menu-item>
-            </router-link>
-            <router-link to="/table">
-              <el-menu-item index="12"><span>Table</span></el-menu-item>
-            </router-link>
-            <router-link to="/messages">
-              <el-menu-item index="13"><span>Messages</span></el-menu-item>
-            </router-link>
-            <router-link to="/breadcrumb">
-              <el-menu-item index="14"><span>Breadcrumb</span></el-menu-item>
-            </router-link>
-            <router-link to="/dialog">
-              <el-menu-item index="15"><span>Dialog</span></el-menu-item>
-            </router-link>
-
-            <router-link to="/pagination">
-              <el-menu-item index="15"><span>Pagination</span></el-menu-item>
-            </router-link>
-          </el-submenu>
+              <router-link to="/pagination">
+                <el-menu-item index="15"><span>Pagination</span></el-menu-item>
+              </router-link>
+            </el-submenu>
+          </div>
         </el-menu>
       </el-scrollbar>
     </el-scrollbar>
@@ -307,22 +328,34 @@ export default {
   computed: {
     isCollapse() {
       return !this.$store.getters.sidebar.opened;
+    },
+    activeMenu() {
+      const route = this.$route;
+      const { meta, path } = route;
+      // if set path, the sidebar will highlight the path you set
+      if (meta.activeMenu) {
+        return meta.activeMenu;
+      }
+      return path;
     }
+  },
+  created(){
+    console.log(this.$route)
   }
 };
 </script>
 <style lang="scss">
- .aside {
-    &__logo {
-      margin-bottom: 20px;
-      padding: 10px 5px;
-      display: block;
+.aside {
+  &__logo {
+    margin-bottom: 20px;
+    padding: 10px 5px;
+    display: block;
+    max-width: 100%;
+    svg {
       max-width: 100%;
-      svg {
-        max-width: 100%;
-      }
     }
   }
+}
 .logo {
   .name {
     fill: #ffffff;

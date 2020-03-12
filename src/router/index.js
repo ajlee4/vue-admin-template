@@ -150,6 +150,36 @@ const routes = [
     component: () => import("../views/views-course/CourseSingle/CourseSingleEdit.vue"),
     meta: { layout: "main" }
   },
+  {
+    path: "/reviews",
+    name: "reviews",
+    component: () => import("../views/views-reviews/Reviews.vue"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/reviews/:id/edit",
+    name: "reviews-edit",
+    component: () => import("../views/views-reviews/ReviewsEdit.vue"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/resourse",
+    name: "resourse",
+    component: () => import("../views/views-resourse/Resourse.vue"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/resourse/:id/edit",
+    name: "resourse-edit",
+    component: () => import("../views/views-resourse/ResourseEdit.vue"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/resourse/create",
+    name: "resourse-create",
+    component: () => import("../views/views-resourse/ResourseAdd.vue"),
+    meta: { layout: "main" }
+  },
 ];
 
 const router = new VueRouter({

@@ -170,7 +170,7 @@ export default {
         seo_text: this.seo.text,
         h1: this.seo.h1,
         banner_text: this.banner.text,
-        banner: this.image.raw
+        banner: this.image
       };
       addCourse(formData).then(() => {
         this.$router.push({ name: "general-course-section" });
