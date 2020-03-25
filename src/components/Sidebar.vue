@@ -274,7 +274,17 @@ C844.968,127.845,848.247,137.233,859.103,137.233z"
               </el-menu-item>
             </router-link>
           </div>
-
+           <div>
+            <router-link to="/calendar">
+              <el-menu-item index="30" class="submenu-title-noDropdown">
+                <i
+                  class="el-icon-date
+"
+                ></i>
+                <span>Календарь</span>
+              </el-menu-item>
+            </router-link>
+          </div>
           <div>
             <el-submenu index="21" class="submenu-title-noDropdown">
               <template slot="title">

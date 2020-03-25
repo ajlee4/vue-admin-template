@@ -1,0 +1,283 @@
+%transition {
+  transition: all .6s;
+}
+$rad: 20px;
+
+/*custom style reset:*/
+* {
+  box-sizing: border-box;
+}
+img, video, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+br {
+  display: block;
+  content: '';
+  margin: 10px 0;
+}
+a {
+  color: #003e7e;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+h1,h2,h3,h4 {
+  font-weight: 400;
+}
+input, textarea, select {
+  border-radius: 0 !important;
+}
+button {
+  outline: none !important;
+  cursor: pointer;
+}
+/* //custom style reset:*/
+
+//wrapper style
+.app_wrapper {
+  position: relative;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+// //wrapper style
+
+//tooltip
+.tooltip {
+  font-size: 12px;
+  font-weight: 600;
+  position: absolute;
+  bottom: calc(100% + 5px);
+  left: 0;
+  padding: 5px 12px;
+  color: #fff;
+  background: #ff8e00;
+  border-radius: 3px;
+  text-align: center;
+
+  z-index: 12;
+
+  transition: all .6s;
+  cursor: pointer;
+}
+// //tooltip
+
+.transition_wrap {
+  position: relative;
+}
+//animation - fade
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+  opacity: 0;
+}
+.fade-leave-active {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+// //animation - fade
+
+//button start
+$btn_color: #003e7e;
+.main_btn {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .07em;
+  cursor: pointer;
+  color: #fff;
+  border-radius: $rad;
+  background: $btn_color;
+  border: 1px solid $btn_color;
+  text-transform: uppercase;
+  padding: 6px 20px;
+
+  @extend %transition;
+
+  &:hover {
+    background: #fff;
+    color: $btn_color;
+  }
+}
+.btn_textstyle {
+  cursor: pointer;
+  color: $btn_color;
+  background-color: transparent;
+  border: none;
+  text-decoration: underline;
+
+  letter-spacing: .02em;
+
+  display: inline-flex;
+  align-items: center;
+
+  &.editrecord {
+    order: 12;
+
+    svg {
+      width: 14px;
+      height: 14px;
+      margin-right: 5px;
+    }
+  }
+}
+.slearfieldsBtn {
+  border: none;
+  background-color: transparent;
+  border-radius: 50%;
+  color: #a9a9a9;
+}
+// //button end
+
+//calendar component slot styles
+.calendar_btn_wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+.calendar_btn {
+  flex: 0 1 33.33%;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  @extend %transition;
+  &:hover {
+    box-shadow: 0 0 4px 0 #9c9c9c;
+  }
+  &.disabled {
+    pointer-events: none !important;
+    .val {
+      color: #9fa0a4;
+    }
+  }
+  .counter {
+    font-size: 12px;
+
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    background: #1ab316;
+    color: #fff;
+
+    margin-right: 5px;
+
+    &.warn {
+      background: #ff5454;
+    }
+  }
+  .val {
+    font-size: 18px;
+    color: #3c3d41;
+  }
+}
+// //calendar component slot styles
+
+//helper classes
+.tac {
+  text-align: center;
+}
+.ml-auto {
+  margin-left: auto !important;
+}
+.w_100 {
+  width: 100% !important;
+}
+.dashed {
+  border: 1px dashed #dddddd !important;
+}
+.mt_20 {
+  margin-top: 20px !important;
+}
+.my_10 {
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+}
+// //helper classes
+
+//regModal slots
+.input_wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  padding-top: 10px;
+
+  position: relative;
+
+  &.spaced {
+    padding: 25px 20px;
+  }
+
+  .input_50 {
+    margin-bottom: 20px;
+  }
+}
+
+.input_50 {
+  flex: 0 1 47%;
+}
+
+.custom_title {
+  font-size: 75%;
+  letter-spacing: .04em;
+  margin-bottom: 7px;
+}
+// //regModal slots
+
+
+//modal slot styles
+.modal_tabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .tab_btn {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+}
+.tab_btn {
+  font-size: 16px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  display: inline-block;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  padding: 6px 15px;
+  
+  @extend %transition;
+  
+  &:hover,
+  &.active {
+    border-color: #ccc;
+  }
+}
+.input_wrap {
+  position: relative;
+
+  .slearfieldsBtn {
+    font-size: 22px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 5;
+  }
+}
+
+// //modal slot styles

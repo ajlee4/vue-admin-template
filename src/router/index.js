@@ -36,6 +36,12 @@ const routes = [
     meta: { layout: "main" }
   },
   {
+    path: "/calendar",
+    name: "calendar",
+    component: () => import("../views/Calendar.vue"),
+    meta: { layout: "main" }
+  },
+  {
     path: "/news/:id/edit",
     name: "news-edit",
     component: () => import("../views/views-news/NewsEdit.vue"),

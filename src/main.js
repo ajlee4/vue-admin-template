@@ -10,6 +10,19 @@ import * as filters from './filters'
 
 import locale from 'element-ui/lib/locale/lang/ru-RU'
 
+
+// moment js
+const moment = require('moment')
+require('moment/locale/ru')
+Vue.use(require('vue-moment'), {
+  moment
+})
+// //moment js
+// import 'vue2-animate/src/sass/vue2-animate.scss'
+import './styles/animation/vue2-animate.scss'
+// //animation
+
+
 Vue.use(Vuelidate);
 
 Vue.use(ElementUI, { locale })
