@@ -264,6 +264,24 @@ C844.968,127.845,848.247,137.233,859.103,137.233z"
             </el-submenu>
           </div>
           <div>
+                <el-submenu index="4" class="submenu-title-noDropdown">
+              <template slot="title">
+                <i class="el-icon-reading"></i>
+                <span>Тестирование</span>
+              </template>
+              <router-link to="/test-category">
+                <el-menu-item index="4-1">Категории</el-menu-item>
+              </router-link>
+              <router-link to="/test-level">
+                <el-menu-item index="4-2">Уровень</el-menu-item>
+              </router-link>
+
+              <router-link to="/test-question">
+                <el-menu-item index="4-3">Вопросы</el-menu-item>
+              </router-link>
+            </el-submenu>
+          </div>
+          <div>
                 <router-link to="/resourse">
               <el-menu-item index="10" class="submenu-title-noDropdown">
                 <i

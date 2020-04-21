@@ -186,6 +186,60 @@ const routes = [
     component: () => import("../views/views-resourse/ResourseAdd.vue"),
     meta: { layout: "main" }
   },
+  {
+    path: "/test-category",
+    name: "test-category",
+    component: () => import("../views/views-test/TestCategory/TestCategory"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/test-category/create",
+    name: "test-category-create",
+    component: () => import("../views/views-test/TestCategory/TestCategoryAdd"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/test-category/:id/edit",
+    name: "test-category-edit",
+    component: () => import("../views/views-test/TestCategory/TestCategoryEdit"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/test-level",
+    name: "test-level",
+    component: () => import("../views/views-test/TestLevel/TestLevel"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/test-level/create",
+    name: "test-level-create",
+    component: () => import("../views/views-test/TestLevel/TestLevelAdd"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/test-level/:id/edit",
+    name: "test-level-edit",
+    component: () => import("../views/views-test/TestLevel/TestLevelEdit"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/test-question",
+    name: "test-question",
+    component: () => import("../views/views-test/TestQuestion/TestQuestion"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/test-question/create",
+    name: "test-question-create",
+    component: () => import("../views/views-test/TestQuestion/TestQuestionAdd"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/test-question/:id/edit",
+    name: "test-question-edit",
+    component: () => import("../views/views-test/TestQuestion/TestQuestionEdit"),
+    meta: { layout: "main" }
+  },
 ];
 
 const router = new VueRouter({

@@ -402,7 +402,7 @@ export default {
         this.listLoading = false;
         this.categories = this.currentSingleCourse.sub_categories;
         this.data = this.currentSingleCourse.data;
-        console.log(this.data);
+      console.log(this.currentSingleCourse)
       });
   },
   computed: {

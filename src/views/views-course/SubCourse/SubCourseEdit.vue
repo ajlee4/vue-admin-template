@@ -190,9 +190,9 @@ export default {
       .dispatch("getCurrentSubCourse", this.$route.params.id)
       .then(() => {
         this.listLoading = false;
-        this.data = this.currentSubCourse.data;
+        this.data = this.currentSubCourse.data
         this.categories = this.currentSubCourse.categories;
-        console.log(this.data);
+        console.log(this.currentSubCourse);
       });
   },
   computed: {

@@ -4,6 +4,7 @@ import news from "./modules/news";
 import course from "./modules/course";
 import reviews from "./modules/reviews";
 import resourse from "./modules/resourse";
+import test from './modules/test'
 import app from "./modules/app";
 
 
@@ -15,6 +16,7 @@ export default new Vuex.Store({
     course,
     app,
     reviews,
-    resourse
+    resourse,
+    test
   }
 });
