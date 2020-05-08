@@ -198,7 +198,7 @@
             <Tinymce v-model="course.content"></Tinymce>
           </el-form-item>
 
-          <div class="banner-info">
+          <!-- <div class="banner-info">
             <h3>Создание баннера</h3>
 
             <el-row :gutter="20">
@@ -226,7 +226,7 @@
                 </div>
               </el-col>
             </el-row>
-          </div>
+          </div> -->
         </el-tab-pane>
         <el-tab-pane label="SEO">
           <el-row>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Создание товара</h2>
+    <h2>Создание новости</h2>
       <el-form
           :label-position="labelPosition"
           label-width="100px"
@@ -36,26 +36,18 @@
                 <el-input v-model="newsData.title"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="12">
-              <el-form-item label="Вводный текст">
-                <el-input
-                
-                class='textarea'
-                  type="textarea"
-                  :rows="5"
-                  placeholder="Введите текст"
-                  v-model="newsData.intro_text"
-                  resize='none'
-                >
-                </el-input>
-              </el-form-item>
+            <el-col :span="24">
+               <el-form-item label="Вводный текст">
+            <Tinymce v-model="newsData.intro_text"></Tinymce>
+          </el-form-item>
+          
             </el-col>
           </el-row>
 
           <el-form-item label="Контент">
             <Tinymce v-model="newsData.description"></Tinymce>
           </el-form-item>
-          <el-upload
+          <!-- <el-upload
             action="https://jsonplaceholder.typicode.com/posts/"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
@@ -64,7 +56,7 @@
           </el-upload>
           <el-dialog :visible.sync="dialogVisible">
             <img width="100%" :src="dialogImageUrl" alt="" />
-          </el-dialog>
+          </el-dialog> -->
        
       
       </el-tab-pane>
@@ -91,7 +83,7 @@
           <el-form-item label="SEO-текст">
             <Tinymce v-model='seo.seo_text'></Tinymce>
           </el-form-item>
-          <el-upload
+          <!-- <el-upload
             action="https://jsonplaceholder.typicode.com/posts/"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
@@ -100,7 +92,7 @@
           </el-upload>
           <el-dialog :visible.sync="dialogVisible">
             <img width="100%" :src="dialogImageUrl" alt="" />
-          </el-dialog>
+          </el-dialog> -->
           
      
       </el-tab-pane>

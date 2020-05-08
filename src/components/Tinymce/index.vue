@@ -63,6 +63,7 @@ export default {
       tinymceId: this.id,
       fullscreen: false,
       languageTypeList: {
+        'ru':'ru',
         'en': 'en',
         'zh': 'zh_CN',
         'es': 'es_MX',
@@ -116,7 +117,7 @@ export default {
       const _this = this
       window.tinymce.init({
         selector: `#${this.tinymceId}`,
-        language: this.languageTypeList['en'],
+        language: this.languageTypeList['ru'],
         height: this.height,
         body_class: 'panel-body ',
         object_resizing: false,

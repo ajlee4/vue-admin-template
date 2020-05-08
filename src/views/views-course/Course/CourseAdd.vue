@@ -32,12 +32,14 @@
               </el-form-item>
             </el-col>
           </el-row>
-
+              <el-form-item label="Вводный текст">
+            <Tinymce  v-model="course.intro_text"></Tinymce>
+          </el-form-item>
           <el-form-item label="Контент">
             <Tinymce v-model="course.content"></Tinymce>
           </el-form-item>
         </el-form>
-        <div class="banner-info">
+        <!-- <div class="banner-info">
           <h3>Создание баннера</h3>
 
           <el-row :gutter="20">
@@ -65,7 +67,7 @@
               </div>
             </el-col>
           </el-row>
-        </div>
+        </div> -->
       </el-tab-pane>
       <el-tab-pane label="SEO">
         <el-form
@@ -131,7 +133,8 @@ export default {
       course: {
         name: "",
         slug: "",
-        content: ""
+        content: "",
+        intro_text:'',
       },
       seo: {
         title: "",
@@ -165,6 +168,7 @@ export default {
       const formData = {
         name: this.course.name,
         content: this.course.content,
+        intro_text:this.course.intro_text,
         title: this.seo.title,
         description: this.seo.description,
         seo_text: this.seo.text,

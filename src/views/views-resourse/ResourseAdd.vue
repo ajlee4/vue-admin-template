@@ -37,11 +37,13 @@
               </el-form-item>
             </el-col>
           </el-row>
-
+             <el-form-item label="Вводный текст">
+            <Tinymce v-model="resourseData.intro_text"></Tinymce>
+          </el-form-item>
           <el-form-item label="Контент">
             <Tinymce v-model="resourseData.description"></Tinymce>
           </el-form-item>
-          <el-upload
+          <!-- <el-upload
             action="https://jsonplaceholder.typicode.com/posts/"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
@@ -50,7 +52,7 @@
           </el-upload>
           <el-dialog :visible.sync="dialogVisible">
             <img width="100%" :src="dialogImageUrl" alt="" />
-          </el-dialog>
+          </el-dialog> -->
         </el-tab-pane>
         <el-tab-pane label="SEO">
           <el-row>
@@ -74,7 +76,7 @@
           <el-form-item label="SEO-текст">
             <Tinymce v-model="seo.seo_text"></Tinymce>
           </el-form-item>
-          <el-upload
+          <!-- <el-upload
             action="https://jsonplaceholder.typicode.com/posts/"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
@@ -83,7 +85,7 @@
           </el-upload>
           <el-dialog :visible.sync="dialogVisible">
             <img width="100%" :src="dialogImageUrl" alt="" />
-          </el-dialog>
+          </el-dialog> -->
         </el-tab-pane>
       </el-tabs>
       <el-button type="success" class="succes-btn" @click="addNews"
@@ -116,7 +118,8 @@ export default {
       resourseData: {
         slug: "",
         page_title: "",
-        description: ""
+        description: "",
+        intro_text:'',
       },
       seo: {
         title: "",
@@ -146,6 +149,7 @@ export default {
         page_title: this.resourseData.page_title,
         slug: this.resourseData.slug,
         content: this.resourseData.description,
+        intro_text: this.resourseData.intro_text,
         h1: this.seo.h1,
         title: this.seo.title,
         description: this.seo.description,

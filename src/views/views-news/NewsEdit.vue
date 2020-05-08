@@ -31,26 +31,17 @@
               <el-input v-model="data.slug"></el-input>
             </el-form-item>
           </el-col>
-                 <el-col :span="12">
-              <el-form-item label="Вводный текст">
-                <el-input
-                
-                class='textarea'
-                  type="textarea"
-                  :rows="5"
-                  placeholder="Введите текст"
-                  v-model="data.intro_text"
-                  resize='none'
-                >
-                </el-input>
-              </el-form-item>
+                 <el-col :span="24">
+                        <el-form-item label="Вводный текст">
+            <Tinymce  v-model="data.intro_text"></Tinymce>
+          </el-form-item>
             </el-col>
         </el-row>
 
         <el-form-item label="Контент">
           <Tinymce v-model="data.content"></Tinymce>
         </el-form-item>
-        <el-upload
+        <!-- <el-upload
           action="https://jsonplaceholder.typicode.com/posts/"
           list-type="picture-card"
           :on-preview="handlePictureCardPreview"
@@ -59,7 +50,7 @@
         </el-upload>
         <el-dialog :visible.sync="dialogVisible">
           <img width="100%" :src="dialogImageUrl" alt="" />
-        </el-dialog>
+        </el-dialog> -->
   
     </el-tab-pane>
     <el-tab-pane label="SEO">
@@ -85,7 +76,7 @@
         <el-form-item label="SEO-текст">
           <Tinymce  v-model="data.seo_text"></Tinymce>
         </el-form-item>
-        <el-upload
+        <!-- <el-upload
           action="https://jsonplaceholder.typicode.com/posts/"
           list-type="picture-card"
           :on-preview="handlePictureCardPreview"
@@ -94,7 +85,7 @@
         </el-upload>
         <el-dialog :visible.sync="dialogVisible">
           <img width="100%" :src="dialogImageUrl" alt="" />
-        </el-dialog>
+        </el-dialog> -->
   
   
     </el-tab-pane>

@@ -1,5 +1,5 @@
 <template>
-<div>Главная</div>
+<div>Панель управления</div>
 </template>
 
 <script>

@@ -27,11 +27,13 @@
             </el-form-item>
           </el-col>
         </el-row>
-
+              <el-form-item label="Вводный текст">
+            <Tinymce  v-model="data.intro_text"></Tinymce>
+          </el-form-item>
         <el-form-item label="Контент">
           <Tinymce v-model="data.content"></Tinymce>
         </el-form-item>
-        <el-upload
+        <!-- <el-upload
           action="https://jsonplaceholder.typicode.com/posts/"
           list-type="picture-card"
           :on-preview="handlePictureCardPreview"
@@ -40,7 +42,7 @@
         </el-upload>
         <el-dialog :visible.sync="dialogVisible">
           <img width="100%" :src="dialogImageUrl" alt="" />
-        </el-dialog>
+        </el-dialog> -->
       </el-tab-pane>
       <el-tab-pane label="SEO">
         <el-row>
@@ -64,7 +66,7 @@
         <el-form-item label="SEO-текст">
           <Tinymce v-model="data.seo_text"></Tinymce>
         </el-form-item>
-        <el-upload
+        <!-- <el-upload
           action="https://jsonplaceholder.typicode.com/posts/"
           list-type="picture-card"
           :on-preview="handlePictureCardPreview"
@@ -73,7 +75,7 @@
         </el-upload>
         <el-dialog :visible.sync="dialogVisible">
           <img width="100%" :src="dialogImageUrl" alt="" />
-        </el-dialog>
+        </el-dialog> -->
       </el-tab-pane>
     </el-tabs>
     <el-button

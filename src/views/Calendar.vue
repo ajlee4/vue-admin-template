@@ -1,6 +1,11 @@
 <template>
   <div class="app_wrapper">
-    <calendar :hours="hours">
+    <calendar
+      :hours="hours"
+      :disableSelect="!office"
+      @dateSet="handeDataSet"
+      @calendarDateChange="handeDataSet"
+    >
       <template v-slot:hdrExtend>
         <div style="position: relative;">
           <transition name="fade" mode="in-out">
@@ -22,7 +27,7 @@
             <el-option
               v-for="item in placesList"
               :key="item.id"
-              :label="item.title"
+              :label="item.address"
               :value="item.id"
             ></el-option>
           </el-select>
@@ -56,13 +61,15 @@
 
       <template v-if="activeOffice" v-slot:cellContent="slotProps">
         <!--{{ slotProps.day }}, {{ slotProps.hour }}-->
+<!-- 
+        !depsByKey[slotProps.day+slotProps.hour+':'+minute+':00'+office] -->
         <div class="calendar_btn_wrap">
           <button
             v-for="minute in minutes"
             :key="minute"
             class="calendar_btn"
-            :class="{disabled: false}"
-            @click="initModal(slotProps.day, slotProps.hour, minute)"
+            :class="{disabled: !recordCountByDay[slotProps.day + '_' + slotProps.hour + ':' + minute + ':00']}"
+            @click="initModal(slotProps.day, slotProps.hour, minute); setActiveModalTime(slotProps.day, slotProps.hour, minute)"
           >
             <span
               v-if="recordCountByDay && recordCountByDay[slotProps.day+'_'+slotProps.hour+':'+minute+':00']"
@@ -79,12 +86,12 @@
     <modal
       :show="showModal"
       :data="modalData"
-      :office="activeOffice"
+      :rec_dep="rec_deps"
       @close="showModal=false"
       @editRecord="handleRecordEdit"
       @makeRecord="editedRecord={};showRegModal=true"
     >
-      <template v-if="activeOffice" v-slot:titleExtend>/ {{ activeOffice.title }}</template>
+      <template v-if="activeOffice" v-slot:titleExtend>/ {{ activeOffice.address }}</template>
     </modal>
 
     <reg-modal
@@ -100,11 +107,11 @@
         <div class="input_wrap">
           <div class="input_50 mb_20">
             <div class="custom_title">Адрес записи</div>
-            <el-select v-model="slotData.formData.office_id" style="width: 100%;">
+            <el-select v-model="slotData.formData.office_id" style="width: 100%;" >
               <el-option
                 v-for="item in placesList"
                 :key="item.id"
-                :label="item.title"
+                :label="item.address"
                 :value="item.id"
               ></el-option>
             </el-select>
@@ -119,6 +126,7 @@
               type="date"
               :clearable="false"
               style="width: 100%;"
+              format="dd-MM-yyyy"
             />
           </div>
 
@@ -147,14 +155,16 @@
           </div>
         </div>
 
-        <h2 class="tac">Контакты одного из родителей</h2>
+       <div v-if="slotData.formData.category_id == 4">
+          <h2 class="tac">Контакты одного из родителей</h2>
 
-        <div class="input_wrap">
+        <div class="input_wrap" >
           <div v-for="input in regformAddInputs" :key="input.id" class="input_50 mb_20">
             <div class="custom_title">{{ input.title }}</div>
             <el-input v-model="slotData.formData[input.name]"></el-input>
           </div>
         </div>
+       </div>
       </template>
     </reg-modal>
 
@@ -186,14 +196,13 @@
                   required
                   v-model="scope.formData.office"
                   placeholder="Выберите офис"
-                  @change="handleChangePlace"
                   @focus="showTooltip = false"
                   class="mb_20 w_100"
                 >
                   <el-option
                     v-for="item in placesList"
                     :key="item.id"
-                    :label="item.title"
+                    :label="item.address"
                     :value="item.id"
                   ></el-option>
                 </el-select>
@@ -242,7 +251,6 @@
                         required
                         v-model="scope.formData.from.hours"
                         placeholder
-                        @change="handleChangePlace"
                         @focus="showTooltip = false"
                       >
                         <el-option v-for="item in hours" :key="item" :label="item" :value="item"></el-option>
@@ -254,7 +262,6 @@
                         required
                         v-model="scope.formData.from.minutes"
                         placeholder
-                        @change="handleChangePlace"
                         @focus="showTooltip = false"
                       >
                         <el-option v-for="item in minutes" :key="item" :label="item" :value="item"></el-option>
@@ -269,7 +276,6 @@
                         required
                         v-model="scope.formData.to.hours"
                         placeholder
-                        @change="handleChangePlace"
                         @focus="showTooltip = false"
                       >
                         <el-option v-for="item in hours" :key="item" :label="item" :value="item"></el-option>
@@ -281,7 +287,6 @@
                         required
                         v-model="scope.formData.to.minutes"
                         placeholder
-                        @change="handleChangePlace"
                         @focus="showTooltip = false"
                       >
                         <el-option v-for="item in minutes" :key="item" :label="item" :value="item"></el-option>
@@ -306,14 +311,13 @@
                   required
                   v-model="scope.formData.office"
                   placeholder="Выберите офис"
-                  @change="handleChangePlace"
                   @focus="showTooltip = false"
                   class="mb_20 w_100"
                 >
                   <el-option
                     v-for="item in placesList"
                     :key="item.id"
-                    :label="item.title"
+                    :label="item.address"
                     :value="item.id"
                   ></el-option>
                 </el-select>
@@ -373,7 +377,6 @@
                         required
                         v-model="scope.formData.from.hours"
                         placeholder
-                        @change="handleChangePlace"
                         @focus="showTooltip = false"
                       >
                         <el-option v-for="item in hours" :key="item" :label="item" :value="item"></el-option>
@@ -385,7 +388,6 @@
                         required
                         v-model="scope.formData.from.minutes"
                         placeholder
-                        @change="handleChangePlace"
                         @focus="showTooltip = false"
                       >
                         <el-option v-for="item in minutes" :key="item" :label="item" :value="item"></el-option>
@@ -400,7 +402,6 @@
                         required
                         v-model="scope.formData.to.hours"
                         placeholder
-                        @change="handleChangePlace"
                         @focus="showTooltip = false"
                       >
                         <el-option v-for="item in hours" :key="item" :label="item" :value="item"></el-option>
@@ -412,7 +413,6 @@
                         required
                         v-model="scope.formData.to.minutes"
                         placeholder
-                        @change="handleChangePlace"
                         @focus="showTooltip = false"
                       >
                         <el-option v-for="item in minutes" :key="item" :label="item" :value="item"></el-option>
@@ -437,14 +437,13 @@
                   required
                   v-model="scope.formData.office"
                   placeholder="Выберите офис"
-                  @change="handleChangePlace"
                   @focus="showTooltip = false"
                   class="mb_20 w_100"
                 >
                   <el-option
                     v-for="item in placesList"
                     :key="item.id"
-                    :label="item.title"
+                    :label="item.address"
                     :value="item.id"
                   ></el-option>
                 </el-select>
@@ -476,14 +475,13 @@
               required
               v-model="scope.formData.office"
               placeholder="Выберите офис"
-              @change="handleChangePlace"
               @focus="showTooltip = false"
               class="mb_20 w_100"
             >
               <el-option
                 v-for="item in placesList"
                 :key="item.id"
-                :label="item.title"
+                :label="item.address"
                 :value="item.id"
               ></el-option>
             </el-select>
@@ -522,14 +520,14 @@
   </div>
 </template>
 
-
-
-
 <script>
 import calendar from "../components/Сalendar/calendar";
 import modal from "../components/Modal/modal.vue";
 import regModal from "../components/Modal/regModal.vue";
 import customModal from "../components/Modal/customModal.vue";
+import { editUserInfo } from "@/api/calendar";
+import { Message } from "element-ui";
+import axios from 'axios';
 
 export default {
   name: "app",
@@ -541,6 +539,7 @@ export default {
   },
   data() {
     return {
+      moduleData: this.$moment(),
       hours: [
         "09",
         "10",
@@ -557,12 +556,14 @@ export default {
       ],
       minutes: ["00", "10", "20", "30", "40", "50"],
       records: null,
-      modalData: null,
+      modalData: [],
       showModal: false,
       placesList: null,
       office: null,
+      dependencies: null,
       showTooltip: false,
       showRegModal: false,
+      depsByKey: {},
       editedRecord: {},
       regformAddInputs: [
         {
@@ -595,6 +596,10 @@ export default {
         parent_surname: null,
         parent_patronymic: null,
         parent_phone: null
+      },
+      activeModalTime: {
+        time: null,
+        date: null
       },
       createRecordModal: {
         visible: false,
@@ -642,7 +647,30 @@ export default {
       }
     };
   },
+  watch: {
+    dependencies: function() {
+      this.dependencies.map(dep => {
+        let key = String(dep.record_date + dep.record_time + dep.office_id);
+        this.depsByKey[key] = true;
+      });
+    }
+  },
   computed: {
+    rec_deps() {
+      if (!this.dependencies || !this.activeModalTime) return null;
+
+      let result = this.dependencies.filter(item => {
+        console.log(item.record_date, this.activeModalTime.date);
+        if (
+          item.record_time == this.activeModalTime.time &&
+          item.record_date == this.activeModalTime.date
+        ) {
+          return item;
+        }
+      });
+
+      return result[0];
+    },
     activeOffice() {
       if (!this.office || !this.placesList) return null;
 
@@ -655,12 +683,14 @@ export default {
       let result = {};
 
       this.records.map(rec => {
-        let key = rec.interview_date + "_" + rec.interview_time;
+        if (rec.office_id === this.office) {
+          let key = rec.interview_date + "_" + rec.interview_time;
 
-        if (!result[key]) {
-          result[key] = 1;
-        } else {
-          result[key]++;
+          if (!result[key]) {
+            result[key] = 1;
+          } else {
+            result[key]++;
+          }
         }
       });
 
@@ -675,71 +705,71 @@ export default {
     }, 5000);
   },
   methods: {
-    getPlaces() {
-      //        todo fetch
-      let fakeData = [
-        {
-          id: 1,
-          records_count: 4,
-          title: "Test street 12 42"
-        },
-        {
-          id: 2,
-          records_count: 1,
-          title: "Another street 52 7"
-        }
-      ];
+    setActiveModalTime(day, hour, minute) {
+      let time = `${hour}:${minute}:00`;
+      console.log(time);
 
-      setTimeout(() => {
-        this.placesList = fakeData;
-      }, 124);
+      this.activeModalTime.date = day;
+      this.activeModalTime.time = time;
+    },
+    handeDataSet($event) {
+      this.moduleData = $event;
+
+      this.getRecDeps(this.office);
+    },
+    getRecDeps(officeID) {
+      let currentMonth = this.$moment(this.moduleData).format("MM");
+      console.log(currentMonth);
+      //params: officeID, currentMonth
+
+      axios
+        .post("http://sandbox.alkonosthim.ru/ih/api/records/all-records-deps", {
+          office_id: officeID,
+          record_date: currentMonth
+        })
+        .then(response => {
+          console.log("GET DEPS", response);
+          this.dependencies = response.data;
+        })
+
+        .catch(error => {
+          console.log("-----error-------");
+          console.log(error);
+        });
+    },
+    getPlaces() {
+      axios
+        .get("http://sandbox.alkonosthim.ru/ih/api/records/all-offices")
+        .then(response => {
+          console.log("resp", response);
+          this.placesList = response.data;
+          console.log("GOt", this.placesList);
+        })
+
+        .catch(error => {
+          console.log("-----error-------");
+          console.log(error);
+        });
+
+      // setTimeout(()=> {this.placesList = fakeData}, 124)
     },
     getRecords() {
-      let fakeData = [
-        {
-          id: 1,
-          name: "Ksfre",
-          surname: "Grtgher",
-          test_result: "182",
-          interview_date: "2019-10-08",
-          interview_time: "09:10:00",
-          phone: "+375(29) 333-33-33",
-          email: "test@gmail.com",
-          birth_date: "2010-10-04 09:10:00",
-          office_id: 1,
-          dependene_id: 2
-        },
-        {
-          id: 2,
-          name: "Jere",
-          surname: "Artob",
-          test_result: "3",
-          interview_date: "2019-10-07",
-          interview_time: "09:20:00",
-          phone: "+375(29) 333-33-33",
-          email: "test@gmail.com",
-          birth_date: "2010-10-04 09:10:00",
-          office_id: 2,
-          dependene_id: 2
-        },
-        {
-          id: 3,
-          name: "Egrr",
-          surname: "Ytsl",
-          test_result: "212",
-          interview_date: "2019-10-07",
-          interview_time: "09:20:00",
-          phone: "+375(29) 333-44-33",
-          email: "test@gmail.com",
-          birth_date: "2010-10-04 09:10:00",
-          office_id: 1,
-          dependene_id: 2
-        }
-      ];
-      //todo fetch
-      setTimeout(() => {
-        this.records = fakeData;
-      }, 132);
+      axios
+        .get("http://sandbox.alkonosthim.ru/ih/api/records/all-records")
+        .then(response => {
+          console.log("resp", response);
+          this.records = response.data;
+          console.log("Got", this.records);
+        })
+
+        .catch(error => {
+          console.log("-----error-------");
+          console.log(error);
+        });
+      // //todo fetch
+      // setTimeout(() => {
+      //     this.records = fakeData
+      // }, 132)
     },
     initModal(date, hour, minute) {
       let time = `${hour}:${minute}:00`;
@@ -759,14 +789,26 @@ export default {
     },
     handleChangePlace(val) {
       console.log(val);
+      this.getRecDeps(this.office);
+      console.log(this.rec_deps);
     },
     handleRecordEdit($event) {
       console.log($event);
       this.editedRecord = $event;
       this.showRegModal = true;
+      this.showModal = false
     },
     regModalSubmit($event) {
       let formData = $event;
+
+          editUserInfo(formData.id, formData).then(() => {
+         Message({
+          message: "Данные пользователя изменены",
+          type: "success",
+          showClose: true
+        });
+        this.showRegModal=false
+      });
       console.log(formData);
     },
     handleRecordSubmit($event) {
@@ -816,6 +858,9 @@ body {
   /*color: #2c3e50;*/
   /*margin-top: 60px;*/
 }
+.modal_wrap {
+  position: relative;
+  z-index: 9999;
+}
 
-@import "@/styles/project";
 </style>

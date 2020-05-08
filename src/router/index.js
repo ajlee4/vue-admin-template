@@ -6,6 +6,7 @@ Vue.use(VueRouter);
 
 const routes = [
   {
+
     path: "/",
     name: "home",
     component: Home,
@@ -24,6 +25,7 @@ const routes = [
     component: () => import("../views/Pages.vue")
   },
   {
+    base: "/admin/",
     path: "/news",
     name: "news-list",
     meta: { layout: "main" },
@@ -242,9 +244,20 @@ const routes = [
   },
 ];
 
-const router = new VueRouter({
-  routes,
-  mode: "history"
-});
+// const router = new VueRouter({
+//   routes,
+//   mode: "history"
+// });
 
+const createRouter = () => new VueRouter({
+  // mode: 'history',
+  routes,
+})
+
+const router = createRouter()
+
+export function resetRouter () {
+  const newRouter = createRouter()
+  router.matcher = newRouter.matcher // the relevant part
+}
 export default router;

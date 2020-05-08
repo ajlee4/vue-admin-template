@@ -64,11 +64,13 @@
               </el-form-item>
             </el-col>
           </el-row>
-
+              <el-form-item label="Вводный текст">
+            <Tinymce  v-model="data.intro_text"></Tinymce>
+          </el-form-item>
           <el-form-item label="Контент">
             <Tinymce v-model="data.content"></Tinymce>
           </el-form-item>
-          <div class="img-edit">
+          <!-- <div class="img-edit">
             <h3>Редактирование изображения</h3>
 
             <el-row :gutter="20">
@@ -94,7 +96,7 @@
                 </div>
               </el-col>
             </el-row>
-          </div>
+          </div> -->
         </el-tab-pane>
         <el-tab-pane label="SEO">
           <el-row>

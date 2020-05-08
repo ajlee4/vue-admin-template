@@ -1,6 +1,6 @@
 <template>
   <div class="calendar_wrap">
-    <h1>Calendar Vue</h1>
+    <h1>Календарь записей</h1>
 
     <div class="hdr_row">
       <slot name="hdrExtend"></slot>

@@ -5,8 +5,66 @@
     <router-link to="/test-question/create">
       <el-button type="primary" class="add-category-button">Создать вопрос</el-button>
     </router-link>
-
-<!-- <div>
+    <el-form :label-position="labelPosition" label-width="100px" ref="courseForm">
+      <el-row>
+        <el-col :span="6">
+          <el-form-item label="Выбор категории">
+            <el-select
+              ref="selectCategory"
+              v-model="category"
+              placeholder="Выберите категорию"
+              class="course-select"
+              clearable
+              @change="filterCategory"
+            >
+              <el-option
+                v-for="item in dataCategory"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="Выбор Уровня">
+            <el-select
+              ref="selectGrades"
+              v-model="grades"
+              placeholder="Выберите уровень"
+              class="course-select"
+              clearable
+            >
+              <el-option
+                v-for="item in dataGrades"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="Выбор блока">
+            <el-select
+              ref="selectLevel"
+              v-model="level"
+              placeholder="Выберите блок"
+              class="course-select"
+              clearable
+            >
+              <el-option
+                v-for="item in dataTestLevel"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </el-form>
+    <!-- <div>
       <h3>Сортировать по:</h3>
     <el-row>
       <el-col :span="6">
@@ -61,7 +119,7 @@
         </el-form-item>
       </el-col>
     </el-row>
-</div> -->
+    </div>-->
     <div class="table-wrap">
       <el-table :data="data" border style="width: 100%" v-loading="listLoading">
         <el-table-column label="Название категории">
@@ -94,7 +152,7 @@
         :total="total"
         :page.sync="listQuery.page"
         :limit.sync="listQuery.limit"
-        @pagination="getDataTestGrades(listQuery.limit)"
+        @pagination="getDataTestQuestion(listQuery.limit)"
       ></pagination>
     </div>
   </div>
@@ -102,7 +160,13 @@
 
 <script>
 import pagination from "@/components/Pagination";
-import { fetchTestQuestion, deleteTestQuestion } from "@/api/test";
+import {
+  fetchTestQuestion,
+  deleteTestQuestion,
+  fetchTestCategoryList,
+  fetchTestGradesList,
+  fetchTestLevelList
+} from "@/api/test";
 import { Message } from "element-ui";
 
 export default {
@@ -113,12 +177,18 @@ export default {
     return {
       id: "",
       categoryName: "",
+      filteredCategory: false,
       data: [],
-      testData:[],
+      filteredArr: [],
+      testData: [],
+      dataCategory: [],
+      dataGrades: [],
+      dataTestLevel: [],
       listLoading: true,
-      category:'',
-      level:'',
-      grades:'',
+      labelPosition: "top",
+      category: "",
+      level: "",
+      grades: "",
       listQuery: {
         page: 1,
         limit: 20
@@ -127,7 +197,22 @@ export default {
       total: 0
     };
   },
+  computed: {
+    filteredData() {
+      return this.data.filter(item => {
+        return !this.category || item.category_id == this.category;
+      });
+    },
+ 
+  },
   methods: {
+    filterCategory() {
+      fetchTestQuestion({ category_id: this.category }).then(res => {
+        this.total = res.data.total;
+        this.data = res.data.data;
+        (this.filteredCategory = true), console.log(res);
+      });
+    },
     handleDelete(id) {
       this.$confirm("Вы хотите удалить этот элемент?", "Warning", {
         confirmButtonText: "OK",
@@ -155,11 +240,22 @@ export default {
 
     getDataTestQuestion() {
       this.listLoading = true;
+
       fetchTestQuestion(this.listQuery).then(response => {
         this.data = response.data.data;
+
         this.total = response.data.total;
         this.listLoading = false;
-        console.log(this.data)
+      });
+      fetchTestCategoryList().then(response => {
+        this.dataCategory = response.data.data;
+      });
+      fetchTestGradesList().then(response => {
+        this.dataGrades = response.data.data;
+      });
+      fetchTestLevelList().then(response => {
+        this.dataTestLevel = response.data.data;
+        console.log(this.dataTestLevel);
       });
     }
   },
@@ -171,6 +267,17 @@ export default {
 </script>
 
 <style lang="scss">
+.el-row {
+  margin-bottom: 20px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+.el-col {
+  border-radius: 4px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
 .el-table__row {
   cursor: pointer;
 }

@@ -205,10 +205,10 @@ C844.968,127.845,848.247,137.233,859.103,137.233z"
             <router-link to="/">
               <el-menu-item index="0" class="submenu-title-noDropdown">
                 <i
-                  class="el-icon-s-home
+                  class="el-icon-s-data
 "
                 ></i>
-                <span>Главная</span>
+                <span>Панель управления</span>
               </el-menu-item>
             </router-link>
           </div>
