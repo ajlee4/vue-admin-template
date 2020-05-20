@@ -304,6 +304,17 @@ C844.968,127.845,848.247,137.233,859.103,137.233z"
             </router-link>
           </div>
           <div>
+              <router-link to="/resourse-localization">
+              <el-menu-item index="30" class="submenu-title-noDropdown">
+                <i
+                  class="el-icon-discover
+"
+                ></i>
+                <span>Локализация</span>
+              </el-menu-item>
+            </router-link>
+          </div>
+          <div>
             <el-submenu index="21" class="submenu-title-noDropdown">
               <template slot="title">
                 <i class="el-icon-setting"></i>

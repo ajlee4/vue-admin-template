@@ -3,33 +3,33 @@ import request from "@/utils/request";
 // CATEGORIES
 export function fetchTestCategoryList(query) {
   return request({
-    url: "http://sandbox.alkonosthim.ru/ih/api/tests/categories",
+    url: "http://ih.yourstartup.by/api/tests/categories",
     method: "get",
     params: query
   });
 }
 export function fetchCurrentTestCategory(id) {
   return request({
-    url: `http://sandbox.alkonosthim.ru/ih/api/tests/categories/${id}/edit`,
+    url: `http://ih.yourstartup.by/api/tests/categories/${id}/edit`,
     method: "get"
   });
 }
 export function createTestCategory(data) {
   return request({
-    url: "http://sandbox.alkonosthim.ru/ih/api/tests/categories/store",
+    url: "http://ih.yourstartup.by/api/tests/categories/store",
     method: "post",
     data
   });
 }
 export function deleteTestCategory(id) {
   return request({
-    url: `http://sandbox.alkonosthim.ru/ih/api/tests/categories/${id}/destroy`,
+    url: `http://ih.yourstartup.by/api/tests/categories/${id}/destroy`,
     method: "delete"
   });
 }
 export function updateTestCategory(id, data) {
   return request({
-    url: `http://sandbox.alkonosthim.ru/ih/api/tests/categories/${id}/update`,
+    url: `http://ih.yourstartup.by/api/tests/categories/${id}/update`,
     method: "put",
     data
   });
@@ -40,33 +40,33 @@ export function updateTestCategory(id, data) {
 // LEVEL
 export function fetchTestGradesList(query) {
   return request({
-    url: "http://sandbox.alkonosthim.ru/ih/api/tests/grades",
+    url: "http://ih.yourstartup.by/api/tests/grades",
     method: "get",
     params: query
   });
 }
 export function fetchCurrentTestGrades(id) {
   return request({
-    url: `http://sandbox.alkonosthim.ru/ih/api/tests/grades/${id}/edit`,
+    url: `http://ih.yourstartup.by/api/tests/grades/${id}/edit`,
     method: "get"
   });
 }
 export function createTestGrades(data) {
   return request({
-    url: "http://sandbox.alkonosthim.ru/ih/api/tests/grades/store",
+    url: "http://ih.yourstartup.by/api/tests/grades/store",
     method: "post",
     data
   });
 }
 export function deleteTestGrades(id) {
   return request({
-    url: `http://sandbox.alkonosthim.ru/ih/api/tests/grades/${id}/destroy`,
+    url: `http://ih.yourstartup.by/api/tests/grades/${id}/destroy`,
     method: "delete"
   });
 }
 export function updateTestGrades(id, data) {
   return request({
-    url: `http://sandbox.alkonosthim.ru/ih/api/tests/grades/${id}/update`,
+    url: `http://ih.yourstartup.by/api/tests/grades/${id}/update`,
     method: "put",
     data
   });
@@ -77,40 +77,40 @@ export function updateTestGrades(id, data) {
 // Question
 export function fetchTestQuestion(query) {
     return request({
-      url: "http://sandbox.alkonosthim.ru/ih/api/tests/questions",
+      url: "http://ih.yourstartup.by/api/tests/questions",
       method: "get",
       params: query
     });
   }
   export function fetchCurrentTestQuestion(id) {
     return request({
-      url: `http://sandbox.alkonosthim.ru/ih/api/tests/questions/${id}/edit`,
+      url: `http://ih.yourstartup.by/api/tests/questions/${id}/edit`,
       method: "get"
     });
   }
   export function createTestQuestion(data) {
     return request({
-      url: "http://sandbox.alkonosthim.ru/ih/api/tests/questions/store",
+      url: "http://ih.yourstartup.by/api/tests/questions/store",
       method: "post",
       data
     });
   }
   export function deleteTestQuestion(id) {
     return request({
-      url: `http://sandbox.alkonosthim.ru/ih/api/tests/questions/${id}/destroy`,
+      url: `http://ih.yourstartup.by/api/tests/questions/${id}/destroy`,
       method: "delete"
     });
   }
   export function updateTestQuestion(id, data) {
     return request({
-      url: `http://sandbox.alkonosthim.ru/ih/api/tests/questions/${id}/update`,
+      url: `http://ih.yourstartup.by/api/tests/questions/${id}/update`,
       method: "put",
       data
     });
   }
   export function fetchTestLevelList(query) {
     return request({
-      url: "http://sandbox.alkonosthim.ru/ih/api/tests/lists",
+      url: "http://ih.yourstartup.by/api/tests/lists",
       method: "get",
       params: query
     });
@@ -120,7 +120,7 @@ export function fetchTestQuestion(query) {
   // ANSWER
   export function createTestAnswer(data) {
     return request({
-      url: "http://sandbox.alkonosthim.ru/ih/api/tests/answers/store",
+      url: "http://ih.yourstartup.by/api/tests/answers/store",
       method: "post",
       data
     });
@@ -128,20 +128,20 @@ export function fetchTestQuestion(query) {
 
   export function fetchTestAnswer(query) {
     return request({
-      url: "http://sandbox.alkonosthim.ru/ih/api/tests/answers",
+      url: "http://ih.yourstartup.by/api/tests/answers",
       method: "get",
       params: query
     });
   }
   export function deleteTestAnswer(id) {
     return request({
-      url: `http://sandbox.alkonosthim.ru/ih/api/tests/answers/${id}/destroy`,
+      url: `http://ih.yourstartup.by/api/tests/answers/${id}/destroy`,
       method: "delete"
     });
   }
   export function fetchCurrentTestAnswer(id) {
     return request({
-      url: `http://sandbox.alkonosthim.ru/ih/api/tests/answers/${id}/edit`,
+      url: `http://ih.yourstartup.by/api/tests/answers/${id}/edit`,
       method: "get"
     });
   }

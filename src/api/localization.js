@@ -2,15 +2,15 @@ import request from "@/utils/request";
 
 export function fetchResourcesList(query) {
   return request({
-    url: "http://ih.yourstartup.by/api/resources/",
+    url: "http://ih.yourstartup.by/api/resources/localization",
     method: "get",
     params: query
   });
 }
 
-export function fetchResourse(id) {
+export function fetchResourseLocalization(id) {
   return request({
-    url: `http://ih.yourstartup.by/api/resources/${id}/edit`,
+    url: `http://ih.yourstartup.by/api/resources/localization/${id}/edit`,
     method: "get"
   });
 }
@@ -18,7 +18,7 @@ export function fetchResourse(id) {
 
 export function createResourse(data) {
   return request({
-    url: "http://ih.yourstartup.by/api/resources/store",
+    url: "http://ih.yourstartup.by/api/resources/localization/store",
     method: "post",
     data
   });
@@ -27,7 +27,7 @@ export function createResourse(data) {
 
 export function updateResourse(id, data) {
   return request({
-    url: `http://ih.yourstartup.by/api/resources/${id}/update`,
+    url: `http://ih.yourstartup.by/api/resources/localization/${id}/update`,
     method: "put",
     data
   });

@@ -189,6 +189,24 @@ const routes = [
     meta: { layout: "main" }
   },
   {
+    path: "/resourse-localization",
+    name: "resourse-localization",
+    component: () => import("../views/views-localization-resourse/Resourse.vue"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/resourse-localization/:id/edit",
+    name: "resourse-localization-edit",
+    component: () => import("../views/views-localization-resourse/ResourseEdit.vue"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/resourse-localization/create",
+    name: "resourse-localization-create",
+    component: () => import("../views/views-localization-resourse/ResourseAdd.vue"),
+    meta: { layout: "main" }
+  },
+  {
     path: "/test-category",
     name: "test-category",
     component: () => import("../views/views-test/TestCategory/TestCategory"),

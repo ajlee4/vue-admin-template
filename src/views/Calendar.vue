@@ -9,11 +9,11 @@
       <template v-slot:hdrExtend>
         <div style="position: relative;">
           <transition name="fade" mode="in-out">
-            <div
+            <!-- <div
               v-show="showTooltip"
               class="tooltip"
               @click="showTooltip = false"
-            >Для начала работы выберите офис &#8681;</div>
+            >Для начала работы выберите офис &#8681;</div>-->
           </transition>
           <el-select
             :disabled="showModal"
@@ -61,8 +61,8 @@
 
       <template v-if="activeOffice" v-slot:cellContent="slotProps">
         <!--{{ slotProps.day }}, {{ slotProps.hour }}-->
-<!-- 
-        !depsByKey[slotProps.day+slotProps.hour+':'+minute+':00'+office] -->
+        <!-- 
+        !depsByKey[slotProps.day+slotProps.hour+':'+minute+':00'+office]-->
         <div class="calendar_btn_wrap">
           <button
             v-for="minute in minutes"
@@ -74,7 +74,7 @@
             <span
               v-if="recordCountByDay && recordCountByDay[slotProps.day+'_'+slotProps.hour+':'+minute+':00']"
               class="counter"
-              :class="{warn: recordCountByDay[slotProps.day+'_'+slotProps.hour+':'+minute+':00'] > 1}"
+              :class="{warn: recordCountByDay[slotProps.day+'_'+slotProps.hour+':'+minute+':00'] >=  recordMaxCountByDay[slotProps.day + '_' + slotProps.hour + ':' + minute + ':00']}"
             >{{ recordCountByDay[slotProps.day + '_' + slotProps.hour + ':' + minute + ':00'] }}</span>
 
             <span class="val">{{ minute }}</span>
@@ -107,7 +107,7 @@
         <div class="input_wrap">
           <div class="input_50 mb_20">
             <div class="custom_title">Адрес записи</div>
-            <el-select v-model="slotData.formData.office_id" style="width: 100%;" >
+            <el-select v-model="slotData.formData.office_id" style="width: 100%;">
               <el-option
                 v-for="item in placesList"
                 :key="item.id"
@@ -134,7 +134,7 @@
             <div class="input_50">
               <div class="custom_title">Часы</div>
               <el-select
-                v-model="slotData.formData.interview_hours"
+                v-model="hour"
                 style="width: 100%;"
                 :disabled="!slotData.formData.interview_date"
               >
@@ -145,7 +145,7 @@
             <div class="input_50">
               <div class="custom_title">Минуты</div>
               <el-select
-                v-model="slotData.formData.interview_minutes"
+                v-model="minute"
                 style="width: 100%;"
                 :disabled="!slotData.formData.interview_date"
               >
@@ -155,16 +155,16 @@
           </div>
         </div>
 
-       <div v-if="slotData.formData.category_id == 4">
+        <div v-if="slotData.formData.category_id == 4">
           <h2 class="tac">Контакты одного из родителей</h2>
 
-        <div class="input_wrap" >
-          <div v-for="input in regformAddInputs" :key="input.id" class="input_50 mb_20">
-            <div class="custom_title">{{ input.title }}</div>
-            <el-input v-model="slotData.formData[input.name]"></el-input>
+          <div class="input_wrap">
+            <div v-for="input in regformAddInputs" :key="input.id" class="input_50 mb_20">
+              <div class="custom_title">{{ input.title }}</div>
+              <el-input v-model="slotData.formData[input.name]"></el-input>
+            </div>
           </div>
         </div>
-       </div>
       </template>
     </reg-modal>
 
@@ -197,7 +197,9 @@
                   v-model="scope.formData.office"
                   placeholder="Выберите офис"
                   @focus="showTooltip = false"
-                  class="mb_20 w_100"
+                  class="mb_20 w_100 activate-form-valid-elem"
+                  ref="vaidateOffice"
+                  :class="{invalid: !scope.formData.office}"
                 >
                   <el-option
                     v-for="item in placesList"
@@ -213,11 +215,14 @@
               <div class="input_50">
                 <div class="custom_title">Дата (с)</div>
                 <el-date-picker
+                  ref="validateDateFrom"
                   v-model="scope.formData.from.date"
                   type="date"
                   required
                   :clearable="false"
-                  style="width: 100%; margin-bottom: 0;"
+                  style="width: 100%; margin-bottom: 0; "
+                  class="activate-form-valid-elem"
+                  :class="{invalid: !scope.formData.from.date}"
                 />
               </div>
               <div class="input_50">
@@ -226,9 +231,11 @@
                   v-model="scope.formData.to.date"
                   type="date"
                   required
+                  ref="validateDateTo"
                   :clearable="false"
                   style="width: 100%; margin-bottom: 0;"
-                  class="input_50"
+                  class="input_50 activate-form-valid-elem"
+                  :class="{invalid: !scope.formData.to.date}"
                 />
               </div>
               <button
@@ -252,6 +259,9 @@
                         v-model="scope.formData.from.hours"
                         placeholder
                         @focus="showTooltip = false"
+                        ref="validateHoursFrom"
+                        class="activate-form-valid-elem"
+                        :class="{invalid: !scope.formData.from.hours}"
                       >
                         <el-option v-for="item in hours" :key="item" :label="item" :value="item"></el-option>
                       </el-select>
@@ -262,14 +272,17 @@
                         required
                         v-model="scope.formData.from.minutes"
                         placeholder
+                        ref="validateMinutesFrom"
                         @focus="showTooltip = false"
+                        class="activate-form-valid-elem"
+                        :class="{invalid: !scope.formData.from.minutes}"
                       >
                         <el-option v-for="item in minutes" :key="item" :label="item" :value="item"></el-option>
                       </el-select>
                     </div>
                   </div>
 
-                  <div class="input_50 input_wrap">
+                  <!-- <div class="input_50 input_wrap">
                     <div class="input_50">
                       <div class="custom_title">Часы</div>
                       <el-select
@@ -292,7 +305,16 @@
                         <el-option v-for="item in minutes" :key="item" :label="item" :value="item"></el-option>
                       </el-select>
                     </div>
-                  </div>
+                  </div>-->
+                </div>
+                <div class="w_100">
+                  <div class="custom_title">Максимальное кол-во записей на одно время</div>
+                  <el-input
+                    v-model="scope.formData.maxRecordCount"
+                    required
+                    ref="validateMaxRecordCount"
+                    :class="{invalid: !scope.formData.maxRecordCount}"
+                  ></el-input>
                 </div>
                 <button
                   class="slearfieldsBtn"
@@ -313,6 +335,7 @@
                   placeholder="Выберите офис"
                   @focus="showTooltip = false"
                   class="mb_20 w_100"
+                  :class="{invalid: !scope.formData.office}"
                 >
                   <el-option
                     v-for="item in placesList"
@@ -339,6 +362,7 @@
                     type="date"
                     required
                     :clearable="false"
+                    :class="{invalid: !scope.formData.from.date}"
                     style="width: 100%; margin-bottom: 0;"
                   />
                 </div>
@@ -351,6 +375,7 @@
                     :clearable="false"
                     style="width: 100%; margin-bottom: 0;"
                     class="input_50"
+                    :class="{invalid: !scope.formData.to.date}"
                   />
                 </div>
                 <button
@@ -378,6 +403,7 @@
                         v-model="scope.formData.from.hours"
                         placeholder
                         @focus="showTooltip = false"
+                        :class="{invalid: !scope.formData.from.hours}"
                       >
                         <el-option v-for="item in hours" :key="item" :label="item" :value="item"></el-option>
                       </el-select>
@@ -389,13 +415,17 @@
                         v-model="scope.formData.from.minutes"
                         placeholder
                         @focus="showTooltip = false"
+                        :class="{invalid: !scope.formData.from.minutes}"
                       >
                         <el-option v-for="item in minutes" :key="item" :label="item" :value="item"></el-option>
                       </el-select>
                     </div>
                   </div>
-
-                  <div class="input_50 input_wrap">
+                  <!-- <div class="w_100">
+                    <div class="custom_title">Максимальное кол-во записей на одно время</div>
+                    <el-input v-model="scope.formData.maxRecordCount" required :class="{invalid: !scope.formData.maxRecordCount}"></el-input>
+                  </div>-->
+                  <!-- <div class="input_50 input_wrap">
                     <div class="input_50">
                       <div class="custom_title">Часы</div>
                       <el-select
@@ -418,7 +448,7 @@
                         <el-option v-for="item in minutes" :key="item" :label="item" :value="item"></el-option>
                       </el-select>
                     </div>
-                  </div>
+                  </div>-->
                 </div>
                 <button
                   class="slearfieldsBtn"
@@ -428,7 +458,7 @@
             </transition>
           </div>
 
-          <div class="tab" v-if="createRecordModal.activeTab === 3" :key="3">
+          <!-- <div class="tab" v-if="createRecordModal.activeTab === 3" :key="3">
             <div class="input_wrap" style="margin-top: 30px;">
               <div class="w_100">
                 <div class="custom_title">Место проведения собеседования</div>
@@ -453,7 +483,7 @@
                 <el-input v-model="scope.formData.maxRecordCount" required></el-input>
               </div>
             </div>
-          </div>
+          </div>-->
         </transition-group>
       </template>
     </custom-modal>
@@ -526,8 +556,9 @@ import modal from "../components/Modal/modal.vue";
 import regModal from "../components/Modal/regModal.vue";
 import customModal from "../components/Modal/customModal.vue";
 import { editUserInfo } from "@/api/calendar";
+import { editRecord, disableRecord } from "@/api/calendar";
 import { Message } from "element-ui";
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   name: "app",
@@ -537,9 +568,13 @@ export default {
     regModal,
     customModal
   },
+
   data() {
     return {
       moduleData: this.$moment(),
+      hour: "",
+      minute: "",
+      formValid: "",
       hours: [
         "09",
         "10",
@@ -560,7 +595,7 @@ export default {
       showModal: false,
       placesList: null,
       office: null,
-      dependencies: null,
+      dependencies: [],
       showTooltip: false,
       showRegModal: false,
       depsByKey: {},
@@ -613,11 +648,11 @@ export default {
           {
             id: 2,
             title: "Деактивация"
-          },
-          {
-            id: 3,
-            title: "Кол-во записей"
           }
+          // {
+          //   id: 3,
+          //   title: "Кол-во записей"
+          // }
         ],
         data: {
           office: null,
@@ -627,9 +662,7 @@ export default {
             minutes: null
           },
           to: {
-            date: null,
-            hours: null,
-            minutes: null
+            date: null
           },
           allDay: false,
           allHours: false,
@@ -650,6 +683,7 @@ export default {
   watch: {
     dependencies: function() {
       this.dependencies.map(dep => {
+        console.log(dep);
         let key = String(dep.record_date + dep.record_time + dep.office_id);
         this.depsByKey[key] = true;
       });
@@ -657,7 +691,8 @@ export default {
   },
   computed: {
     rec_deps() {
-      if (!this.dependencies || !this.activeModalTime) return null;
+      console.log(this.dependencies);
+      if (!this.dependencies) return null;
 
       let result = this.dependencies.filter(item => {
         console.log(item.record_date, this.activeModalTime.date);
@@ -671,10 +706,10 @@ export default {
 
       return result[0];
     },
+
     activeOffice() {
       if (!this.office || !this.placesList) return null;
 
-      console.log(this.placesList);
       return this.placesList.filter(place => place.id === this.office)[0];
     },
     recordCountByDay() {
@@ -683,7 +718,8 @@ export default {
       let result = {};
 
       this.records.map(rec => {
-        if (rec.office_id === this.office) {
+        console.log(result);
+        if (rec.office_id == this.office) {
           let key = rec.interview_date + "_" + rec.interview_time;
 
           if (!result[key]) {
@@ -691,6 +727,20 @@ export default {
           } else {
             result[key]++;
           }
+        }
+      });
+
+      return result;
+    },
+    recordMaxCountByDay() {
+      if (!this.records) return null;
+
+      let result = {};
+
+      this.dependencies.map(rec => {
+        if (rec.office_id == this.office) {
+          let key = rec.record_date + "_" + rec.record_time;
+          result[key] = rec.records_count;
         }
       });
 
@@ -705,6 +755,13 @@ export default {
     }, 5000);
   },
   methods: {
+    parseDate(val) {
+      return this.$options.filters.parseTime(val, "{y}-{m}-{d}");
+    },
+    parseTime(hour, minutes) {
+      let time = `${hour}:${minutes}:00`;
+      this.formData.interview_time = time;
+    },
     setActiveModalTime(day, hour, minute) {
       let time = `${hour}:${minute}:00`;
       console.log(time);
@@ -716,6 +773,7 @@ export default {
       this.moduleData = $event;
 
       this.getRecDeps(this.office);
+      console.log(this.moduleData);
     },
     getRecDeps(officeID) {
       let currentMonth = this.$moment(this.moduleData).format("MM");
@@ -723,13 +781,14 @@ export default {
       //params: officeID, currentMonth
 
       axios
-        .post("http://sandbox.alkonosthim.ru/ih/api/records/all-records-deps", {
+        .post("http://ih.yourstartup.by/api/records/all-records-deps", {
           office_id: officeID,
           record_date: currentMonth
         })
         .then(response => {
           console.log("GET DEPS", response);
           this.dependencies = response.data;
+          console.log(this.recordMaxCountByDay);
         })
 
         .catch(error => {
@@ -739,7 +798,7 @@ export default {
     },
     getPlaces() {
       axios
-        .get("http://sandbox.alkonosthim.ru/ih/api/records/all-offices")
+        .get("http://ih.yourstartup.by/api/records/all-offices")
         .then(response => {
           console.log("resp", response);
           this.placesList = response.data;
@@ -755,11 +814,12 @@ export default {
     },
     getRecords() {
       axios
-        .get("http://sandbox.alkonosthim.ru/ih/api/records/all-records")
+        .get("http://ih.yourstartup.by/api/records/all-records")
         .then(response => {
           console.log("resp", response);
           this.records = response.data;
           console.log("Got", this.records);
+          console.log(this.recordCountByDay);
         })
 
         .catch(error => {
@@ -773,7 +833,8 @@ export default {
     },
     initModal(date, hour, minute) {
       let time = `${hour}:${minute}:00`;
-
+      this.hour = hour;
+      this.minute = minute;
       let result = this.records
         .filter(item => {
           return item.interview_date === date;
@@ -793,36 +854,81 @@ export default {
       console.log(this.rec_deps);
     },
     handleRecordEdit($event) {
-      console.log($event);
+      this.formData = $event;
+      console.log(this.formData);
       this.editedRecord = $event;
       this.showRegModal = true;
-      this.showModal = false
+      this.showModal = false;
     },
     regModalSubmit($event) {
       let formData = $event;
-
-          editUserInfo(formData.id, formData).then(() => {
-         Message({
+      this.parseTime(this.hour, this.minute);
+      editUserInfo(formData.id, formData).then(() => {
+        Message({
           message: "Данные пользователя изменены",
           type: "success",
           showClose: true
         });
-        this.showRegModal=false
+        this.showRegModal = false;
       });
-      console.log(formData);
     },
     handleRecordSubmit($event) {
-      //            todo validate
+      let formData = $event;
+      //  console.log(formData)
+      //   const validArray = [this.$refs.vaidateOffice,this.$refs.validateDateFrom,this.$refs.validateDateTo,this.$refs.validateHoursFrom,this.$refs.validateMinutesFrom,this.$refs.validateMaxRecordCount]
+      //   console.log(validArray)
+
       if (this.createRecordModal.valid) {
         // if valid - submit
         // check type of form:
         if (this.createRecordModal.activeTab == 1) {
           // Активация
           //            todo request
-          console.log("Add record", $event);
+
+          try {
+            formData.from.date = this.parseDate(formData.from.date);
+            formData.to.date = this.parseDate(formData.to.date);
+            console.log("submit");
+            editRecord(formData).then(() => {
+              this.createRecordModal.visible = false;
+
+              this.$message({
+                type: "success",
+                message: "Запись активирована",
+                showClose: true
+              });
+            });
+          } catch {
+            this.$message({
+              type: "error",
+              message: "Заполните поля",
+              showClose: true
+            });
+          }
         } else if (this.createRecordModal.activeTab === 2) {
           // Деактивация
           //            todo request
+
+          try {
+            console.log(typeof formData.from, formData.from);
+            delete formData.maxRecordCount;
+            formData.from.date = this.parseDate(formData.from.date);
+            formData.to.date = this.parseDate(formData.to.date);
+            disableRecord(formData).then(() => {
+              this.createRecordModal.visible = false;
+              this.$message({
+                type: "success",
+                message: "Запись деактивирована",
+                showClose: true
+              });
+            });
+          } catch {
+            this.$message({
+              type: "error",
+              message: "Заполните поля",
+              showClose: true
+            });
+          }
           console.log("Delete record", $event);
         } else if (this.createRecordModal.activeTab === 3) {
           // Кол-во записей
@@ -862,5 +968,4 @@ body {
   position: relative;
   z-index: 9999;
 }
-
 </style>

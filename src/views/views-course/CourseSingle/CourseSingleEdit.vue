@@ -376,6 +376,9 @@ export default {
         this.$v.$touch();
         return;
       }
+      this.data.start_recruit = this.$options.filters.parseTime(this.data.start_recruit, "{y}-{m}-{d}")
+      this.data.start_date = this.$options.filters.parseTime( this.data.start_date, "{y}-{m}-{d}")
+      this.data.end_date = this.$options.filters.parseTime( this.data.end_date, "{y}-{m}-{d}")
       editSingleCourse(id, this.data).then(() => {
         Message({
           message: "Ресурс изменен",

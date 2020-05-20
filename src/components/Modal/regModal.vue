@@ -12,14 +12,12 @@
 
           <div class="input_wrap">
             <div v-for="input in inputs" :key="input.id" class="input_50 mb_20">
-           
-                <div class="custom_title">{{ input.title }}</div>
-                <el-input
-                  ref="regInputValidate"
-                  v-model="formData[input.name]"
-                  :required="input.required"
-                ></el-input>
-           
+              <div class="custom_title">{{ input.title }}</div>
+              <el-input
+                ref="regInputValidate"
+                v-model="formData[input.name]"
+                :required="input.required"
+              ></el-input>
             </div>
 
             <div class="input_50 mb_20">
@@ -30,9 +28,7 @@
                 :clearable="false"
                 style="width: 100%;"
                 format="dd-MM-yyyy"
-                
               />
-                
             </div>
 
             <div class="input_50 mb_20">
@@ -101,15 +97,13 @@ export default {
           id: 1,
           name: "name",
           title: "Имя",
-          required: true,
-        
+          required: true
         },
         {
           id: 2,
           name: "surname",
           title: "Фамилия",
-          required: true,
-         
+          required: true
         },
         // {
         //   id: 3,
@@ -121,17 +115,15 @@ export default {
           id: 4,
           name: "phone",
           title: "Телефон",
-          required: false,
-        
+          required: false
         },
         {
           id: 5,
           name: "email",
           title: "E-mail",
-          required: true,
-         
-        },
-      
+          required: true
+        }
+
         // {
         //   id: 6,
         //   name: "level",
@@ -150,10 +142,13 @@ export default {
     }
   },
   methods: {
+    parseDate(val) {
+      return this.$options.filters.parseTime(val, "{y}-{m}-{d}");
+    },
     submit() {
       // check each input - if required - check notempty
-      console.log(this.formData);
-    
+      console.log(this.$refs.regInputValidate);
+
       this.formValid = true;
       this.$refs.regInputValidate.map(item => {
         item.$el.classList.remove("invalid");
@@ -165,6 +160,12 @@ export default {
 
       if (this.formValid) {
         // emit submit to parent
+
+        this.formData.interview_date = this.parseDate(
+          this.formData.interview_date
+        );
+        this.formData.birth_date = this.parseDate(this.formData.birth_date);
+
         this.$emit("submit", this.formData);
       } else {
         // scroll to first invalid input
@@ -289,13 +290,13 @@ export default {
     background: #0b549e;
   }
 }
-.invalid {
-  border: 1px solid red !important;
+// .invalid {
+//   border: 1px solid red !important;
 
-  input {
-    border: 1px solid red !important;
-  }
-}
+//   input {
+//     border: 1px solid red !important;
+//   }
+// }
 .errorTooltip {
   position: fixed;
   z-index: 9;
