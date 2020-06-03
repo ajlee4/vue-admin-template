@@ -17,7 +17,7 @@
       />
     </div>
 
-    <div class="table_wrap">
+    <div class="table_wrap" >
       <!--th-->
       <div class="table_row thead">
         <div class="table_cell">
@@ -112,7 +112,7 @@ export default {
   },
   methods: {
     handleChangeDate($event) {
-      console.log($event);
+      this.$emit('calendarDateChange',$event)
     },
     formatedHour($hour) {
       $hour += ""; //to string

@@ -15,6 +15,15 @@ export function editUserInfo(id, data) {
       data
     });
   }
+  export function addRecord(data) {
+    return request({
+      url: `http://ih.yourstartup.by/api/records/add-record`,
+      method: "post",
+      data
+    });
+  }
+
+ 
 
   export function disableRecord(data) {
     return request({
@@ -24,7 +33,22 @@ export function editUserInfo(id, data) {
     });
   }
 
+  export function getCategoryRecords(data) {
+    return request({
+      url: `http://ih.yourstartup.by/api/records/all-records`,
+      method: "get",
+      params: data
+    });
+  }
 
+
+  export function deleteRecord(id) {
+    return request({
+      url: `http://ih.yourstartup.by/api/record-deps/${id}/destroy-single-deps`,
+      method: "delete"
+    });
+  }
+ 
 
 
 

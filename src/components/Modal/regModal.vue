@@ -1,9 +1,9 @@
 <template>
   <transition name="fade">
     <div v-show="isVisible" class="r_modal_wrap" @click.self="$emit('close')">
-      <transition name="fade">
+   
         <div class="errorTooltip" v-if="showErr" @click="showErr = false">{{errMsg}}</div>
-      </transition>
+  
 
       <div class="modal_body">
         <button class="close_btn" @click="$emit('close')">&#215;</button>
@@ -20,7 +20,7 @@
               ></el-input>
             </div>
 
-            <div class="input_50 mb_20">
+            <div class="input_50 mb_20" >
               <div class="custom_title">Дата рождения</div>
               <el-date-picker
                 v-model="formData.birth_date"
@@ -28,6 +28,7 @@
                 :clearable="false"
                 style="width: 100%;"
                 format="dd-MM-yyyy"
+                ref='regInputBirthday'
               />
             </div>
 
@@ -45,7 +46,7 @@
 
           <slot name="formExtend" :formData="formData"></slot>
         </div>
-        <button class="submit_reg_form" @click="submit()">Сохранить изменения</button>
+        <button class="submit_reg_form" v-loading='buttonLoading' @click="submit()">Сохранить изменения</button>
       </div>
     </div>
   </transition>
@@ -56,6 +57,10 @@ export default {
   name: "registerModal",
   props: {
     isVisible: {
+      type: Boolean,
+      dafault: false
+    },
+     buttonLoading: {
       type: Boolean,
       dafault: false
     },
@@ -84,7 +89,7 @@ export default {
         phone: null,
         email: null,
         level: null,
-        birth_date: null,
+        birth_date: "",
         parent_email: null,
         parent_name: null,
         parent_phone: null,
@@ -115,7 +120,7 @@ export default {
           id: 4,
           name: "phone",
           title: "Телефон",
-          required: false
+          required: true
         },
         {
           id: 5,
@@ -147,20 +152,23 @@ export default {
     },
     submit() {
       // check each input - if required - check notempty
-      console.log(this.$refs.regInputValidate);
+      console.log(this.formData.birth_date);
 
       this.formValid = true;
       this.$refs.regInputValidate.map(item => {
-        item.$el.classList.remove("invalid");
-        if (item.$attrs.required && !item.value) {
-          item.$el.classList.add("invalid");
+        item.$el.classList.remove("invalid-field");
+        if (item.$attrs.required && !item.value && !this.formData.birth_date) {
+          item.$el.classList.add("invalid-field");
           this.formValid = false;
         }
       });
-
+      if(!this.formData.birth_date) {
+        this.$refs.regInputBirthday.$el.classList.add('invalid')
+        this.formValid = false
+      }
       if (this.formValid) {
         // emit submit to parent
-
+this.$refs.regInputBirthday.$el.classList.remove('invalid')
         this.formData.interview_date = this.parseDate(
           this.formData.interview_date
         );
@@ -184,7 +192,9 @@ export default {
 %transition {
   transition: all 0.6s;
 }
-
+.invalid {
+  border: 1px solid red;
+}
 .r_modal_wrap {
   position: fixed;
   z-index: 999;
@@ -250,7 +260,9 @@ export default {
     margin-bottom: 20px;
   }
 }
-
+.invalid-field {
+border:1px solid red;
+}
 .input_50 {
   flex: 0 1 47%;
 }

@@ -61,7 +61,7 @@ export function addSubCourse(data) {
 
 export function addSingleCourse(data) {
   return request({
-    url: "http://sandbox.alkonosthim.ru/api/courses/single-course/store",
+    url: "http://ih.yourstartup.by/api/courses/single-course/store",
     method: "post",
     data
   });
@@ -69,28 +69,28 @@ export function addSingleCourse(data) {
 
 export function deleteCourse(id) {
   return request({
-    url: `http://sandbox.alkonosthim.ru/api/courses/category/${id}/destroy`,
+    url: `http://ih.yourstartup.by/api/courses/category/${id}/destroy`,
     method: "delete"
   });
 }
 
 export function deleteSubCourse(id) {
   return request({
-    url: `http://sandbox.alkonosthim.ru/api/courses/sub-category/${id}/destroy`,
+    url: `http://ih.yourstartup.by/api/courses/sub-category/${id}/destroy`,
     method: "delete"
   });
 }
 
 export function deleteSingleCourse(id) {
   return request({
-    url: `http://sandbox.alkonosthim.ru/api/courses/single-course/${id}/destroy`,
+    url: `http://ih.yourstartup.by/api/courses/single-course/${id}/destroy`,
     method: "delete"
   });
 }
 
 export function editCourse(id, data) {
   return request({
-    url: `http://sandbox.alkonosthim.ru/api/courses/category/${id}/update`,
+    url: `http://ih.yourstartup.by/api/courses/category/${id}/update`,
     method: "put",
     data
   });
@@ -98,7 +98,7 @@ export function editCourse(id, data) {
 
 export function editSubCourse(id, data) {
   return request({
-    url: `http://sandbox.alkonosthim.ru/api/courses/sub-category/${id}/update`,
+    url: `http://ih.yourstartup.by/api/courses/sub-category/${id}/update`,
     method: "put",
     data
   });
@@ -106,7 +106,7 @@ export function editSubCourse(id, data) {
 
 export function editSingleCourse(id, data) {
   return request({
-    url: `http://sandbox.alkonosthim.ru/api/courses/single-course/${id}/update`,
+    url: `http://ih.yourstartup.by/api/courses/single-course/${id}/update`,
     method: "put",
     data
   });

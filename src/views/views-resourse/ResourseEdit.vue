@@ -27,6 +27,9 @@
             </el-form-item>
           </el-col>
         </el-row>
+          <el-form-item label="Текст">
+          <Tinymce v-model="data.subtitle"></Tinymce>
+        </el-form-item>
               <el-form-item label="Вводный текст">
             <Tinymce  v-model="data.intro_text"></Tinymce>
           </el-form-item>

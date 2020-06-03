@@ -34,6 +34,7 @@
               placeholder="Выберите уровень"
               class="course-select"
               clearable
+                   @change="filterCategory"
             >
               <el-option
                 v-for="item in dataGrades"
@@ -52,6 +53,7 @@
               placeholder="Выберите блок"
               class="course-select"
               clearable
+              @change="filterCategory"
             >
               <el-option
                 v-for="item in dataTestLevel"
@@ -152,7 +154,7 @@
         :total="total"
         :page.sync="listQuery.page"
         :limit.sync="listQuery.limit"
-        @pagination="getDataTestQuestion(listQuery.limit)"
+        @pagination="filterCategory()"
       ></pagination>
     </div>
   </div>
@@ -207,7 +209,8 @@ export default {
   },
   methods: {
     filterCategory() {
-      fetchTestQuestion({ category_id: this.category }).then(res => {
+     
+      fetchTestQuestion({category_id: this.category,grade_id:this.grades,list_id:this.level,...this.listQuery}).then(res => {
         this.total = res.data.total;
         this.data = res.data.data;
         (this.filteredCategory = true), console.log(res);

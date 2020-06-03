@@ -194,10 +194,13 @@
                 ></el-input></div
             ></el-col>
           </el-row>
+          <el-form-item label="Текст">
+            <Tinymce v-model="course.intro_text"></Tinymce>
+          </el-form-item>
           <el-form-item label="Контент">
             <Tinymce v-model="course.content"></Tinymce>
           </el-form-item>
-
+          
           <!-- <div class="banner-info">
             <h3>Создание баннера</h3>
 
@@ -296,7 +299,8 @@ export default {
       course: {
         name: "",
         slug: "",
-        content: ""
+        content: "",
+        intro_text:'',
       },
       seo: {
         title: "",
@@ -373,6 +377,7 @@ export default {
        const formData = {
         name: this.course.name,
         content: this.course.content,
+        intro_text:this.course.intro_text,
         title: this.seo.title,
         description: this.seo.description,
         seo_text: this.seo.text,

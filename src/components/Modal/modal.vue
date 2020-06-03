@@ -10,7 +10,7 @@
             </h3>
             <!--todo IF render btn-->
             <button
-              v-if="data.length < office.records_count"
+              v-if="data.length < office.records_count || !data.length"
               @click="$emit('makeRecord')"
               class="main_btn"
               style="margin-left: auto; margin-right: 30px;"

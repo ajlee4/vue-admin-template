@@ -37,6 +37,9 @@
               </el-form-item>
             </el-col>
           </el-row>
+            <el-form-item label="Текст">
+          <Tinymce v-model="resourseData.subtitle"></Tinymce>
+        </el-form-item>
              <el-form-item label="Вводный текст">
             <Tinymce v-model="resourseData.intro_text"></Tinymce>
           </el-form-item>
@@ -120,6 +123,7 @@ export default {
         page_title: "",
         description: "",
         intro_text:'',
+        subtitle:'',
       },
       seo: {
         title: "",
@@ -150,10 +154,11 @@ export default {
         slug: this.resourseData.slug,
         content: this.resourseData.description,
         intro_text: this.resourseData.intro_text,
+        subtitle:this.resourseData.subtitle,
         h1: this.seo.h1,
         title: this.seo.title,
         description: this.seo.description,
-        seo_text: this.seo_text
+        seo_text: this.seo_text,
       };
 
       createResourse(formData).then(() => {

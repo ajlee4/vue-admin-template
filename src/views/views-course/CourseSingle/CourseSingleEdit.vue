@@ -27,7 +27,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="Псевдоним">
-                <el-input></el-input>
+                <el-input  v-model="data.slug"></el-input>
               </el-form-item>
             </el-col>
 
@@ -229,9 +229,13 @@
                 ></el-input></div
             ></el-col>
           </el-row>
+             <el-form-item label="Текст">
+            <Tinymce v-model="data.intro_text"></Tinymce>
+          </el-form-item>
           <el-form-item label="Контент">
             <Tinymce v-model="data.content"></Tinymce>
           </el-form-item>
+        
         </el-form>
         <!-- <div class="banner-info">
           <h3>Создание баннера</h3>

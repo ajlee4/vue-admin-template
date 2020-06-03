@@ -31,13 +31,21 @@
               <el-input v-model="data.slug"></el-input>
             </el-form-item>
           </el-col>
+
+    
+                   <el-col :span="12">
+     <el-form-item label="Изображение">
+       <img src="https://studlive.by/wp-content/uploads/2019/06/87afef76100d0b704ca5b6039468a736.jpg" alt="" width="200"  height="200">
+       </el-form-item>          
+              </el-col>
+              
                  <el-col :span="24">
                         <el-form-item label="Вводный текст">
             <Tinymce  v-model="data.intro_text"></Tinymce>
           </el-form-item>
             </el-col>
         </el-row>
-
+       
         <el-form-item label="Контент">
           <Tinymce v-model="data.content"></Tinymce>
         </el-form-item>

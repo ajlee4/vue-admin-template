@@ -260,13 +260,7 @@ export default {
       background: #0b549e;
     }
   }
-  .invalid {
 
-
-    input {
-      border: 1px solid red !important;
-    }
-  }
   .errorTooltip {
     position: fixed;
     z-index: 9;
