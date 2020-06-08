@@ -4,10 +4,13 @@
       <div v-if="show" class="modal_body">
         <div class="modal_inner">
           <div class="modal_hdr">
-            <h3 v-if="data && data.length">
+            <h3 v-if="showFastEditModal">Режим "Быстрого редактирования"</h3>
+            <h3 v-if="data && data.length && !showFastEditModal">
+              <br />
               {{data[0].interview_time.slice(0, -3) }} {{data[0].interview_date | moment("dd, DD, MMMM, YYYY")}}
               <slot name="titleExtend" />
             </h3>
+
             <!--todo IF render btn-->
             <button
               v-if="data.length < office.records_count || !data.length"
@@ -15,13 +18,35 @@
               class="main_btn"
               style="margin-left: auto; margin-right: 30px;"
             >+ Записать</button>
-            <button class="close_btn" @click="$emit('close')">&#215;</button>
+            <button class="close_btn" @click="close">&#215;</button>
           </div>
-          <div v-if="data" class="row_wrapper">
-            
-           
+          <div v-if="showFastEditModal" class="row">
+            <div class="row_wrapper row__item row__item-radio">
+              <el-radio class="row__radio" v-model="radio" label="1">Активировать</el-radio>
+              <el-radio
+                v-if="!fastEditRecordCount"
+                class="row__radio"
+                v-model="radio"
+                label="2"
+              >Деактивировать</el-radio>
+            </div>
+            <div v-if="radio==1" class="row__item">
+              <div>
+                <div class="input_30 mb_20">
+                  <div class="custom_title">Ввести максимальное кол-во записей</div>
+                  <el-input v-model="maxRecordCount"></el-input>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button
+            v-if="showFastEditModal"
+            class="main_btn success"
+            style="margin-top: 30px;"
+            @click="submitFastEdit"
+          >Сохранить изменения</button>
 
-           
+          <div v-if="data && data.length && !showFastEditModal" class="row_wrapper">
             <div v-for="(item, idx) in data" :key="item.id" class="modal_row">
               <div class="cell name">{{++idx}}. {{item.name}} {{item.surname}}</div>
               <div class="cell">
@@ -55,9 +80,12 @@
                     />
                   </svg>
                 </button>
+
+                    <button class="edit_btn" @click="$emit('deleteRecord', item.id)">
+                      <i style="width:28px;height:22px"   class="el-icon-delete"></i>
+                </button>
               </div>
             </div>
-            
           </div>
         </div>
       </div>
@@ -77,17 +105,65 @@ export default {
       type: Array,
       default: null
     },
+    showFastEditModal: {
+      type: Boolean
+    },
+    fastEditRecordCount: {
+      type: Boolean
+    },
     office: {
       type: Object,
       default() {
         return {};
       }
     }
+  },
+  data() {
+    return {
+      radio: "1",
+      maxRecordCount: ""
+    };
+  },
+  methods: {
+    close() {
+      this.$emit("close");
+
+      this.maxRecordCount = "";
+    },
+    submitFastEdit() {
+      console.log(this.radio);
+       if (this.radio == 2 ||this.maxRecordCount ) {
+          this.$emit("submitFastEdit", this.radio, this.maxRecordCount);
+          setTimeout(() => {
+            this.maxRecordCount = "";
+          }, 1000);
+          return;
+        }
+     else {
+       this.$message({
+          message: "Заполните поля",
+          type: "error",
+          showClose: true
+        });
+        console.log("error");
+        return;
+     }
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.row {
+  display: flex;
+}
+.row__item-radio {
+  margin-right: 50px;
+}
+.row__radio {
+  margin-bottom: 20px;
+}
+
 .modal_wrap {
   position: fixed;
   bottom: 0;

@@ -48,8 +48,19 @@ export function editUserInfo(id, data) {
       method: "delete"
     });
   }
- 
-
+  export function updateRecord(id,data) {
+    return request({
+      url: `http://ih.yourstartup.by/api/record-deps/${id}/update-single-deps`,
+      method: "put",
+      data
+    });
+  }
+  export function deleteSingleRecord(id) {
+    return request({
+      url: `http://ih.yourstartup.by/api/records/${id}/destroy`,
+      method: "delete"
+    });
+  }
 
 
 

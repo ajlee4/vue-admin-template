@@ -1,6 +1,7 @@
 <template>
   <div class="app_wrapper" v-loading="listLoading">
     <calendar
+      :fastEdit='fastEdit'
       :hours="hours"
       :disableSelect="!office"
       @dateSet="handeDataSet"
@@ -57,21 +58,7 @@
         >Скачать анкеты</button>
 
         <button class="btn_textstyle editrecord" @click="createRecordModal.visible = true">
-          <svg
-            width="20"
-            height="20"
-            aria-hidden="true"
-            focusable="false"
-            data-icon="pencil-alt"
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 512 512"
-          >
-            <path
-              fill="currentColor"
-              d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
-            />
-          </svg>
+    
           <span>Редактировать</span>
         </button>
         <button class="btn_textstyle editrecord" @click="fastEdit=!fastEdit">
@@ -89,13 +76,13 @@
             :key="minute"
             class="calendar_btn"
             :class="{disabled: !recordCountByDay[slotProps.day + '_' + slotProps.hour + ':' + minute + ':00'] && !recordByDay[slotProps.day + '_' + slotProps.hour + ':' + minute + ':00'],
-              bold:recordByDay[slotProps.day + '_' + slotProps.hour + ':' + minute + ':00']
+              bold:recordByDay && recordByDay[slotProps.day + '_' + slotProps.hour + ':' + minute + ':00']
             
             }"
-            @click="!fastEdit && initModal(slotProps.day, slotProps.hour, minute); setActiveModalTime(slotProps.day, slotProps.hour, minute)"
+            
           >
             <span
-              v-if="recordCountByDay && recordCountByDay[slotProps.day+'_'+slotProps.hour+':'+minute+':00'] && !fastEdit"
+              v-if="recordCountByDay && recordCountByDay[slotProps.day+'_'+slotProps.hour+':'+minute+':00']"
               class="counter"
               :class="{warn: recordCountByDay[slotProps.day+'_'+slotProps.hour+':'+minute+':00'] >=  recordMaxCountByDay[slotProps.day + '_' + slotProps.hour + ':' + minute + ':00']}"
             >{{ recordCountByDay[slotProps.day + '_' + slotProps.hour + ':' + minute + ':00'] }}</span>
@@ -104,27 +91,39 @@
               @click="fastDelete(recordById[slotProps.day + '_' + slotProps.hour + ':' + minute + ':00'])"
               v-if="fastEdit && recordByDay[slotProps.day + '_' + slotProps.hour + ':' + minute + ':00'] && !recordCountByDay[slotProps.day+'_'+slotProps.hour+':'+minute+':00'] "
             >&#215;</span>
-            <span class="val">{{ minute }}</span>
+          
+              <span @click="initeEdtiModal(slotProps.day, slotProps.hour, minute)" class="val">{{ minute }}</span>
+         
           </button>
         </div>
       </template>
     </calendar>
 
     <modal
+      :showFastEditModal='showFastEditModal'
       :show="showModal"
       :data="modalData"
       :office="rec_deps"
-      @close="showModal=false"
+      :fastEditRecordCount='fastEditRecordCount'
+      
+      @submitFastEdit ='submitFastEdit'
+      @close="showModal=false;showFastEditModal=false;fastEditMaxRecordCount=''"
       @editRecord="handleRecordEdit"
+      @deleteRecord="handleRecordDelete"
       @makeRecord="handleShowRegModal"
     >
       <template v-if="activeOffice" v-slot:titleExtend>/ {{ activeOffice.address }}</template>
+     
     </modal>
+
+
+ 
 
     <reg-modal
       :isVisible="showRegModal"
       :addFields="regAdditionalFields"
       :fieldsData="editedRecord"
+      
       @close="showRegModal=false;"
       @submit="regModalSubmit"
     >
@@ -177,7 +176,7 @@
                   style="width: 100%;"
                   :disabled="!slotData.formData.interview_date"
                 >
-                  <el-option v-for="item in minutes" :key="item" :label="item" :value="item"></el-option>
+                  <el-option v-for="item in interview_minutes" :key="item" :label="item" :value="item"></el-option>
                 </el-select>
               </div>
             </div>
@@ -199,6 +198,7 @@
     <reg-modal
       :buttonLoading="buttonLoading"
       :isVisible="showRegModalAddRecords"
+      :clearFieldsRegModal='clearFieldsRegModal'
       @close="showRegModalAddRecords=false;"
       @submit="regModalAddRecordsSubmit"
     >
@@ -257,7 +257,7 @@
               <div class="input_50">
                 <div class="custom_title">Минуты</div>
                 <el-select v-model="minute" style="width: 100%;" :disabled="true">
-                  <el-option v-for="item in minutes" :key="item" :label="item" :value="item"></el-option>
+                  <el-option v-for="item in interview_minutes" :key="item" :label="item" :value="item"></el-option>
                 </el-select>
               </div>
             </div>
@@ -308,7 +308,7 @@
                   @focus="showTooltip = false"
                   class="mb_20 w_100 activate-form-valid-elem"
                   ref="vaidateOffice"
-                  :class="{invalid: !scope.formData.office}"
+                  :class="{invalid_fields: !scope.formData.office}"
                 >
                   <el-option
                     v-for="item in placesList"
@@ -324,7 +324,7 @@
                   placeholder="Выберите категорию"
                   class="mb_20 w_100"
                   style="margin-right: 30px;"
-                  :class="{invalid: !scope.formData.categories_id}"
+                  :class="{invalid_fields: !scope.formData.categories_id}"
                 >
                   <el-option
                     v-for="item in categories"
@@ -334,6 +334,15 @@
                   ></el-option>
                 </el-select>
               </div>
+                  <div class="w_100">
+              <div class="custom_title">Максимальное кол-во записей на одно время</div>
+              <el-input
+                v-model="scope.formData.maxRecordCount"
+                required
+                ref="validateMaxRecordCount"
+                :class="{invalid_fields: !scope.formData.maxRecordCount}"
+              ></el-input>
+            </div>
             </div>
 
             <div class="input_wrap dashed spaced mt_20">
@@ -348,7 +357,7 @@
                   :clearable="false"
                   style="width: 100%; margin-bottom: 0; "
                   class="activate-form-valid-elem"
-                  :class="{invalid: !scope.formData.from.date}"
+                  :class="{invalid_fields: !scope.formData.from.date}"
                 />
               </div>
               <div class="input_50">
@@ -361,10 +370,31 @@
                   :clearable="false"
                   style="width: 100%; margin-bottom: 0;"
                   class="input_50 activate-form-valid-elem"
-                  :class="{invalid: !scope.formData.to.date}"
+                  :class="{invalid_fields: !scope.formData.to.date}"
                   :picker-options="pickerOptions"
                 />
               </div>
+                  <div class="w_100">
+               
+                    <div class="custom_title">Продолжительность собеседования (минуты)</div>
+                    <el-select
+                      required
+                      v-model="interview_duration"
+                      placeholder
+                      class="mb_20 w_100 activate-form-valid-elem"
+                      @change="handleInterviewTime"
+                      :class="{invalid_fields: !interview_duration}"
+                    >
+                      <el-option
+                        v-for="item in interview_duration_minutes"
+                        :key="item"
+                        :label="item"
+                        :value="item"
+                      ></el-option>
+                    </el-select>
+               
+                  
+                </div>
               <button
                 class="slearfieldsBtn"
                 @click="scope.formData.from.date=null;scope.formData.to.date=null"
@@ -377,25 +407,7 @@
 
             <transition name="fade">
               <div v-if="!scope.formData.allDay" class="input_wrap dashed spaced mt_20">
-                <div>
-                  <div class="input_50">
-                    <div class="custom_title">Продолжительность собеседования (минуты)</div>
-                    <el-select
-                      required
-                      v-model="interview_duration"
-                      placeholder
-                      class="activate-form-valid-elem"
-                      @change="handleInterviewTime"
-                    >
-                      <el-option
-                        v-for="item in interview_duration_minutes"
-                        :key="item"
-                        :label="item"
-                        :value="item"
-                      ></el-option>
-                    </el-select>
-                  </div>
-                </div>
+            
                 <div class="input_wrap">
                   <div class="input_50 input_wrap">
                     <div class="input_50">
@@ -407,7 +419,7 @@
                         @focus="showTooltip = false"
                         ref="validateHoursFrom"
                         class="activate-form-valid-elem"
-                        :class="{invalid: !scope.formData.from.hours}"
+                        :class="{invalid_fields: !scope.formData.from.hours}"
                       >
                         <el-option v-for="item in hours" :key="item" :label="item" :value="item"></el-option>
                       </el-select>
@@ -421,10 +433,10 @@
                         ref="validateMinutesFrom"
                         @focus="showTooltip = false"
                         class="activate-form-valid-elem"
-                        :class="{invalid: !scope.formData.from.minutes}"
+                        :class="{invalid_fields: !scope.formData.from.minutes}"
                         :disabled="!interview_duration"
                       >
-                        <el-option v-for="item in minutes" :key="item" :label="item" :value="item"></el-option>
+                        <el-option v-for="item in interview_minutes" :key="item" :label="item" :value="item"></el-option>
                       </el-select>
                     </div>
                   </div>
@@ -437,7 +449,7 @@
                         v-model="scope.formData.to.hours"
                         placeholder
                         @focus="showTooltip = false"
-                        :class="{invalid: !scope.formData.to.hours}"
+                        :class="{invalid_fields: !scope.formData.to.hours}"
                       >
                         <el-option v-for="item in hours" :key="item" :label="item" :value="item"></el-option>
                       </el-select>
@@ -449,10 +461,10 @@
                         v-model="scope.formData.to.minutes"
                         placeholder
                         @focus="showTooltip = false"
-                        :class="{invalid: !scope.formData.to.minutes}"
+                        :class="{invalid_fields: !scope.formData.to.minutes}"
                         :disabled="!interview_duration"
                       >
-                        <el-option v-for="item in minutes" :key="item" :label="item" :value="item"></el-option>
+                        <el-option v-for="item in interview_minutes" :key="item" :label="item" :value="item"></el-option>
                       </el-select>
                     </div>
                   </div>
@@ -460,19 +472,11 @@
 
                 <button
                   class="slearfieldsBtn"
-                  @click="scope.formData.from.hours=null;scope.formData.to.hours=null;scope.formData.from.minutes=null;scope.formData.to.minutes=null;"
+                  @click="scope.formData.from.hours=null;scope.formData.to.hours=null;scope.formData.from.minutes=null;scope.formData.to.minutes=null;interview_duration=''"
                 >&#215;</button>
               </div>
             </transition>
-            <div class="w_100">
-              <div class="custom_title">Максимальное кол-во записей на одно время</div>
-              <el-input
-                v-model="scope.formData.maxRecordCount"
-                required
-                ref="validateMaxRecordCount"
-                :class="{invalid: !scope.formData.maxRecordCount}"
-              ></el-input>
-            </div>
+        
           </div>
 
           <div class="tab" v-if="createRecordModal.activeTab === 2" :key="2">
@@ -486,7 +490,7 @@
                   placeholder="Выберите офис"
                   @focus="showTooltip = false"
                   class="mb_20 w_100"
-                  :class="{invalid: !scope.formData.office}"
+                  :class="{invalid_fields: !scope.formData.office}"
                 >
                   <el-option
                     v-for="item in placesList"
@@ -502,7 +506,7 @@
                   placeholder="Выберите категорию"
                   class="mb_20 w_100"
                   style="margin-right: 30px;"
-                  :class="{invalid: !scope.formData.categories_id}"
+                  :class="{invalid_fields: !scope.formData.categories_id}"
                 >
                   <el-option
                     v-for="item in categories"
@@ -513,15 +517,28 @@
                 </el-select>
               </div>
             </div>
-
-            <div class="input_wrap my_10">
-              <el-checkbox
-                v-model="scope.formData.allHours"
-              >Деактивировать выбранный адрес на все время</el-checkbox>
-            </div>
-
-            <transition-group v-if="!scope.formData.allHours" tag="div" name="fade" mode="out-in">
-              <div class="input_wrap dashed spaced mt_20" :key="2">
+     <div class="input_wrap dashed spaced mt_20" :key="2">
+                     <div class="w_100">
+                  <div class="input_100">
+                    <div class="custom_title">Продолжительность собеседования (минуты)</div>
+                    <el-select
+                      required
+                      v-model="interview_duration"
+                      placeholder
+                      class="mb_20 w_100 activate-form-valid-elem"
+                      @change="handleInterviewTime"
+                      :class="{invalid_fields: !interview_duration}"
+                    >
+                      <el-option
+                        v-for="item in interview_duration_minutes"
+                        :key="item"
+                        :label="item"
+                        :value="item"
+                      ></el-option>
+                    </el-select>
+                  </div>
+                  
+                </div>
                 <div class="input_50">
                   <div class="custom_title">Дата (с)</div>
                   <el-date-picker
@@ -529,7 +546,7 @@
                     type="date"
                     required
                     :clearable="false"
-                    :class="{invalid: !scope.formData.from.date}"
+                    :class="{invalid_fields: !scope.formData.from.date}"
                     style="width: 100%; margin-bottom: 0;"
                     :picker-options="pickerOptions"
                   />
@@ -543,7 +560,7 @@
                     :clearable="false"
                     style="width: 100%; margin-bottom: 0;"
                     class="input_50"
-                    :class="{invalid: !scope.formData.to.date}"
+                    :class="{invalid_fields: !scope.formData.to.date}"
                     :picker-options="pickerOptions"
                   />
                 </div>
@@ -553,6 +570,15 @@
                 >&#215;</button>
               </div>
 
+            <div class="input_wrap my_10">
+              <el-checkbox
+                v-model="scope.formData.allDay"
+              >Деактивировать выбранный адрес на все время</el-checkbox>
+            </div>
+
+            <transition-group v-if="!scope.formData.allDay" tag="div" name="fade" mode="out-in">
+              
+         
               <!-- <div class="input_wrap my_10" :key="3">
                 <el-checkbox v-model="scope.formData.allDay">Активировать на весь день</el-checkbox>
               </div>-->
@@ -572,7 +598,7 @@
                         v-model="scope.formData.from.hours"
                         placeholder
                         @focus="showTooltip = false"
-                        :class="{invalid: !scope.formData.from.hours}"
+                        :class="{invalid_fields: !scope.formData.from.hours}"
                       >
                         <el-option v-for="item in hours" :key="item" :label="item" :value="item"></el-option>
                       </el-select>
@@ -584,9 +610,9 @@
                         v-model="scope.formData.from.minutes"
                         placeholder
                         @focus="showTooltip = false"
-                        :class="{invalid: !scope.formData.from.minutes}"
+                        :class="{invalid_fields: !scope.formData.from.minutes}"
                       >
-                        <el-option v-for="item in minutes" :key="item" :label="item" :value="item"></el-option>
+                        <el-option v-for="item in interview_minutes" :key="item" :label="item" :value="item"></el-option>
                       </el-select>
                     </div>
                   </div>
@@ -602,7 +628,7 @@
                         v-model="scope.formData.to.hours"
                         placeholder
                         @focus="showTooltip = false"
-                        :class="{invalid: !scope.formData.to.hours}"
+                        :class="{invalid_fields: !scope.formData.to.hours}"
                       >
                         <el-option v-for="item in hours" :key="item" :label="item" :value="item"></el-option>
                       </el-select>
@@ -614,16 +640,16 @@
                         v-model="scope.formData.to.minutes"
                         placeholder
                         @focus="showTooltip = false"
-                        :class="{invalid: !scope.formData.to.minutes}"
+                        :class="{invalid_fields: !scope.formData.to.minutes}"
                       >
-                        <el-option v-for="item in minutes" :key="item" :label="item" :value="item"></el-option>
+                        <el-option v-for="item in interview_minutes" :key="item" :label="item" :value="item"></el-option>
                       </el-select>
                     </div>
                   </div>
                 </div>
                 <button
                   class="slearfieldsBtn"
-                  @click="scope.formData.from.hours=null;scope.formData.to.hours=null;scope.formData.from.minutes=null;scope.formData.to.minutes=null;"
+                  @click="scope.formData.from.hours=null;scope.formData.to.hours=null;scope.formData.from.minutes=null;scope.formData.to.minutes=null;interview_duration=''"
                 >&#215;</button>
               </div>
             </transition>
@@ -726,7 +752,7 @@ import calendar from "../components/Сalendar/calendar";
 import modal from "../components/Modal/modal.vue";
 import regModal from "../components/Modal/regModal.vue";
 import customModal from "../components/Modal/customModal.vue";
-import { editUserInfo,addRecord } from "@/api/calendar";
+import { editUserInfo,addRecord,updateRecord,deleteSingleRecord } from "@/api/calendar";
 import {
   editRecord,
   disableRecord,
@@ -766,7 +792,24 @@ export default {
         "19",
         "20"
       ],
+      clearFieldsRegModal:false,
+      fastEditMaxRecordCount:'',
+      showFastEditModal:false,
       dependencies_id:'',
+      interview_minutes:[
+          "00",
+        "05",
+        "10",
+        "15",
+        "20",
+        "25",
+        "30",
+        "35",
+        "40",
+        "45",
+        "50",
+        "55"
+      ],
       minutes: [
         "00",
         "05",
@@ -795,6 +838,7 @@ export default {
       dependencies: [],
       showTooltip: false,
       showRegModal: false,
+      fastEditRecordCount:false,
       depsByKey: {},
       editedRecord: {},
       listLoading: true,
@@ -1011,6 +1055,56 @@ console.log(result)
       let time = `${hour}:${minutes}:00`;
       this.formData.interview_time = time;
     },
+    submitFastEdit(id,maxRecordCount){
+if(id==1) {
+  let formData = {
+    records_count:maxRecordCount
+  }
+updateRecord(this.dependencies_id,formData).then(()=>{
+     Message({
+              message: "ресурс обновлен",
+              type: "success",
+              showClose: true
+            });
+            this.handleChangeCategory();
+            this.handleChangePlace()
+            maxRecordCount = ''
+            id=''
+            this.showFastEditModal=false
+             this.showModal=false
+})
+}
+if(id==2) {
+    this.$confirm("Вы хотите удалить запись?", "Осторожно", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "warning"
+      })
+        .then(() => {
+          console.log("delete");
+          deleteRecord(this.dependencies_id).then(() => {
+            Message({
+              message: "ресурс удален",
+              type: "success",
+              showClose: true
+            });
+             maxRecordCount = ''
+            id=''
+            this.showFastEditModal=false
+            this.showModal=false
+            this.handleChangeCategory();
+            this.handleChangePlace()
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "Delete canceled",
+            showClose: true
+          });
+        });
+}
+},
     setActiveModalTime(day, hour, minute) {
       let time = `${hour}:${minute}:00`;
       console.log(day, time);
@@ -1021,11 +1115,11 @@ console.log(result)
     handeDataSet(event) {
       this.moduleData = event;
       let currentMonth = this.$moment(this.moduleData).format("MM");
-      this.getRecDeps(this.office, currentMonth);
+      this.getRecDeps(this.office, currentMonth,this.categories_id);
     },
     getRecDeps(officeID, currentMonth,categoryID) {
       //params: officeID, currentMonth
-
+      this.listLoading = true
       axios
         .post("http://ih.yourstartup.by/api/records/all-records-deps", {
           office_id: officeID,
@@ -1036,6 +1130,7 @@ console.log(result)
           console.log("GET DEPS", response);
           this.dependencies = response.data;
           console.log(this.recordByDay);
+          this.listLoading = false
         })
 
         .catch(error => {
@@ -1097,6 +1192,7 @@ console.log(result)
       this.regFormAddUserField.interview_date = date;
       this.regFormAddUserField.office_id = this.office;
       this.dependencies_id = this.recordById[date + '_' + hour + ':' + minute + ':00']
+      console.log(this.modalData)
       let result = this.records
         .filter(item => {
           return item.interview_date === date;
@@ -1110,32 +1206,84 @@ console.log(result)
       // show modal
       this.showModal = true;
     },
-    handleChangePlace() {
+    initeEdtiModal(date, hour, minute) {
+           this.fastEditRecordCount = false 
+      if(this.fastEdit) {
+        this.showFastEditModal = true
+      
+      if(this.recordCountByDay && this.recordCountByDay[date+'_'+hour+':'+minute+':00']) {
+        
+        this.fastEditRecordCount = true 
+          console.log('fastEdit', this.fastEditRecordCount)
+      }
+      }
+      this.initModal(date, hour, minute)
+      this.setActiveModalTime(date, hour, minute)
+    },
+     handleChangePlace() {
       let currentMonth = this.$moment(this.moduleData).format("MM");
-      (this.listLoading = true), this.getRecDeps(this.office, currentMonth,this.categories_id);
-      this.listLoading = false;
+   
+      this.getRecDeps(this.office, currentMonth,this.categories_id)
+       
+     
     },
     handleChangeCategory() {
       let data = {
         category_id: this.categories_id
       };
-      let currentMonth = this.$moment(this.moduleData).format("MM");
+     
+        this.listLoading = true
+          let currentMonth = this.$moment(this.moduleData).format("MM");
       this.getRecDeps(this.office, currentMonth,this.categories_id)
       getCategoryRecords(data).then(res => {
         console.log(res);
         this.records = res;
+          this.listLoading = false
       });
+      
+    
     },
     handleShowRegModal() {
+      this.clearFieldsRegModal = true
       this.showRegModalAddRecords = true;
       this.showModal = false;
+      console.log(  this.clearFieldsRegModal)
     },
     handleRecordEdit($event) {
-      this.formData = $event;
-
+      
+      this.formData = $event
       this.editedRecord = $event;
+           this.showModal = false;
       this.showRegModal = true;
-      this.showModal = false;
+ 
+    },
+    handleRecordDelete(id){
+              this.$confirm("Вы хотите удалить запись?", "Осторожно", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "warning"
+      })
+        .then(() => {
+          console.log("delete");
+        this.showModal = false;
+        deleteSingleRecord(id).then(()=>{
+           Message({
+              message: "ресурс удален",
+              type: "success",
+              showClose: true
+            });
+            this.handleChangePlace()
+             this.handleChangeCategory()
+            
+        })
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "Delete canceled",
+            showClose: true
+          });
+        });
     },
     fastDelete(id) {
       this.$confirm("Вы хотите удалить запись?", "Осторожно", {
@@ -1250,7 +1398,7 @@ console.log(result)
           try {
             formData.from.date = this.parseDate(formData.from.date);
             formData.to.date = this.parseDate(formData.to.date);
-
+            formData.interview_duration = this.interview_duration
             editRecord(formData).then(() => {
               this.createRecordModal.visible = false;
 
@@ -1259,6 +1407,9 @@ console.log(result)
                 message: "Запись активирована",
                 showClose: true
               });
+              this.handleChangeCategory()
+              this.handleChangePlace()
+             
               formData.allDay = false;
               formData.allHours = false;
               formData.office = null;
@@ -1281,13 +1432,16 @@ console.log(result)
         } else if (this.createRecordModal.activeTab === 2) {
           // Деактивация
           //            todo request
-
+          
           try {
-            delete formData.maxRecordCount;
+            
             formData.from.date = this.parseDate(formData.from.date);
             formData.to.date = this.parseDate(formData.to.date);
+            formData.interview_duration = this.interview_duration
             disableRecord(formData).then(() => {
               this.createRecordModal.visible = false;
+               this.handleChangeCategory()
+              this.handleChangePlace()
               this.$message({
                 type: "success",
                 message: "Запись деактивирована",
@@ -1323,7 +1477,7 @@ console.log(result)
       }
     },
     handleInterviewTime() {
-      (this.minutes = [
+      (this.interview_minutes = [
         "00",
         "05",
         "10",
@@ -1337,7 +1491,7 @@ console.log(result)
         "50",
         "55"
       ]),
-        (this.minutes = this.minutes.filter(item => {
+        (this.interview_minutes = this.interview_minutes.filter(item => {
           return parseInt(item) % parseInt(this.interview_duration) == 0;
         }));
     }
@@ -1360,12 +1514,33 @@ body {
   z-index: 9999;
 }
 .bold {
-  font-weight: bold;
+ span {
+   font-weight: bold;
+ }
 }
 .calendar_wrap {
   padding: 0 !important;
 }
 .invalid {
   border: 1px solid red;
+}
+.invalid_fields {
+  input {
+    border-color: red;
+  }
+}
+.close_btn {
+  margin-bottom: 0 !important;
+}
+.calendar_btn {
+  &:hover {
+    box-shadow: none;
+  }
+}
+.val {
+  &:hover {
+    color: #409eff;
+    transition: 0.3s;
+  }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="calendar_wrap">
-    <h1>Календарь записей</h1>
+    <h1>{{fastEdit?'Режим Быстрого редактирования':'Календарь записей'}}</h1>
 
     <div class="hdr_row">
       <slot name="hdrExtend"></slot>
@@ -69,6 +69,9 @@ export default {
     hours: {
       type: Array,
    
+    },
+    fastEdit:{
+      type:Boolean,
     }
   },
   data() {

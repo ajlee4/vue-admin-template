@@ -6,7 +6,7 @@
   
 
       <div class="modal_body">
-        <button class="close_btn" @click="$emit('close')">&#215;</button>
+        <button class="close_btn" @click="close">&#215;</button>
         <div class="modal_inner">
           <h1 class="tac hdr_big">Контактные данные</h1>
 
@@ -25,10 +25,12 @@
               <el-date-picker
                 v-model="formData.birth_date"
                 type="date"
+                
                 :clearable="false"
                 style="width: 100%;"
                 format="dd-MM-yyyy"
                 ref='regInputBirthday'
+               
               />
             </div>
 
@@ -70,6 +72,9 @@ export default {
       default() {
         return {};
       }
+    },
+    clearFieldsRegModal:{
+      type:Boolean,
     },
     fieldsData: {
       //default field values
@@ -149,6 +154,15 @@ export default {
   methods: {
     parseDate(val) {
       return this.$options.filters.parseTime(val, "{y}-{m}-{d}");
+    },
+    close(){
+      console.log(this.clearFieldsRegModal)
+      if(this.clearFieldsRegModal) {
+      this.formData.name = this.formData.surname = this.formData.phone=this.formData.email = this.formData.birth_date = this.formData.parent_email = this.formData.parent_name = this.formData.parent_phone = this.formData.parent_surname=this.formData.patronymic
+
+      }
+      this.$emit('close')
+
     },
     submit() {
       // check each input - if required - check notempty
@@ -261,7 +275,10 @@ this.$refs.regInputBirthday.$el.classList.remove('invalid')
   }
 }
 .invalid-field {
-border:1px solid red;
+   border:1px solid red;
+  input {
+    border-color: red;
+  }
 }
 .input_50 {
   flex: 0 1 47%;
