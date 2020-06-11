@@ -141,6 +141,7 @@ export default {
         return;
       }
        editCourse(id, this.data).then(() => {
+            this.$router.push({ name: "general-course-section" });
         Message({
           message: "Ресурс изменен",
           type: "success",

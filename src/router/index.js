@@ -141,6 +141,44 @@ const routes = [
     meta: { layout: "main" }
   },
   {
+    path: "/teachers",
+    name: "teachers",
+    component: () => import("../views/views-teacher/teacherList.vue"),
+    meta: { layout: "main" }
+  },
+
+  {
+    path: "/teachers/create",
+    name: "teachers-add",
+    component: () => import("../views/views-teacher/teacherAdd.vue"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/teachers/:id/edit",
+    name: "teachers-edit",
+    component: () => import("../views/views-teacher/teacherEdit.vue"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/branch-offices",
+    name: "branch-offices",
+    component: () => import("../views/views-branch-offices/officesList.vue"),
+    meta: { layout: "main" }
+  },
+
+  {
+    path: "/branch-offices/create",
+    name: "branch-offices-add",
+    component: () => import("../views/views-branch-offices/officesListAdd.vue"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/branch-offices/:id/edit",
+    name: "branch-offices-edit",
+    component: () => import("../views/views-branch-offices/officesListEdit.vue"),
+    meta: { layout: "main" }
+  },
+  {
     path: "/course-single",
     name: "course-single",
     component: () => import("../views/views-course/CourseSingle/CourseSingle.vue"),
@@ -165,6 +203,12 @@ const routes = [
     meta: { layout: "main" }
   },
   {
+    path: "/reviews/create",
+    name: "reviews-create",
+    component: () => import("../views/views-reviews/ReviewsAdd.vue"),
+    meta: { layout: "main" }
+  },
+  {
     path: "/reviews/:id/edit",
     name: "reviews-edit",
     component: () => import("../views/views-reviews/ReviewsEdit.vue"),
@@ -186,6 +230,24 @@ const routes = [
     path: "/resourse/create",
     name: "resourse-create",
     component: () => import("../views/views-resourse/ResourseAdd.vue"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/banner",
+    name: "banner",
+    component: () => import("../views/views-banner/bannerList.vue"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/banner/:id/edit",
+    name: "banner-edit",
+    component: () => import("../views/views-banner/bannerEdit.vue"),
+    meta: { layout: "main" }
+  },
+  {
+    path: "/banner/create",
+    name: "banner-create",
+    component: () => import("../views/views-banner/bannerAdd.vue"),
     meta: { layout: "main" }
   },
   {

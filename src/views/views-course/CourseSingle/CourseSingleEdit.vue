@@ -160,7 +160,7 @@
               </div></el-col
             >
           </el-row>
-          <el-row :gutter="20">
+          <!-- <el-row :gutter="20">
             <el-col :span="6"
               ><div class="grid-content ">
                 <div class="input-title">
@@ -228,7 +228,7 @@
                   v-model="data.total_hours"
                 ></el-input></div
             ></el-col>
-          </el-row>
+          </el-row> -->
              <el-form-item label="Текст">
             <Tinymce v-model="data.intro_text"></Tinymce>
           </el-form-item>
@@ -384,6 +384,7 @@ export default {
       this.data.start_date = this.$options.filters.parseTime( this.data.start_date, "{y}-{m}-{d}")
       this.data.end_date = this.$options.filters.parseTime( this.data.end_date, "{y}-{m}-{d}")
       editSingleCourse(id, this.data).then(() => {
+        this.$router.push({ name: "course-single" });
         Message({
           message: "Ресурс изменен",
           type: "success",

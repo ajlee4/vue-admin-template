@@ -125,7 +125,7 @@
               </div></el-col
             >
           </el-row>
-          <el-row :gutter="20">
+          <!-- <el-row :gutter="20">
             <el-col :span="6"
               ><div class="grid-content ">
                 <div class="input-title">
@@ -193,7 +193,7 @@
                   v-model="totalHours"
                 ></el-input></div
             ></el-col>
-          </el-row>
+          </el-row> -->
           <el-form-item label="Текст">
             <Tinymce v-model="course.intro_text"></Tinymce>
           </el-form-item>

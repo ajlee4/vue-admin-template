@@ -172,6 +172,7 @@ export default {
         return;
       }
       editSubCourse(id, this.data).then(() => {
+          this.$router.push({ name: "subcourse" });
         Message({
           message: "Ресурс изменен",
           type: "success",

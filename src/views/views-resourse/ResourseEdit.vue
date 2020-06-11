@@ -134,6 +134,7 @@ export default {
         return;
       }
       updateResourse(id, this.data).then(() => {
+          this.$router.push({ name: "resourse" });
         this.$message({
           type: "success",
           message: "Ресурс изменен",

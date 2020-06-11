@@ -61,6 +61,7 @@ export default {
       }
 
       updateTestCategory(id, this.data).then(() => {
+         this.$router.push({ name: "test-category" });
         Message({
           message: "Категория изменена",
           type: "success",

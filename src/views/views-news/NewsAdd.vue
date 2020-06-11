@@ -36,6 +36,26 @@
                 <el-input v-model="newsData.title"></el-input>
               </el-form-item>
             </el-col>
+            <el-col :span="6">
+              <el-form-item label="Изображение новости">
+                <el-upload
+                  action="http://ih.yourstartup.by/api/news/store-image"
+                  list-type="picture-card"
+                  :on-preview="handlePictureCardPreview"
+                  :on-change="handlePictureCard"
+                  :auto-upload="false"
+                  :data="imageData"
+                  ref="upload"
+                  name="image"
+                  :on-remove="handleRemove"
+                >
+                  <i class="el-icon-plus"></i>
+                </el-upload>
+                <el-dialog :visible.sync="dialogVisible">
+                  <img width="100%" :src="dialogImageUrl" alt="" />
+                </el-dialog>
+              </el-form-item>
+            </el-col>
             <el-col :span="24">
                <el-form-item label="Вводный текст">
             <Tinymce v-model="newsData.intro_text"></Tinymce>
@@ -124,6 +144,7 @@ export default {
       labelPosition: "top",
       dialogImageUrl: "",
       dialogVisible: false,
+       imageData:{},
       newsData: {
         slug: null,
         page_title: "",
@@ -144,7 +165,12 @@ export default {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
-
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePictureCard(file) {
+      this.image = file;
+    },
     addNews() {
       if (this.$v.$invalid) {
         Message({
@@ -165,8 +191,10 @@ export default {
         seo_text:this.seo_text
       };
 
-      createNews(formData).then(() => {
+      createNews(formData).then((res) => {
         this.$router.push({ name: "news-list" });
+         this.imageData.id = res.data.id;
+        this.$refs.upload.submit();
         Message({
           message: "Новость создана",
           type: "success",

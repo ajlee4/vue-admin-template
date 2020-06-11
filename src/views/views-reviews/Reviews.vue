@@ -1,14 +1,14 @@
 <template>
   <div class="newslist-container">
     <h2>Отзывы</h2>
-    <el-form label-position="top" label-width="100px" class="news-form">
+    <router-link to='/reviews/create'>
+      <el-button type="success" class="add-course-button"
+        >Создать продукт</el-button
+      >
+ </router-link>
+    <el-form label-position="top" label-width="100px" class="news-form" style="margin-top:20px">
       <el-row :gutter="20" align="bottom" class="news-form-row">
-        <el-col :span="6"
-          ><div class="grid-content ">
-            <el-form-item label="Поле для поиска">
-              <el-input v-model="search"></el-input>
-            </el-form-item></div
-        ></el-col>
+
       </el-row>
     </el-form>
     <div class="table-wrap">
@@ -28,11 +28,11 @@
             {{ scope.row.name }}
           </template>
         </el-table-column>
-          <el-table-column label="Отзыв">
+          <!-- <el-table-column label="Отзыв">
           <template slot-scope="scope">
             {{ scope.row.review }}
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column align="right">
           <template slot-scope="scope">
              <router-link
@@ -40,8 +40,14 @@
               class="edit-button"
             >
               <el-button size="mini">Edit</el-button>
+              
             </router-link>
-       
+            <el-button
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.row.id)"
+              >Delete</el-button
+            >
           </template>
         </el-table-column>
       </el-table>

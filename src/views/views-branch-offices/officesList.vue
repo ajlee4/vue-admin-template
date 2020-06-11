@@ -1,30 +1,46 @@
 <template>
-  <div class="category-container">
-    <h2>Категории</h2>
-
-    <router-link to="/test-category/create">
-      <el-button type="primary" class="add-category-button">Создать категорию</el-button>
+  <div class="newslist-container">
+    <h2>Филиалы</h2>
+    <el-form label-position="top" label-width="100px" class="news-form">
+      <el-row :gutter="20" align="bottom" class="news-form-row">
+      </el-row>
+    </el-form>
+    <router-link to="/branch-offices/create">
+      <el-button type="primary" class="add-news-button"
+        >Создать продукт</el-button
+      >
     </router-link>
     <div class="table-wrap">
-      <el-table :data="data" border style="width: 100%" v-loading="listLoading">
-        <el-table-column label="Название категории">
+      <el-table
+        :data="data"
+        border
+        style="width: 100%"
+        v-loading="listLoading"
+      >
+        <el-table-column label="Адрес филиала">
           <template slot-scope="scope">
-            
-      
-           {{ scope.row.name }}
+           {{scope.row.address}}
+          </template>
+        </el-table-column>
+             <el-table-column label="Активный">
+          <template slot-scope="scope">
+           {{scope.row.is_active? "Да":"Нет"}}
           </template>
         </el-table-column>
         <el-table-column align="right">
           <template slot-scope="scope">
-         
                <router-link
-              :to="{ name: 'test-category-edit', params: { id: scope.row.id } }"
+              :to="{ name: 'branch-offices-edit', params: { id: scope.row.id } }"
               class="edit-button"
             >
               <el-button size="mini">Edit</el-button>
             </router-link>
-          
-            <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">Delete</el-button>
+            <el-button
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.row.id)"
+              >Delete</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -33,7 +49,7 @@
         :total="total"
         :page.sync="listQuery.page"
         :limit.sync="listQuery.limit"
-        @pagination="getDataTestCategory(listQuery.limit)"
+        @pagination="getDataOffices(listQuery.limit)"
       ></pagination>
     </div>
   </div>
@@ -41,9 +57,8 @@
 
 <script>
 import pagination from "@/components/Pagination";
-import { fetchTestCategoryList, deleteTestCategory } from "@/api/test";
+import { fetchOfficesList, deleteOfficesInfo } from "@/api/branchOffices";
 import { Message } from "element-ui";
-
 export default {
   components: {
     pagination
@@ -51,10 +66,9 @@ export default {
   data() {
     return {
       id: "",
-      categoryName: "",
+      search: "",
       data: [],
       listLoading: true,
-   
       listQuery: {
         page: 1,
         limit: 20
@@ -62,6 +76,12 @@ export default {
 
       total: 0
     };
+  },
+  computed: {
+    newsLink() {
+      return `/news/${this.id}/edit`;
+    },
+
   },
   methods: {
     handleDelete(id) {
@@ -71,7 +91,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          deleteTestCategory(id).then(() => {
+          deleteOfficesInfo(id).then(() => {
             this.data = this.data.filter(item => item.id !== id);
             Message({
               message: "ресурс удален",
@@ -88,20 +108,23 @@ export default {
           });
         });
     },
-
-    getDataTestCategory() {
+    getDataOffices() {
       this.listLoading = true;
-      fetchTestCategoryList(this.listQuery).then(response => {
+      fetchOfficesList(this.listQuery).then(response => {
         this.data = response.data.data;
         this.total = response.data.total;
-        console.log(this.data)
         this.listLoading = false;
+        console.log(this.data);
       });
     }
+    // searchNews() {
+    //   searchNews(this.searchData);
+    //   console.log(this.searchData);
+    // }
   },
 
   created() {
-    this.getDataTestCategory();
+    this.getDataOffices();
   }
 };
 </script>
@@ -119,17 +142,17 @@ export default {
 .el-pagination {
   margin-top: 30px;
 }
-.category-form-row {
+.news-form-row {
   display: flex;
   align-items: flex-end;
 }
 .el-select {
   width: 100%;
 }
-.category-form {
+.news-form {
   margin-bottom: 30px;
 }
-.add-category-button {
+.add-news-button {
   margin-bottom: 10px;
 }
 </style>

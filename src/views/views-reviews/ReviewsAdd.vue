@@ -47,7 +47,7 @@
     <el-button
       type="success"
       class="succes-btn"
-      @click="handleUpdateReviews(data.id)"
+      @click="handleAddReviews"
       >Изменить</el-button
     >
   </el-form>
@@ -55,7 +55,7 @@
 
 <script>
 import Tinymce from "@/components/Tinymce";
-import { updateReviews } from "@/api/reviews";
+import { createReviews } from "@/api/reviews";
 import { required } from "vuelidate/lib/validators";
 import { Message } from "element-ui";
 export default {
@@ -69,7 +69,13 @@ export default {
   },
   data() {
     return {
-      data: [],
+      data: {
+          name:'',
+          fb:'',
+          insta:'',
+          vk:'',
+          review:"",
+      },
       activeName: "first",
       labelPosition: "top",
       dialogImageUrl: "",
@@ -86,7 +92,7 @@ export default {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
-    handleUpdateReviews(id) {
+    handleAddReviews() {
       if (this.$v.$invalid) {
         Message({
           message: "Заполните обязательные поля",
@@ -96,30 +102,17 @@ export default {
         this.$v.$touch();
         return;
       }
-      updateReviews(id, this.data).then(() => {
+      createReviews(this.data).then(() => {
          this.$router.push({ name: "reviews" });
         this.$message({
           type: "success",
-          message: "Отзыв изменен",
+          message: "Отзыв добавлен",
           showClose: true
         });
       });
     }
   },
-  created() {
-    this.$store
-      .dispatch("getCurrentReviews", this.$route.params.id)
-      .then(() => {
-        this.listLoading = false;
-        this.data = this.currentReviews;
-        console.log(this.data);
-      });
-  },
-  computed: {
-    currentReviews() {
-      return this.$store.getters.currentReviews;
-    }
-  }
+
 };
 </script>
 <style lang="scss">

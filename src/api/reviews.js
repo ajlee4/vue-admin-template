@@ -30,3 +30,10 @@ export function fetchReviews(id) {
       data
     });
   }
+  export function createReviews(data) {
+    return request({
+      url: "http://ih.yourstartup.by/api/reviews/store",
+      method: "post",
+      data
+    });
+  }

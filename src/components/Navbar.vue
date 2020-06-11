@@ -16,25 +16,24 @@ import Dropdown from "./Dropdown";
 import Hamburger from "@/components/Hamburger";
 export default {
   components: {
-
     Dropdown,
-    Hamburger
+    Hamburger,
   },
   data() {
     return {
       activeIndex: "1",
-      activeIndex2: "1"
+      activeIndex2: "1",
     };
   },
   computed: {
     sidebar() {
       return this.$store.getters.sidebar;
-    }
+    },
   },
   methods: {
     toggleSideBar() {
       this.$store.dispatch("toggleSideBar");
-    }
-  }
+    },
+  },
 };
 </script>

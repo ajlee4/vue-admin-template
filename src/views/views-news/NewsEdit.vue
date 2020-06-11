@@ -33,11 +33,37 @@
           </el-col>
 
     
-                   <el-col :span="12">
-     <el-form-item label="Изображение">
-       <img src="https://studlive.by/wp-content/uploads/2019/06/87afef76100d0b704ca5b6039468a736.jpg" alt="" width="200"  height="200">
-       </el-form-item>          
-              </el-col>
+         <el-col :span="6">
+     <el-form-item label="Фотография баннера">
+            <el-image
+      style="width: 200px; height: 200px"
+      :src="url"
+     
+      ></el-image>  
+     </el-form-item>
+            
+
+            </el-col>
+       
+<el-col :span="6">
+  <el-form-item label="Добавьте фотографию">
+                     <el-upload
+  action="http://ih.yourstartup.by/api/news/store-news"
+  list-type="picture-card"
+  :on-preview="handlePictureCardPreview"
+  :on-change ='handlePictureCard'
+  :auto-upload="false"
+  :data='imageData'
+ ref="upload"
+  name='image'
+  :on-remove="handleRemove">
+  <i class="el-icon-plus"></i>
+</el-upload>
+<el-dialog :visible.sync="dialogVisible">
+  <img width="100%" :src="dialogImageUrl" alt="">
+</el-dialog>
+  </el-form-item>
+            </el-col>
               
                  <el-col :span="24">
                         <el-form-item label="Вводный текст">
@@ -125,6 +151,8 @@ export default {
       labelPosition: "top",
       dialogImageUrl: "",
       dialogVisible: false,
+         imageData:{},
+      url:"",
       news: {
         title: "",
         slug: "",
@@ -148,6 +176,9 @@ export default {
         return;
       }
       updateNews(id,this.data).then(() => {
+  this.imageData.id = id
+         this.$refs.upload.submit()
+          this.$router.push({ name: "news-list" });
         this.$message({
           type: "success",
           message: "Новость изменена",
@@ -160,6 +191,7 @@ export default {
     this.$store.dispatch("getCurrentNews", this.$route.params.id).then(() => {
       this.listLoading = false;
       this.data = this.currentNews
+       this.url =  `http://ih.yourstartup.by/${this.data.image}`
       console.log(this.data)
     });
   },

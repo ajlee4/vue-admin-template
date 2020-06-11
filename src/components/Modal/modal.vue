@@ -111,6 +111,9 @@ export default {
     fastEditRecordCount: {
       type: Boolean
     },
+    maxRecordCount:{
+
+    },
     office: {
       type: Object,
       default() {
@@ -121,7 +124,7 @@ export default {
   data() {
     return {
       radio: "1",
-      maxRecordCount: ""
+    
     };
   },
   methods: {

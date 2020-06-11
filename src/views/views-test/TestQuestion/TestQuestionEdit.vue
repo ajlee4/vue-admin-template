@@ -166,6 +166,7 @@ export default {
       }
 
       updateTestGrades(id, this.data).then(() => {
+          this.$router.push({ name: "test-question" });
         Message({
           message: "Уровень изменен",
           type: "success",

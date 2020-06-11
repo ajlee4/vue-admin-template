@@ -224,7 +224,7 @@ C844.968,127.845,848.247,137.233,859.103,137.233z"
             </router-link>
           </div>
           <div>
-            <router-link to="/pages">
+            <!-- <router-link to="/pages">
               <el-menu-item index="1" class="submenu-title-noDropdown">
                 <i
                   class="el-icon-document-copy
@@ -232,9 +232,39 @@ C844.968,127.845,848.247,137.233,859.103,137.233z"
                 ></i>
                 <span>Страницы</span>
               </el-menu-item>
+            </router-link> -->
+          </div>
+
+          <div>
+            <router-link to="/banner">
+              <el-menu-item index="111" class="submenu-title-noDropdown">
+                <i
+                  class="el-icon-picture
+"
+                ></i>
+                <span>Баннеры</span>
+              </el-menu-item>
             </router-link>
           </div>
-                 <div>
+          <div>
+            <router-link to="/branch-offices">
+              <el-menu-item index="25" class="submenu-title-noDropdown">
+                <i
+                  class="el-icon-s-shop
+"
+                ></i>
+                <span>Филиалы</span>
+              </el-menu-item>
+            </router-link>
+            <router-link to="/teachers">
+              <el-menu-item index="22" class="submenu-title-noDropdown">
+                <i
+                  class="el-icon-s-custom
+"
+                ></i>
+                <span>Преподователи</span>
+              </el-menu-item>
+            </router-link>
             <router-link to="/reviews">
               <el-menu-item index="10" class="submenu-title-noDropdown">
                 <i
@@ -264,7 +294,7 @@ C844.968,127.845,848.247,137.233,859.103,137.233z"
             </el-submenu>
           </div>
           <div>
-                <el-submenu index="4" class="submenu-title-noDropdown">
+            <el-submenu index="4" class="submenu-title-noDropdown">
               <template slot="title">
                 <i class="el-icon-reading"></i>
                 <span>Тестирование</span>
@@ -282,7 +312,7 @@ C844.968,127.845,848.247,137.233,859.103,137.233z"
             </el-submenu>
           </div>
           <div>
-                <router-link to="/resourse">
+            <router-link to="/resourse">
               <el-menu-item index="10" class="submenu-title-noDropdown">
                 <i
                   class="el-icon-folder
@@ -292,7 +322,7 @@ C844.968,127.845,848.247,137.233,859.103,137.233z"
               </el-menu-item>
             </router-link>
           </div>
-           <div>
+          <div>
             <router-link to="/calendar">
               <el-menu-item index="30" class="submenu-title-noDropdown">
                 <i
@@ -304,7 +334,7 @@ C844.968,127.845,848.247,137.233,859.103,137.233z"
             </router-link>
           </div>
           <div>
-              <router-link to="/resourse-localization">
+            <router-link to="/resourse-localization">
               <el-menu-item index="30" class="submenu-title-noDropdown">
                 <i
                   class="el-icon-discover
@@ -315,7 +345,7 @@ C844.968,127.845,848.247,137.233,859.103,137.233z"
             </router-link>
           </div>
           <div>
-            <el-submenu index="21" class="submenu-title-noDropdown">
+            <!-- <el-submenu index="21" class="submenu-title-noDropdown">
               <template slot="title">
                 <i class="el-icon-setting"></i>
                 <span>Компоненты</span>
@@ -352,7 +382,7 @@ C844.968,127.845,848.247,137.233,859.103,137.233z"
               <router-link to="/pagination">
                 <el-menu-item index="15"><span>Pagination</span></el-menu-item>
               </router-link>
-            </el-submenu>
+            </el-submenu> -->
           </div>
         </el-menu>
       </el-scrollbar>
@@ -362,7 +392,7 @@ C844.968,127.845,848.247,137.233,859.103,137.233z"
 <script>
 export default {
   props: {
-    sidebarVisible: Boolean
+    sidebarVisible: Boolean,
   },
   computed: {
     isCollapse() {
@@ -376,11 +406,11 @@ export default {
         return meta.activeMenu;
       }
       return path;
-    }
+    },
   },
-  created(){
-    console.log(this.$route)
-  }
+  created() {
+    console.log(this.$route);
+  },
 };
 </script>
 <style lang="scss">

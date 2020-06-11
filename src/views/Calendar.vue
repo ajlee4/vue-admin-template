@@ -16,7 +16,8 @@
               @click="showTooltip = false"
             >Для начала работы выберите офис &#8681;</div>-->
           </transition>
-
+<div style="display:flex">
+  
           <el-select
             v-model="categories_id"
             placeholder="Выберите категорию"
@@ -49,6 +50,7 @@
               :value="item.id"
             ></el-option>
           </el-select>
+</div>
         </div>
 
         <button
@@ -92,7 +94,7 @@
               v-if="fastEdit && recordByDay[slotProps.day + '_' + slotProps.hour + ':' + minute + ':00'] && !recordCountByDay[slotProps.day+'_'+slotProps.hour+':'+minute+':00'] "
             >&#215;</span>
           
-              <span @click="initeEdtiModal(slotProps.day, slotProps.hour, minute)" class="val">{{ minute }}</span>
+              <span @click="initeEdtiModal(slotProps.day, slotProps.hour, minute,recordMaxCountByDay[slotProps.day + '_' + slotProps.hour + ':' + minute + ':00'])" class="val">{{ minute }}</span>
          
           </button>
         </div>
@@ -105,7 +107,7 @@
       :data="modalData"
       :office="rec_deps"
       :fastEditRecordCount='fastEditRecordCount'
-      
+      :maxRecordCount ='fastEditMaxRecordCount'
       @submitFastEdit ='submitFastEdit'
       @close="showModal=false;showFastEditModal=false;fastEditMaxRecordCount=''"
       @editRecord="handleRecordEdit"
@@ -1206,11 +1208,11 @@ if(id==2) {
       // show modal
       this.showModal = true;
     },
-    initeEdtiModal(date, hour, minute) {
+    initeEdtiModal(date, hour, minute,maxCount) {
            this.fastEditRecordCount = false 
       if(this.fastEdit) {
         this.showFastEditModal = true
-      
+      this.fastEditMaxRecordCount = maxCount
       if(this.recordCountByDay && this.recordCountByDay[date+'_'+hour+':'+minute+':00']) {
         
         this.fastEditRecordCount = true 
