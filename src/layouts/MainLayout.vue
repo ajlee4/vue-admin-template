@@ -14,8 +14,7 @@
 </template>
 
 <script>
-import Sidebar from "@/components/Sidebar";
-import Navbar from "@/components/Navbar";
+import {Navbar,Sidebar} from "@/components";
 
 export default {
   name: "main-layout",
