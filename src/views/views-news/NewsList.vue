@@ -50,24 +50,24 @@
           </template>
         </el-table-column>
       </el-table>
-      <pagination
+      <Pagination
         v-show="total > 0"
         :total="total"
         :page.sync="listQuery.page"
         :limit.sync="listQuery.limit"
         @pagination="getDataNews(listQuery.limit)"
-      ></pagination>
+      ></Pagination>
     </div>
   </div>
 </template>
 
 <script>
-import pagination from "@/components/Pagination";
+import {Pagination} from "@/components";
 import { fetchNewsList, deleteNews } from "@/api/news";
 import { Message } from "element-ui";
 export default {
   components: {
-    pagination
+    Pagination
   },
   data() {
     return {

@@ -10,26 +10,26 @@ const routes = [
     path: "/",
     name: "home",
     component: Home,
-    meta: { layout: "main" }
+    meta: { layout: "main",title:'Панель управления',icon:'el-icon-s-data',sidebarVisible:true, }
+
   },
   {
-    base: "/admin/",
     path: "/news",
     name: "news-list",
-    meta: { layout: "main" },
+    meta: { layout: "main",title:'Новости',icon:'el-icon-s-promotion',sidebarVisible:true, },
     component: () => import("../views/views-news/NewsList.vue")
   },
   {
     path: "/news/create",
     name: "news-add",
     component: () => import("../views/views-news/NewsAdd.vue"),
-    meta: { layout: "main" }
+    meta: { layout: "main",sidebarVisible:false, }
   },
   {
     path: "/calendar",
     name: "calendar",
     component: () => import("../views/Calendar.vue"),
-    meta: { layout: "main" }
+    meta: { layout: "main",title:'Календарь',icon:'el-icon-date',sidebarVisible:true, }
   },
   {
     path: "/news/:id/edit",
@@ -39,11 +39,34 @@ const routes = [
   },
 
   {
-    path: "/course",
-    name: "general-course-section",
-    meta: { layout: "main" },
-    component: () => import("../views/views-course/Course/Course.vue")
+    path: "/course-list",
+    name: "course-list",
+    component: () => import("../views/views-course/Course/Course.vue"),
+    meta: { layout: "main",submenuVisible:true,title:'Курсы' },
+    children:[
+      {
+        path: "/course",
+        name: "general-course-section",
+        meta: { layout: "main",title:'Общие разделы',sidebarVisible:true, },
+        component: () => import("../views/views-course/Course/Course.vue"),
+       
+      },
+      {
+        path: "/subcourse",
+        name: "subcourse",
+        component: () => import("../views/views-course/SubCourse/SubCourse.vue"),
+        meta: { layout: "main",title:'Направления',sidebarVisible:true, }
+      },
+      {
+        path: "/course-single",
+        name: "course-single",
+        component: () => import("../views/views-course/CourseSingle/CourseSingle.vue"),
+        meta: { layout: "main",title:'Курсы',sidebarVisible:true, },
+      
+      },
+    ]
   },
+ 
   {
     path: "/course/create",
     name: "course-add",
@@ -56,12 +79,7 @@ const routes = [
     component: () => import("../views/views-course/Course/CourseEdit.vue"),
     meta: { layout: "main" }
   },
-  {
-    path: "/subcourse",
-    name: "subcourse",
-    component: () => import("../views/views-course/SubCourse/SubCourse.vue"),
-    meta: { layout: "main" }
-  },
+
 
   {
     path: "/subcourse/create",
@@ -79,7 +97,7 @@ const routes = [
     path: "/teachers",
     name: "teachers",
     component: () => import("../views/views-teacher/teacherList.vue"),
-    meta: { layout: "main" }
+    meta: { layout: "main",title:'Преподаватели',icon:'el-icon-s-custom',sidebarVisible:true, }
   },
 
   {
@@ -98,7 +116,7 @@ const routes = [
     path: "/branch-offices",
     name: "branch-offices",
     component: () => import("../views/views-branch-offices/officesList.vue"),
-    meta: { layout: "main" }
+    meta: { layout: "main",title:'Филиалы',icon:'el-icon-s-shop',sidebarVisible:true, }
   },
 
   {
@@ -113,12 +131,7 @@ const routes = [
     component: () => import("../views/views-branch-offices/officesListEdit.vue"),
     meta: { layout: "main" }
   },
-  {
-    path: "/course-single",
-    name: "course-single",
-    component: () => import("../views/views-course/CourseSingle/CourseSingle.vue"),
-    meta: { layout: "main" }
-  },
+
   {
     path: "/course-single/create",
     name: "course-single-create",
@@ -135,7 +148,7 @@ const routes = [
     path: "/reviews",
     name: "reviews",
     component: () => import("../views/views-reviews/Reviews.vue"),
-    meta: { layout: "main" }
+    meta: { layout: "main",title:'Отзывы',icon:'el-icon-s-comment',sidebarVisible:true, }
   },
   {
     path: "/reviews/create",
@@ -153,7 +166,7 @@ const routes = [
     path: "/resourse",
     name: "resourse",
     component: () => import("../views/views-resourse/Resourse.vue"),
-    meta: { layout: "main" }
+    meta: { layout: "main",title:'Ресурсы',icon:'el-icon-folder',sidebarVisible:true,}
   },
   {
     path: "/resourse/:id/edit",
@@ -171,7 +184,7 @@ const routes = [
     path: "/banner",
     name: "banner",
     component: () => import("../views/views-banner/bannerList.vue"),
-    meta: { layout: "main" }
+    meta: { layout: "main",title:'Баннеры',icon:'el-icon-picture',sidebarVisible:true, }
   },
   {
     path: "/banner/:id/edit",
@@ -189,7 +202,7 @@ const routes = [
     path: "/resourse-localization",
     name: "resourse-localization",
     component: () => import("../views/views-localization-resourse/Resourse.vue"),
-    meta: { layout: "main" }
+    meta: { layout: "main",title:'Локализация',icon:'el-icon-discover',sidebarVisible:true, }
   },
   {
     path: "/resourse-localization/:id/edit",
@@ -258,6 +271,8 @@ const routes = [
     meta: { layout: "main" }
   },
 ];
+
+
 
 // const router = new VueRouter({
 //   routes,

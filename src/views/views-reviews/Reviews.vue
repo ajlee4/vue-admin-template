@@ -51,24 +51,24 @@
           </template>
         </el-table-column>
       </el-table>
-      <pagination
+      <Pagination
         v-show="total > 0"
         :total="total"
         :page.sync="listQuery.page"
         :limit.sync="listQuery.limit"
         @pagination="getDataReviews(listQuery.limit)"
-      ></pagination>
+      ></Pagination>
     </div>
   </div>
 </template>
 
 <script>
-import pagination from "@/components/Pagination";
+import {Pagination} from "@/components";
 import { fetchReviewsList,deleteReviews } from "@/api/reviews";
 import { Message } from "element-ui";
 export default {
   components: {
-    pagination
+    Pagination
   },
   data() {
      return{

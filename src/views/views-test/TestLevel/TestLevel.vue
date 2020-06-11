@@ -3,50 +3,54 @@
     <h2>Уровни</h2>
 
     <router-link to="/test-level/create">
-      <el-button type="primary" class="add-category-button">Создать уровень</el-button>
+      <el-button type="primary" class="add-category-button"
+        >Создать уровень</el-button
+      >
     </router-link>
     <div class="table-wrap">
       <el-table :data="data" border style="width: 100%" v-loading="listLoading">
         <el-table-column label="Название уровня">
           <template slot-scope="scope">
-            
-      
-           {{ scope.row.name }}
+            {{ scope.row.name }}
           </template>
         </el-table-column>
         <el-table-column align="right">
           <template slot-scope="scope">
-         
-               <router-link
+            <router-link
               :to="{ name: 'test-level-edit', params: { id: scope.row.id } }"
               class="edit-button"
             >
               <el-button size="mini">Edit</el-button>
             </router-link>
-          
-            <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">Delete</el-button>
+
+            <el-button
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.row.id)"
+              >Delete</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
-      <pagination
+      <Pagination
         v-show="total > 0"
         :total="total"
         :page.sync="listQuery.page"
         :limit.sync="listQuery.limit"
         @pagination="getDataTestGrades(listQuery.limit)"
-      ></pagination>
+      ></Pagination>
     </div>
   </div>
 </template>
 
 <script>
-import pagination from "@/components/Pagination";
+import {Pagination} from "@/components";
 import { fetchTestGradesList, deleteTestGrades } from "@/api/test";
 import { Message } from "element-ui";
 
 export default {
   components: {
-    pagination
+    Pagination,
   },
   data() {
     return {
@@ -54,13 +58,13 @@ export default {
       categoryName: "",
       data: [],
       listLoading: true,
-   
+
       listQuery: {
         page: 1,
-        limit: 20
+        limit: 20,
       },
 
-      total: 0
+      total: 0,
     };
   },
   methods: {
@@ -68,15 +72,15 @@ export default {
       this.$confirm("Вы хотите удалить этот элемент?", "Warning", {
         confirmButtonText: "OK",
         cancelButtonText: "Cancel",
-        type: "warning"
+        type: "warning",
       })
         .then(() => {
           deleteTestGrades(id).then(() => {
-            this.data = this.data.filter(item => item.id !== id);
+            this.data = this.data.filter((item) => item.id !== id);
             Message({
               message: "ресурс удален",
               type: "success",
-              showClose: true
+              showClose: true,
             });
           });
         })
@@ -84,25 +88,24 @@ export default {
           this.$message({
             type: "info",
             message: "Delete canceled",
-            showClose: true
+            showClose: true,
           });
         });
     },
 
     getDataTestGrades() {
       this.listLoading = true;
-      fetchTestGradesList(this.listQuery).then(response => {
+      fetchTestGradesList(this.listQuery).then((response) => {
         this.data = response.data.data;
         this.total = response.data.total;
         this.listLoading = false;
-     
       });
-    }
+    },
   },
 
   created() {
     this.getDataTestGrades();
-  }
+  },
 };
 </script>
 

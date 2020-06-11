@@ -1,11 +1,7 @@
 <template>
   <div>
     <h2>Редактирование ресурса</h2>
-    <el-form
-      :label-position="labelPosition"
-      label-width="100px"
-    
-    >
+    <el-form :label-position="labelPosition" label-width="100px">
       <el-tabs type="card">
         <el-tab-pane label="Ресурс">
           <div style="margin: 20px;"></div>
@@ -15,17 +11,12 @@
               <el-form-item
                 label="Имя"
                 :class="{
-                  'is-error':
-                    $v.banner.name.$dirty &&
-                    !$v.banner.name.required,
+                  'is-error': $v.banner.name.$dirty && !$v.banner.name.required,
                 }"
               >
                 <el-input v-model="banner.name"></el-input>
                 <small
-                  v-if="
-                    $v.banner.name.$dirty &&
-                      !$v.banner.name.required
-                  "
+                  v-if="$v.banner.name.$dirty && !$v.banner.name.required"
                   class="error-text"
                   >Поле заголовок не должно быть пустым</small
                 >
@@ -36,59 +27,58 @@
                 <el-input v-model="banner.link"></el-input>
               </el-form-item>
             </el-col>
-             <el-col :span="24">
+            <el-col :span="24">
               <el-form-item label="Активный">
-               <el-checkbox v-model="banner.is_active"></el-checkbox>
+                <el-checkbox v-model="banner.is_active"></el-checkbox>
               </el-form-item>
             </el-col>
-    <el-col :span="12">
+            <el-col :span="12">
               <el-form-item label="Заголовок">
                 <el-input v-model="banner.title"></el-input>
               </el-form-item>
             </el-col>
-                <el-col :span="12">
+            <el-col :span="12">
               <el-form-item label="Подзаголовок">
                 <el-input v-model="banner.subtitle"></el-input>
               </el-form-item>
             </el-col>
-          
-<el-col :span="24">
-     <el-form-item label="Изображение баннера">
-            <el-image
-      style="width: 700px; height: 200px"
-      :src="url"
-     
-      ></el-image>  
-     </el-form-item>
-            
 
-            </el-col>
-       
-<el-col :span="12">
-  <el-form-item label="Добавьте фотографию">
-                     <el-upload
-  action="http://ih.yourstartup.by/api/banners/store-banner"
-  list-type="picture-card"
-  :on-preview="handlePictureCardPreview"
-  :on-change ='handlePictureCard'
-  :auto-upload="false"
-  :data='imageData'
- ref="upload"
-  name='image'
-  :on-remove="handleRemove">
-  <i class="el-icon-plus"></i>
-</el-upload>
-<el-dialog :visible.sync="dialogVisible">
-  <img width="100%" :src="dialogImageUrl" alt="">
-</el-dialog>
-  </el-form-item>
+            <el-col :span="24">
+              <el-form-item label="Изображение баннера">
+                <el-image
+                  style="width: 700px; height: 200px"
+                  :src="url"
+                ></el-image>
+              </el-form-item>
             </el-col>
 
-        
+            <el-col :span="12">
+              <el-form-item label="Добавьте фотографию">
+                <el-upload
+                  action="http://ih.yourstartup.by/api/banners/store-banner"
+                  list-type="picture-card"
+                  :on-preview="handlePictureCardPreview"
+                  :on-change="handlePictureCard"
+                  :auto-upload="false"
+                  :data="imageData"
+                  ref="upload"
+                  name="image"
+                  :on-remove="handleRemove"
+                >
+                  <i class="el-icon-plus"></i>
+                </el-upload>
+                <el-dialog :visible.sync="dialogVisible">
+                  <img width="100%" :src="dialogImageUrl" alt="" />
+                </el-dialog>
+              </el-form-item>
+            </el-col>
           </el-row>
         </el-tab-pane>
       </el-tabs>
-      <el-button type="success" class="succes-btn" @click="editBanner(banner.id)"
+      <el-button
+        type="success"
+        class="succes-btn"
+        @click="editBanner(banner.id)"
         >Сохранить</el-button
       >
     </el-form>
@@ -97,10 +87,9 @@
 
 <script>
 import { Message } from "element-ui";
-import { fetchBanner,updateBanner } from "@/api/banner";
+import { fetchBanner, updateBanner } from "@/api/banner";
 import { required } from "vuelidate/lib/validators";
 export default {
-
   validations: {
     banner: {
       name: { required },
@@ -112,13 +101,11 @@ export default {
       labelPosition: "top",
       dialogImageUrl: "",
       dialogVisible: false,
-      imageData:{},
-      url:"",
+      imageData: {},
+      url: "",
       banner: {
-   
         name: "",
-        link:"",
-
+        link: "",
       },
       seo: {
         title: "",
@@ -133,13 +120,12 @@ export default {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
-   handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-     handlePictureCard(file){
-        this.image = file
-     
-     },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePictureCard(file) {
+      this.image = file;
+    },
     editBanner(id) {
       if (this.$v.$invalid) {
         Message({
@@ -151,12 +137,10 @@ export default {
         return;
       }
 
-
-
-      updateBanner(id,this.banner).then(() => {
+      updateBanner(id, this.banner).then(() => {
         this.$router.push({ name: "banner" });
-          this.imageData.id = id
-         this.$refs.upload.submit()
+        this.imageData.id = id;
+        this.$refs.upload.submit();
         Message({
           message: "Ресурс обновлен",
           type: "success",
@@ -164,19 +148,16 @@ export default {
         });
       });
     },
-          getBannerData(){
- fetchBanner(this.$route.params.id).then((res)=>{
-            this.listLoading = false;
-      this.banner = res.data;
-   this.url =  `http://ih.yourstartup.by/${this.banner.image}`
-       })
-      },
-
+    getBannerData() {
+      fetchBanner(this.$route.params.id).then((res) => {
+        this.listLoading = false;
+        this.banner = res.data;
+        this.url = `http://ih.yourstartup.by/${this.banner.image}`;
+      });
+    },
   },
-   created() {
-      
-       this.getBannerData()
-
+  created() {
+    this.getBannerData();
   },
 };
 </script>

@@ -38,23 +38,23 @@
         </template>
       </el-table-column>
     </el-table>
-      <pagination
+      <Pagination
         v-show="total > 0"
         :total="total"
         :page.sync="listQuery.page"
         :limit.sync="listQuery.limit"
         @pagination="getDataSingleCourse"
-      ></pagination>
+      ></Pagination>
      </div>
 </template>
 
 <script>
 import { fetchSingleCourseList,deleteSingleCourse } from "@/api/course";
 import { Message } from "element-ui";
-import pagination from "@/components/Pagination";
+import {Pagination} from "@/components";
 export default {
     components: {
-    pagination
+    Pagination
   },
    data() {
     return {

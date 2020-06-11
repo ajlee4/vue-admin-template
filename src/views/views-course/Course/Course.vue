@@ -8,7 +8,7 @@
           >Создать продукт</el-button
         >
       </router-link>
-     
+
       <el-table :data="data" border style="width: 100%" v-loading="listLoading">
         <el-table-column label="Название курса">
           <template slot-scope="scope">
@@ -42,13 +42,13 @@
           </template>
         </el-table-column>
       </el-table>
-      <pagination
+      <Pagination
         v-show="total > 0"
         :total="total"
         :page.sync="listQuery.page"
         :limit.sync="listQuery.limit"
         @pagination="getDataCourse"
-      ></pagination>
+      ></Pagination>
     </div>
   </div>
 </template>
@@ -56,27 +56,27 @@
 <script>
 import { fetchCourseList, deleteCourse } from "@/api/course";
 import { Message } from "element-ui";
-import pagination from "@/components/Pagination";
+import {Pagination} from "@/components";
 export default {
   components: {
-    pagination
+    Pagination,
   },
   data() {
     return {
       data: [],
       listLoading: true,
-      search:'',
+      search: "",
       listQuery: {
         page: 1,
-        limit: 20
+        limit: 20,
       },
-      total: 0
+      total: 0,
     };
   },
   methods: {
     getDataCourse() {
       this.listLoading = true;
-      fetchCourseList(this.listQuery).then(response => {
+      fetchCourseList(this.listQuery).then((response) => {
         this.data = response.data.data;
         this.total = response.data.total;
         this.listLoading = false;
@@ -87,15 +87,15 @@ export default {
       this.$confirm("Вы хотите удалить этот элемент?", "Warning", {
         confirmButtonText: "OK",
         cancelButtonText: "Cancel",
-        type: "warning"
+        type: "warning",
       })
         .then(() => {
           deleteCourse(id).then(() => {
-            this.data = this.data.filter(item => item.id !== id);
+            this.data = this.data.filter((item) => item.id !== id);
             Message({
               message: "ресурс удален",
               type: "success",
-              showClose: true
+              showClose: true,
             });
           });
         })
@@ -103,15 +103,15 @@ export default {
           this.$message({
             type: "info",
             message: "Delete canceled",
-            showClose: true
+            showClose: true,
           });
         });
-    }
+    },
   },
 
   mounted() {
     this.getDataCourse();
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>

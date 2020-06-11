@@ -1,10 +1,12 @@
 <template>
-  <router-link :to="url">
-    <el-menu-item :index="item.path">
-      <i :class="item.meta.icon"></i>
-      <span>{{ item.meta.title }}</span>
-    </el-menu-item>
-  </router-link>
+  <div>
+    <router-link :to="url" v-if="item.meta.sidebarVisible">
+      <el-menu-item :index="item.path">
+        <i :class="item.meta.icon"></i>
+        <span>{{ item.meta.title }}</span>
+      </el-menu-item>
+    </router-link>
+  </div>
 </template>
 
 <script>

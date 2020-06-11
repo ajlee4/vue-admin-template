@@ -2,8 +2,7 @@
   <div class="newslist-container">
     <h2>Преподаватели</h2>
     <el-form label-position="top" label-width="100px" class="news-form">
-      <el-row :gutter="20" align="bottom" class="news-form-row">
-      </el-row>
+      <el-row :gutter="20" align="bottom" class="news-form-row"> </el-row>
     </el-form>
     <router-link to="/teachers/create">
       <el-button type="primary" class="add-news-button"
@@ -11,21 +10,16 @@
       >
     </router-link>
     <div class="table-wrap">
-      <el-table
-        :data="data"
-        border
-        style="width: 100%"
-        v-loading="listLoading"
-      >
+      <el-table :data="data" border style="width: 100%" v-loading="listLoading">
         <el-table-column label="Имя преподавателя">
           <template slot-scope="scope">
-           {{scope.row.name}}
+            {{ scope.row.name }}
           </template>
         </el-table-column>
-     
+
         <el-table-column align="right">
           <template slot-scope="scope">
-               <router-link
+            <router-link
               :to="{ name: 'teachers-edit', params: { id: scope.row.id } }"
               class="edit-button"
             >
@@ -40,24 +34,24 @@
           </template>
         </el-table-column>
       </el-table>
-      <pagination
+      <Pagination
         v-show="total > 0"
         :total="total"
         :page.sync="listQuery.page"
         :limit.sync="listQuery.limit"
         @pagination="getDataTeachers(listQuery.limit)"
-      ></pagination>
+      ></Pagination>
     </div>
   </div>
 </template>
 
 <script>
-import pagination from "@/components/Pagination";
+import {Pagination} from "@/components";
 import { fetchTeachersList, deleteTeacherInfo } from "@/api/teachers";
 import { Message } from "element-ui";
 export default {
   components: {
-    pagination
+    Pagination,
   },
   data() {
     return {
@@ -67,32 +61,31 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        limit: 20
+        limit: 20,
       },
 
-      total: 0
+      total: 0,
     };
   },
   computed: {
     newsLink() {
       return `/news/${this.id}/edit`;
     },
-
   },
   methods: {
     handleDelete(id) {
       this.$confirm("Вы хотите удалить этот элемент?", "Warning", {
         confirmButtonText: "OK",
         cancelButtonText: "Cancel",
-        type: "warning"
+        type: "warning",
       })
         .then(() => {
           deleteTeacherInfo(id).then(() => {
-            this.data = this.data.filter(item => item.id !== id);
+            this.data = this.data.filter((item) => item.id !== id);
             Message({
               message: "ресурс удален",
               type: "success",
-              showClose: true
+              showClose: true,
             });
           });
         })
@@ -100,19 +93,19 @@ export default {
           this.$message({
             type: "info",
             message: "Delete canceled",
-            showClose: true
+            showClose: true,
           });
         });
     },
     getDataTeachers() {
       this.listLoading = true;
-      fetchTeachersList(this.listQuery).then(response => {
+      fetchTeachersList(this.listQuery).then((response) => {
         this.data = response.data.data;
         this.total = response.data.total;
         this.listLoading = false;
         console.log(this.data);
       });
-    }
+    },
     // searchNews() {
     //   searchNews(this.searchData);
     //   console.log(this.searchData);
@@ -121,7 +114,7 @@ export default {
 
   created() {
     this.getDataTeachers();
-  }
+  },
 };
 </script>
 

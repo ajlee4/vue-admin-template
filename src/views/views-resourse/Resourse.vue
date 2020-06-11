@@ -10,77 +10,69 @@
             </el-form-item></div
         ></el-col>
       </el-row>
-          <router-link to="/resourse/create">
-      <el-button type="primary" class="add-resourse-button"
-        >Создать ресурс</el-button
-      >
-    </router-link>
+      <router-link to="/resourse/create">
+        <el-button type="primary" class="add-resourse-button"
+          >Создать ресурс</el-button
+        >
+      </router-link>
     </el-form>
     <div class="table-wrap">
-      <el-table
-       :data="data"
-        border
-        style="width: 100%"
-        v-loading="listLoading"
-      >
-     
-      
-          <el-table-column label="Название ресурса">
+      <el-table :data="data" border style="width: 100%" v-loading="listLoading">
+        <el-table-column label="Название ресурса">
           <template slot-scope="scope">
             {{ scope.row.page_title }}
           </template>
         </el-table-column>
         <el-table-column align="right">
           <template slot-scope="scope">
-             <router-link
+            <router-link
               :to="{ name: 'resourse-edit', params: { id: scope.row.id } }"
               class="edit-button"
             >
               <el-button size="mini">Edit</el-button>
             </router-link>
-       
           </template>
         </el-table-column>
       </el-table>
-      <pagination
+      <Pagination
         v-show="total > 0"
         :total="total"
         :page.sync="listQuery.page"
         :limit.sync="listQuery.limit"
         @pagination="getDataResourses(listQuery.limit)"
-      ></pagination>
+      ></Pagination>
     </div>
   </div>
 </template>
 
 <script>
-import pagination from "@/components/Pagination";
+import {Pagination} from "@/components";
 import { fetchResourcesList } from "@/api/resourse";
 // import { Message } from "element-ui";
 export default {
   components: {
-    pagination
+    Pagination,
   },
   data() {
-     return{
-                id: "",
+    return {
+      id: "",
       search: "",
       data: [],
       listLoading: true,
       listQuery: {
         page: 1,
-        limit: 20
+        limit: 20,
       },
 
-      total: 0
-     }
+      total: 0,
+    };
   },
-  computed:{
- reviewsLink() {
+  computed: {
+    reviewsLink() {
       return `/reviews/${this.id}/edit`;
     },
   },
-    methods: {
+  methods: {
     // handleDelete(id) {
     //   this.$confirm("Вы хотите удалить этот элемент?", "Warning", {
     //     confirmButtonText: "OK",
@@ -107,21 +99,19 @@ export default {
     // },
     getDataResourses() {
       this.listLoading = true;
-      fetchResourcesList(this.listQuery).then(response => {
+      fetchResourcesList(this.listQuery).then((response) => {
         this.data = response.data.data;
         this.total = response.data.total;
         this.listLoading = false;
         console.log(this.data);
       });
-    }
-
+    },
   },
 
- created() {
+  created() {
     this.getDataResourses();
-  }
+  },
 };
-
 </script>
 
 <style lang="scss">
