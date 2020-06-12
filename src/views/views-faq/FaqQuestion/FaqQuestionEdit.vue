@@ -72,7 +72,7 @@
       <el-button
         type="success"
         class="succes-btn"
-        @click="editFaqQuestion(faqCategoryData.id)"
+        @click="editFaqQuestion(faqQuestionData.id)"
         >Сохранить</el-button
       >
     </el-form>
@@ -119,7 +119,7 @@ export default {
       }
 
       updateFaqQuestion(id, { ...this.faqQuestionData }).then(() => {
-        this.$router.push({ name: "faq-category" });
+        this.$router.push({ name: "faq-question" });
         Message({
           message: "Ресурс обновлен",
           type: "success",

@@ -18,7 +18,7 @@
         </el-table-column>
         <el-table-column label="Категория">
           <template slot-scope="scope">
-            {{ scope.row.category_id }}
+            {{ scope.row.category.name}}
           </template>
         </el-table-column>
         <el-table-column align="right">
