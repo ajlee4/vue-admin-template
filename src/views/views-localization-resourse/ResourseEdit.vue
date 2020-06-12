@@ -95,7 +95,7 @@
 </template>
 
 <script>
-import Tinymce from "@/components/Tinymce";
+import {Tinymce} from "@/components";
 import { updateResourse } from "@/api/localization";
 import { required } from "vuelidate/lib/validators";
 import { fetchResourcesList } from "@/api/resourse";

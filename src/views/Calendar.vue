@@ -950,10 +950,8 @@
 </template>
 
 <script>
-import calendar from "../components/Сalendar/calendar";
-import modal from "../components/Modal/modal.vue";
-import regModal from "../components/Modal/regModal.vue";
-import customModal from "../components/Modal/customModal.vue";
+import {calendar} from "../components";
+import {modal,regModal,customModal} from "../components";
 import {
   editUserInfo,
   addRecord,

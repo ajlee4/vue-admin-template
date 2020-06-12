@@ -307,7 +307,7 @@
 </template>
 
 <script>
-import Tinymce from "@/components/Tinymce";
+import {Tinymce} from "@/components";
 import { editSingleCourse } from "@/api/course";
 import { required } from "vuelidate/lib/validators";
 import { Message } from "element-ui";

@@ -2,25 +2,21 @@
   <div :class="classObj" class="app-wrapper">
     <Sidebar></Sidebar>
     <div class="main-container">
-      <Navbar @sidebarShow="sidebarShow"></Navbar>
-
-      <el-main class="app-main">
-        <transition name="fade-transform" mode="out-in">
-          <router-view></router-view>
-        </transition>
-      </el-main>
+      <navbar @sidebarShow="sidebarShow"></navbar>
+        <app-main />
     </div>
   </div>
 </template>
 
 <script>
-import {Navbar,Sidebar} from "@/components";
+import { Navbar, Sidebar,AppMain } from "@/components";
 
 export default {
-  name: "main-layout",
+  name: 'Layout',
   components: {
     Sidebar,
     Navbar,
+    AppMain
   },
 
   methods: {
@@ -35,6 +31,9 @@ export default {
     device() {
       return this.$store.getters.device;
     },
+
+   
+
     classObj() {
       return {
         hideSidebar: !this.sidebar.opened,

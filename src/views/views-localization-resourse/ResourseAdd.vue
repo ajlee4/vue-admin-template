@@ -2,32 +2,30 @@
   <div>
     <h2>Создание ресурса</h2>
 
-<div style='margin-bottom:30px'>
-  <h3>
-Ресурсы для связи
-  </h3>
+    <div style="margin-bottom:30px">
+      <h3>
+        Ресурсы для связи
+      </h3>
       <el-select
-                  ref="select"
-                  v-model="resourseData.resourse_id"
-                  placeholder="Select"
-                  class="course-select"
-                >
-                  <el-option
-                    v-for="item in resourseList"
-                    :key="item.id"
-                    :label="item.page_title"
-                    :value="item.id"
-                  >
-                  </el-option>
-                </el-select>
-</div>
+        ref="select"
+        v-model="resourseData.resourse_id"
+        placeholder="Select"
+        class="course-select"
+      >
+        <el-option
+          v-for="item in resourseList"
+          :key="item.id"
+          :label="item.page_title"
+          :value="item.id"
+        >
+        </el-option>
+      </el-select>
+    </div>
     <el-form
       :label-position="labelPosition"
       label-width="100px"
       :model="resourseData"
     >
-
- 
       <el-tabs type="card">
         <el-tab-pane label="Ресурс">
           <div style="margin: 20px;"></div>
@@ -39,7 +37,7 @@
                 :class="{
                   'is-error':
                     $v.resourseData.page_title.$dirty &&
-                    !$v.resourseData.page_title.required
+                    !$v.resourseData.page_title.required,
                 }"
               >
                 <el-input v-model="resourseData.page_title"></el-input>
@@ -59,7 +57,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-             <el-form-item label="Вводный текст">
+          <el-form-item label="Вводный текст">
             <Tinymce v-model="resourseData.intro_text"></Tinymce>
           </el-form-item>
           <el-form-item label="Контент">
@@ -118,19 +116,19 @@
 </template>
 
 <script>
-import Tinymce from "@/components/Tinymce";
+import {Tinymce} from "@/components";
 import { Message } from "element-ui";
 import { createResourse } from "@/api/localization";
 import { fetchResourcesList } from "@/api/resourse";
 import { required } from "vuelidate/lib/validators";
 export default {
   components: {
-    Tinymce
+    Tinymce,
   },
   validations: {
     resourseData: {
-      page_title: { required }
-    }
+      page_title: { required },
+    },
   },
   data() {
     return {
@@ -138,20 +136,20 @@ export default {
       labelPosition: "top",
       dialogImageUrl: "",
       dialogVisible: false,
-      resourseList:[],
+      resourseList: [],
       resourseData: {
-        resourse_id:'',
+        resourse_id: "",
         slug: "",
         page_title: "",
         description: "",
-        intro_text:'',
+        intro_text: "",
       },
       seo: {
         title: "",
         description: "",
         seo_text: "",
-        h1: ""
-      }
+        h1: "",
+      },
     };
   },
   methods: {
@@ -165,7 +163,7 @@ export default {
         Message({
           message: "Заполните обязательные поля",
           type: "error",
-          showClose: true
+          showClose: true,
         });
         this.$v.$touch();
         return;
@@ -175,12 +173,12 @@ export default {
         slug: this.resourseData.slug,
         content: this.resourseData.description,
         intro_text: this.resourseData.intro_text,
-        resource_id:this.resourseData.resourse_id,
-        locale:'en',
+        resource_id: this.resourseData.resourse_id,
+        locale: "en",
         h1: this.seo.h1,
         title: this.seo.title,
         description: this.seo.description,
-        seo_text: this.seo_text
+        seo_text: this.seo_text,
       };
 
       createResourse(formData).then(() => {
@@ -188,15 +186,15 @@ export default {
         Message({
           message: "Ресурс создан",
           type: "success",
-          showClose: true
+          showClose: true,
         });
       });
-    }
+    },
   },
-    created() {
- fetchResourcesList().then((res)=>{
-   this.resourseList=res.data.data
- })
+  created() {
+    fetchResourcesList().then((res) => {
+      this.resourseList = res.data.data;
+    });
   },
 };
 </script>

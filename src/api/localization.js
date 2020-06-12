@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function fetchResourcesList(query) {
   return request({
-    url: "http://ih.yourstartup.by/api/resources/localization",
+    url: "/api/resources/localization",
     method: "get",
     params: query
   });
@@ -10,7 +10,7 @@ export function fetchResourcesList(query) {
 
 export function fetchResourseLocalization(id) {
   return request({
-    url: `http://ih.yourstartup.by/api/resources/localization/${id}/edit`,
+    url: `/api/resources/localization/${id}/edit`,
     method: "get"
   });
 }
@@ -18,7 +18,7 @@ export function fetchResourseLocalization(id) {
 
 export function createResourse(data) {
   return request({
-    url: "http://ih.yourstartup.by/api/resources/localization/store",
+    url: "/api/resources/localization/store",
     method: "post",
     data
   });
@@ -27,7 +27,7 @@ export function createResourse(data) {
 
 export function updateResourse(id, data) {
   return request({
-    url: `http://ih.yourstartup.by/api/resources/localization/${id}/update`,
+    url: `/api/resources/localization/${id}/update`,
     method: "put",
     data
   });

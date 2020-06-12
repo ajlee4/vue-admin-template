@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function fetchTeachersList(query) {
   return request({
-    url: "http://ih.yourstartup.by/api/lecturers",
+    url: "/api/lecturers",
     method: "get",
     params: query
   });
@@ -10,14 +10,14 @@ export function fetchTeachersList(query) {
 
 export function deleteTeacherInfo(id) {
   return request({
-    url: `http://ih.yourstartup.by/api/lecturers/${id}/destroy`,
+    url: `/api/lecturers/${id}/destroy`,
     method: "delete",
     params: { id }
   });
 }
 export function createTeacher(data) {
     return request({
-      url: "http://ih.yourstartup.by/api/lecturers/store",
+      url: "/api/lecturers/store",
       method: "post",
       data
     });
@@ -25,14 +25,14 @@ export function createTeacher(data) {
 
 export function fetchTeacher(id) {
     return request({
-      url: `http://ih.yourstartup.by/api/lecturers/${id}/edit`,
+      url: `/api/lecturers/${id}/edit`,
       method: "get"
     });
   }
 
   export function fetchTeacherAvatar(id) {
     return request({
-      url: `http://ih.yourstartup.by/api/lecturers/${id}/edit`,
+      url: `/api/lecturers/${id}/edit`,
       method: "get"
     });
   }
@@ -40,7 +40,7 @@ export function fetchTeacher(id) {
 
   export function updateTeacher(id, data) {
     return request({
-      url: `http://ih.yourstartup.by/api/lecturers/${id}/update`,
+      url: `/api/lecturers/${id}/update`,
       method: "put",
       data
     });

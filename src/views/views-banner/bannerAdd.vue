@@ -73,18 +73,6 @@
             </el-col>
          
           </el-row>
-
-       
-          <!-- <el-upload
-            action="https://jsonplaceholder.typicode.com/posts/"
-            list-type="picture-card"
-            :on-preview="handlePictureCardPreview"
-          >
-            <i class="el-icon-plus"></i>
-          </el-upload>
-          <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="" />
-          </el-dialog> -->
         </el-tab-pane>
       </el-tabs>
       <el-col>

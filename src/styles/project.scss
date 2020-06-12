@@ -1,5 +1,5 @@
 %transition {
-  transition: all .6s;
+  transition: all 0.6s;
 }
 $rad: 20px;
 
@@ -7,14 +7,16 @@ $rad: 20px;
 * {
   box-sizing: border-box;
 }
-img, video, svg {
+img,
+video,
+svg {
   max-width: 100%;
   height: auto;
 }
 
 br {
   display: block;
-  content: '';
+  content: "";
   margin: 10px 0;
 }
 a {
@@ -24,10 +26,15 @@ a {
     text-decoration: none;
   }
 }
-h1,h2,h3,h4 {
+h1,
+h2,
+h3,
+h4 {
   font-weight: 400;
 }
-input, textarea, select {
+input,
+textarea,
+select {
   border-radius: 0 !important;
 }
 button {
@@ -60,7 +67,7 @@ button {
 
   z-index: 12;
 
-  transition: all .6s;
+  transition: all 0.6s;
   cursor: pointer;
 }
 // //tooltip
@@ -69,8 +76,9 @@ button {
   position: relative;
 }
 //animation - fade
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
@@ -88,7 +96,7 @@ $btn_color: #003e7e;
 .main_btn {
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: .07em;
+  letter-spacing: 0.07em;
   cursor: pointer;
   color: #fff;
   border-radius: $rad;
@@ -111,7 +119,7 @@ $btn_color: #003e7e;
   border: none;
   text-decoration: underline;
 
-  letter-spacing: .02em;
+  letter-spacing: 0.02em;
 
   display: inline-flex;
   align-items: center;
@@ -232,11 +240,10 @@ $btn_color: #003e7e;
 
 .custom_title {
   font-size: 75%;
-  letter-spacing: .04em;
+  letter-spacing: 0.04em;
   margin-bottom: 7px;
 }
 // //regModal slots
-
 
 //modal slot styles
 .modal_tabs {
@@ -260,9 +267,9 @@ $btn_color: #003e7e;
   border: 1px solid transparent;
   border-radius: 20px;
   padding: 6px 15px;
-  
+
   @extend %transition;
-  
+
   &:hover,
   &.active {
     border-color: #ccc;

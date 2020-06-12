@@ -39,35 +39,6 @@
             <Tinymce v-model="course.content"></Tinymce>
           </el-form-item>
         </el-form>
-        <!-- <div class="banner-info">
-          <h3>Создание баннера</h3>
-
-          <el-row :gutter="20">
-            <el-col :span="6"
-              ><div class="grid-content ">
-                <h4>Загрузите изображение</h4>
-                <el-upload
-                  name="banner"
-                  action="http://sandbox.alkonosthim.ru/ih/api/courses/category/store"
-                  list-type="picture-card"
-                  :on-preview="handlePictureCardPreview"
-                  :auto-upload="false"
-                  :on-change="changeUpload"
-                >
-                  <i class="el-icon-plus"></i>
-                </el-upload>
-                <el-dialog :visible.sync="dialogVisible">
-                  <img width="100%" :src="dialogImageUrl" alt="" />
-                </el-dialog></div
-            ></el-col>
-            <el-col :span="18"
-              ><div class="grid-content ">
-                <h4>Введите текст баннера</h4>
-                <Tinymce v-model="banner.text"></Tinymce>
-              </div>
-            </el-col>
-          </el-row>
-        </div> -->
       </el-tab-pane>
       <el-tab-pane label="SEO">
         <el-form
@@ -107,7 +78,7 @@
 </template>
 
 <script>
-import Tinymce from "@/components/Tinymce";
+import {Tinymce} from "@/components";
 import { addCourse } from "@/api/course";
 import { Message } from "element-ui";
 import { required } from "vuelidate/lib/validators";

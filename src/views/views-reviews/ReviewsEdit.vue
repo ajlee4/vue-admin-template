@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import Tinymce from "@/components/Tinymce";
+import {Tinymce} from "@/components";
 import { updateReviews } from "@/api/reviews";
 import { required } from "vuelidate/lib/validators";
 import { Message } from "element-ui";

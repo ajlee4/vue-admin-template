@@ -133,7 +133,7 @@
 </template>
 
 <script>
-import Tinymce from "@/components/Tinymce";
+import {Tinymce} from "@/components";
 import { Message } from "element-ui";
 import { editSubCourse } from "@/api/course";
 import { required } from "vuelidate/lib/validators";

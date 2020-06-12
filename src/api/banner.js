@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function fetchBannerList(query) {
   return request({
-    url: "http://ih.yourstartup.by/api/banners",
+    url: "/api/banners",
     method: "get",
     params: query
   });
@@ -10,14 +10,14 @@ export function fetchBannerList(query) {
 
 export function deleteBanner(id) {
   return request({
-    url: `http://ih.yourstartup.by/api/banners/${id}/destroy`,
+    url: `/api/banners/${id}/destroy`,
     method: "delete",
     params: { id }
   });
 }
 export function createBanner(data) {
     return request({
-      url: "http://ih.yourstartup.by/api/banners/store",
+      url: "/api/banners/store",
       method: "post",
       data
     });
@@ -25,7 +25,7 @@ export function createBanner(data) {
 
 export function fetchBanner(id) {
     return request({
-      url: `http://ih.yourstartup.by/api/banners/${id}/edit`,
+      url: `/api/banners/${id}/edit`,
       method: "get"
     });
   }
@@ -34,7 +34,7 @@ export function fetchBanner(id) {
 
   export function updateBanner(id, data) {
     return request({
-      url: `http://ih.yourstartup.by/api/banners/${id}/update`,
+      url: `/api/banners/${id}/update`,
       method: "put",
       data
     });

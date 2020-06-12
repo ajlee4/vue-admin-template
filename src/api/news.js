@@ -2,14 +2,14 @@ import request from "@/utils/request";
 
 export function fetchNewsList(query) {
   return request({
-    url: "http://ih.yourstartup.by/api/news/",
+    url: "/api/news/",
     method: "get",
     params: query
   });
 }
 export function fetchNews(id) {
   return request({
-    url: `http://ih.yourstartup.by/api/news/${id}/edit`,
+    url: `/api/news/${id}/edit`,
     method: "get"
   });
 }
@@ -17,7 +17,7 @@ export function fetchNews(id) {
 
 export function createNews(data) {
   return request({
-    url: "http://ih.yourstartup.by/api/news/store",
+    url: "/api/news/store",
     method: "post",
     data
   });
@@ -25,7 +25,7 @@ export function createNews(data) {
 
 export function deleteNews(id) {
   return request({
-    url: `http://ih.yourstartup.by/api/news/${id}/destroy`,
+    url: `/api/news/${id}/destroy`,
     method: "delete",
     params: { id }
   });
@@ -33,7 +33,7 @@ export function deleteNews(id) {
 
 export function updateNews(id, data) {
   return request({
-    url: `http://ih.yourstartup.by/api/news/${id}/update`,
+    url: `/api/news/${id}/update`,
     method: "put",
     data
   });

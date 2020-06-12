@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function fetchReviewsList(query) {
   return request({
-    url: "http://ih.yourstartup.by/api/reviews/",
+    url: "/api/reviews/",
     method: "get",
     params: query
   });
@@ -10,7 +10,7 @@ export function fetchReviewsList(query) {
 
 export function deleteReviews(id) {
   return request({
-    url: `http://ih.yourstartup.by/api/reviews/${id}/destroy`,
+    url: `/api/reviews/${id}/destroy`,
     method: "delete",
     params: { id }
   });
@@ -18,21 +18,21 @@ export function deleteReviews(id) {
 
 export function fetchReviews(id) {
     return request({
-      url: `http://ih.yourstartup.by/api/reviews/${id}/edit`,
+      url: `/api/reviews/${id}/edit`,
       method: "get"
     });
   }
 
   export function updateReviews(id, data) {
     return request({
-      url: `http://ih.yourstartup.by/api/reviews/${id}/update`,
+      url: `/api/reviews/${id}/update`,
       method: "put",
       data
     });
   }
   export function createReviews(data) {
     return request({
-      url: "http://ih.yourstartup.by/api/reviews/store",
+      url: "/api/reviews/store",
       method: "post",
       data
     });

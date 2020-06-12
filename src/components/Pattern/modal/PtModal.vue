@@ -50,10 +50,10 @@
             <div v-for="(item, idx) in data" :key="item.id" class="modal_row">
               <div class="cell name">{{++idx}}. {{item.name}} {{item.surname}}</div>
               <div class="cell">
-                <a href="/file.pdf" class="download_icon"></a>
+                <a href="/records/generate-pdf" class="download_icon"></a>
               </div>
               <div class="cell">
-                <a href="/file.pdf" class="download_icon_v2"></a>
+                <a href="/records/open-pdf" target="_blank" class="download_icon_v2"></a>
               </div>
               <div class="cell res">{{item.test_result}}</div>
               <div class="cell contact">
@@ -224,7 +224,7 @@ export default {
   width: 16px;
   background-color: #003e7e;
 
-  mask: url(./../../assets/download.svg) center no-repeat;
+  mask: url(./../../../assets/download.svg) center no-repeat;
   mask-size: contain;
 
   transition: all 0.3s;
@@ -240,7 +240,7 @@ export default {
   width: 16px;
   background-color: #003e7e;
 
-  mask: url(./../../assets/export.svg) center no-repeat;
+  mask: url(./../../../assets/export.svg) center no-repeat;
   mask-size: contain;
 
   transition: all 0.3s;

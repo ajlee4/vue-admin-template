@@ -4,84 +4,73 @@
     <el-form
       :label-position="labelPosition"
       label-width="100px"
-      :model="office"
+     
     >
       <el-tabs type="card">
         <el-tab-pane label="Ресурс">
           <div style="margin: 20px;"></div>
 
           <el-row>
-            <el-col :span="12">
+            <el-col :span="8">
               <el-form-item
-                label="Адрес филиала"
+                label="Заголовок"
                 :class="{
                   'is-error':
-                    $v.office.address.$dirty &&
-                    !$v.office.address.required,
+                    $v.faqCategoryData.name.$dirty && !$v.faqCategoryData.name.required,
                 }"
               >
-                <el-input v-model="office.address"></el-input>
+                <el-input v-model="faqCategoryData.name"></el-input>
                 <small
                   v-if="
-                    $v.office.address.$dirty &&
-                      !$v.office.address.required
+                    $v.faqCategoryData.name.$dirty && !$v.faqCategoryData.name.required
                   "
                   class="error-text"
-                  >Поле Адрес не должно быть пустым</small
+                  >Поле заголовок не должно быть пустым</small
                 >
               </el-form-item>
             </el-col>
-
-              <el-col :span="12">
-              <el-form-item
-                label="Активность"
-             
-              >
-               <el-checkbox v-model="office.is_active"></el-checkbox>
-              
+            <el-col :span="8">
+              <el-form-item label="Активный">
+                <el-checkbox v-model="faqCategoryData.is_active"></el-checkbox>
               </el-form-item>
             </el-col>
           </el-row>
-            <el-form-item label="Контент">
-            <Tinymce v-model="office.content"></Tinymce>
-          </el-form-item>
         </el-tab-pane>
       </el-tabs>
-      <el-button type="success" class="succes-btn" @click="editOffice(office.id)"
-        >Сохранить</el-button
+     <el-col>
+          <el-button type="success" class="succes-btn" @click="addfaqCategory"
+        >Создать</el-button
       >
+     </el-col>
     </el-form>
   </div>
 </template>
 
 <script>
-import {Tinymce} from "@/components";
 import { Message } from "element-ui";
-import { updateOffices,fetchOffices } from "@/api/branchOffices";
+import { createFaqCategory } from "@/api/faq";
 import { required } from "vuelidate/lib/validators";
 
 export default {
-  components: {
-    Tinymce,
-  },
   validations: {
-    office: {
-     address: { required },
+    faqCategoryData: {
+      name: { required },
     },
   },
   data() {
     return {
       activeName: "first",
       labelPosition: "top",
-      office: {
-        address:'',
-        is_active:''
+
+      faqCategoryData: {
+        name: "",
+        price: "",
+        is_active: "false",
       },
     };
   },
-   methods: {
-
-    editOffice(id) {
+  methods: {
+    addfaqCategory() {
       if (this.$v.$invalid) {
         Message({
           message: "Заполните обязательные поля",
@@ -92,27 +81,16 @@ export default {
         return;
       }
 
-
-      updateOffices(id,this.office).then(() => {
-        this.$router.push({ name: "branch-offices" });
-       
+      createFaqCategory({ ...this.faqCategoryData }).then(() => {
         Message({
-          message: "Ресурс обновлен",
+          message: "Ресурс создан",
           type: "success",
           showClose: true,
         });
+        this.$router.push({ name: "faq-category" });
       });
     },
-  },
-
-   created() {
-       fetchOffices(this.$route.params.id).then((res)=>{
-            this.listLoading = false;
-      this.office = res.data;
-        console.log(this.office)
-       })
-
-
+    
   },
 };
 </script>

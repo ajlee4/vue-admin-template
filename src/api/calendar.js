@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function editUserInfo(id, data) {
     return request({
-      url: `http://ih.yourstartup.by/api/records/${id}/update`,
+      url: `/api/records/${id}/update`,
       method: "put",
       data
     });
@@ -10,14 +10,14 @@ export function editUserInfo(id, data) {
 
   export function editRecord( data) {
     return request({
-      url: `http://ih.yourstartup.by/api/record-deps/store-deps`,
+      url: `/api/record-deps/store-deps`,
       method: "post",
       data
     });
   }
   export function addRecord(data) {
     return request({
-      url: `http://ih.yourstartup.by/api/records/add-record`,
+      url: `/api/records/add-record`,
       method: "post",
       data
     });
@@ -27,7 +27,7 @@ export function editUserInfo(id, data) {
 
   export function disableRecord(data) {
     return request({
-      url: `http://ih.yourstartup.by/api/record-deps/destroy-deps`,
+      url: `/api/record-deps/destroy-deps`,
       method: "get",
       params: data
     });
@@ -35,7 +35,7 @@ export function editUserInfo(id, data) {
 
   export function getCategoryRecords(data) {
     return request({
-      url: `http://ih.yourstartup.by/api/records/all-records`,
+      url: `/api/records/all-records`,
       method: "get",
       params: data
     });
@@ -44,20 +44,20 @@ export function editUserInfo(id, data) {
 
   export function deleteRecord(id) {
     return request({
-      url: `http://ih.yourstartup.by/api/record-deps/${id}/destroy-single-deps`,
+      url: `/api/record-deps/${id}/destroy-single-deps`,
       method: "delete"
     });
   }
   export function updateRecord(id,data) {
     return request({
-      url: `http://ih.yourstartup.by/api/record-deps/${id}/update-single-deps`,
+      url: `/api/record-deps/${id}/update-single-deps`,
       method: "put",
       data
     });
   }
   export function deleteSingleRecord(id) {
     return request({
-      url: `http://ih.yourstartup.by/api/records/${id}/destroy`,
+      url: `/api/records/${id}/destroy`,
       method: "delete"
     });
   }

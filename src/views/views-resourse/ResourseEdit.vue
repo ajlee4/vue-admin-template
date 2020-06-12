@@ -10,7 +10,7 @@
               label="Заголовок"
               :class="{
                 'is-error':
-                  $v.data.page_title.$dirty && !$v.data.page_title.required
+                  $v.data.page_title.$dirty && !$v.data.page_title.required,
               }"
             >
               <el-input v-model="data.page_title"></el-input>
@@ -27,12 +27,12 @@
             </el-form-item>
           </el-col>
         </el-row>
-          <el-form-item label="Текст">
+        <el-form-item label="Текст">
           <Tinymce v-model="data.subtitle"></Tinymce>
         </el-form-item>
-              <el-form-item label="Вводный текст">
-            <Tinymce  v-model="data.intro_text"></Tinymce>
-          </el-form-item>
+        <el-form-item label="Вводный текст">
+          <Tinymce v-model="data.intro_text"></Tinymce>
+        </el-form-item>
         <el-form-item label="Контент">
           <Tinymce v-model="data.content"></Tinymce>
         </el-form-item>
@@ -91,18 +91,18 @@
 </template>
 
 <script>
-import Tinymce from "@/components/Tinymce";
+import {Tinymce} from "@/components";
 import { updateResourse } from "@/api/resourse";
 import { required } from "vuelidate/lib/validators";
 import { Message } from "element-ui";
 export default {
   components: {
-    Tinymce
+    Tinymce,
   },
   validations: {
     data: {
-      page_title: { required }
-    }
+      page_title: { required },
+    },
   },
   data() {
     return {
@@ -114,8 +114,8 @@ export default {
       news: {
         title: "",
         slug: "",
-        description: ""
-      }
+        description: "",
+      },
     };
   },
   methods: {
@@ -128,20 +128,20 @@ export default {
         Message({
           message: "Заполните обязательные поля",
           type: "error",
-          showClose: true
+          showClose: true,
         });
         this.$v.$touch();
         return;
       }
       updateResourse(id, this.data).then(() => {
-          this.$router.push({ name: "resourse" });
+        this.$router.push({ name: "resourse" });
         this.$message({
           type: "success",
           message: "Ресурс изменен",
-          showClose: true
+          showClose: true,
         });
       });
-    }
+    },
   },
   created() {
     this.$store
@@ -155,8 +155,8 @@ export default {
   computed: {
     currentResourse() {
       return this.$store.getters.currentResourse;
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss">
