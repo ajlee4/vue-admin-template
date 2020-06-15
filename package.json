@@ -15,7 +15,9 @@
     }
   },
   "lint-staged": {
-    "*.js": "prettier --write '**/*.js'"
+    "src/**/*.{js,vue}": [
+      "eslint --fix"
+    ]
   },
   "dependencies": {
     "@tinymce/tinymce-vue": "^3.0.1",
