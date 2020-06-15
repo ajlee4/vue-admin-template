@@ -4,7 +4,7 @@
 			<h2>Общие разделы</h2>
 
 			<router-link to="/course/create">
-				<el-button type="success" class="add-course-button">Создать продукт</el-button>
+				<el-button type="primary" class="add-course-button">Создать ресурс</el-button>
 			</router-link>
 
 			<el-table :data="data" border style="width: 100%" v-loading="listLoading">
@@ -18,11 +18,11 @@
 						{{ scope.row.slug }}
 					</template>
 				</el-table-column>
-				<el-table-column label="Главное изображение">
+				<!-- <el-table-column label="Главное изображение">
 					<template slot-scope="scope">
 						{{ scope.row.alias }}
 					</template>
-				</el-table-column>
+				</el-table-column> -->
 				<el-table-column align="right">
 					<template slot-scope="scope">
 						<router-link

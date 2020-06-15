@@ -3,7 +3,7 @@
 		<h2>Категории</h2>
 
 		<router-link to="/test-category/create">
-			<el-button type="primary" class="add-category-button">Создать категорию</el-button>
+			<el-button type="primary" class="add-category-button">Создать ресурс</el-button>
 		</router-link>
 		<div class="table-wrap">
 			<el-table :data="data" border style="width: 100%" v-loading="listLoading">

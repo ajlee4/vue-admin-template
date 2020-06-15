@@ -3,7 +3,7 @@
 		<h2>Уровни</h2>
 
 		<router-link to="/test-level/create">
-			<el-button type="primary" class="add-category-button">Создать уровень</el-button>
+			<el-button type="primary" class="add-category-button">Создать ресурс</el-button>
 		</router-link>
 		<div class="table-wrap">
 			<el-table :data="data" border style="width: 100%" v-loading="listLoading">

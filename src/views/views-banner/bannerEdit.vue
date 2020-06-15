@@ -43,9 +43,13 @@
 							</el-form-item>
 						</el-col>
 
-						<el-col :span="24">
+						<el-col :span="12">
 							<el-form-item label="Изображение баннера">
-								<el-image style="width: 700px; height: 200px" :src="url"></el-image>
+								<el-image
+									style="width: 700px; height: 200px"
+									:src="url"
+									:preview-src-list="previewUrl"
+								></el-image>
 							</el-form-item>
 						</el-col>
 
@@ -97,6 +101,8 @@ export default {
 			dialogVisible: false,
 			imageData: {},
 			url: '',
+			previewUrl: [],
+			srcUrl: 'https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg',
 			banner: {
 				name: '',
 				link: '',
@@ -147,6 +153,7 @@ export default {
 				this.listLoading = false;
 				this.banner = res.data;
 				this.url = `http://ih.yourstartup.by/${this.banner.image}`;
+				this.previewUrl.push(this.url);
 			});
 		},
 	},

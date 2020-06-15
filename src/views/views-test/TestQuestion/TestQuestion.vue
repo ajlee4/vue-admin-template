@@ -3,7 +3,7 @@
 		<h2>Вопросы</h2>
 
 		<router-link to="/test-question/create">
-			<el-button type="primary" class="add-category-button">Создать вопрос</el-button>
+			<el-button type="primary" class="add-category-button">Создать ресурс</el-button>
 		</router-link>
 		<el-form :label-position="labelPosition" label-width="100px" ref="courseForm">
 			<el-row>
@@ -210,6 +210,7 @@ export default {
 	},
 	methods: {
 		filterCategory() {
+			this.listLoading = true;
 			fetchTestQuestion({
 				category_id: this.category,
 				grade_id: this.grades,
@@ -218,7 +219,8 @@ export default {
 			}).then((res) => {
 				this.total = res.data.total;
 				this.data = res.data.data;
-				(this.filteredCategory = true), console.log(res);
+				(this.filteredCategory = true), (this.listLoading = false);
+				console.log(res);
 			});
 		},
 		handleDelete(id) {

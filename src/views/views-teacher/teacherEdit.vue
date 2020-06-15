@@ -46,7 +46,11 @@
 						</el-col>
 						<el-col :span="4">
 							<el-form-item label="Фотография преподавателя">
-								<el-image style="width: 200px; height: 200px" :src="url"></el-image>
+								<el-image
+									style="width: 200px; height: 200px"
+									:src="url"
+									:preview-src-list="previewUrl"
+								></el-image>
 							</el-form-item>
 						</el-col>
 
@@ -121,6 +125,7 @@ export default {
 			dialogImageUrl: '',
 			dialogVisible: false,
 			imageData: {},
+			previewUrl: [],
 			url: '',
 			teacherData: {
 				slug: null,
@@ -181,6 +186,7 @@ export default {
 			this.listLoading = false;
 			this.teacherData = res.data;
 			this.url = `http://ih.yourstartup.by/${this.teacherData.image}`;
+			this.previewUrl.push(this.url);
 		});
 	},
 };

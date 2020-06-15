@@ -12,7 +12,7 @@
 			</el-row>
 		</el-form>
 		<router-link to="/news/create">
-			<el-button type="primary" class="add-news-button">Создать продукт</el-button>
+			<el-button type="primary" class="add-news-button">Создать ресурс</el-button>
 		</router-link>
 		<div class="table-wrap">
 			<el-table :data="filteredData" border style="width: 100%" v-loading="listLoading">

@@ -2,7 +2,7 @@
 	<div class="course-edit-container">
 		<h2>Курсы</h2>
 		<router-link to="/course-single/create">
-			<el-button type="success" class="add-course-button">Создать продукт</el-button>
+			<el-button type="primary" class="add-course-button">Создать ресурс</el-button>
 		</router-link>
 		<el-table :data="data" border style="width: 100%" v-loading="listLoading">
 			<el-table-column label="Название подкурса">
@@ -15,11 +15,11 @@
 					{{ scope.row.name }}
 				</template>
 			</el-table-column>
-			<el-table-column label="Главное изображение">
+			<!-- <el-table-column label="Главное изображение">
 				<template slot-scope="scope">
 					{{ scope.row.alias }}
 				</template>
-			</el-table-column>
+			</el-table-column> -->
 			<el-table-column align="right">
 				<template slot-scope="scope">
 					<router-link

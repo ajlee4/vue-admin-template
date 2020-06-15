@@ -1,7 +1,18 @@
+// module.exports = {
+// 	css: {
+// 		extract: false,
+// 	  },
+// 	configureWebpack: {
+// 		optimization: {
+// 			splitChunks: false,
+// 		},
+// 	},
+// };
+
+
 module.exports = {
-	configureWebpack: {
-		optimization: {
-			splitChunks: false,
-		},
+	chainWebpack(config) {
+		config.plugins.delete('prefetch')
+		config.plugins.delete('preload')
 	},
 };

@@ -27,14 +27,18 @@
 						</el-form-item>
 					</el-col>
 
-					<el-col :span="6">
-						<el-form-item label="Фотография баннера">
-							<el-image style="width: 200px; height: 200px" :src="url"></el-image>
+					<el-col :span="12">
+						<el-form-item label="Изображение новости">
+							<el-image
+								style="width: 100%; height: 300px"
+								:src="url"
+								:preview-src-list="previewUrl"
+							></el-image>
 						</el-form-item>
 					</el-col>
 
-					<el-col :span="6">
-						<el-form-item label="Добавьте фотографию">
+					<el-col :span="12">
+						<el-form-item label="Добавьте Изображение">
 							<el-upload
 								action="http://ih.yourstartup.by/api/news/store-news"
 								list-type="picture-card"
@@ -137,6 +141,7 @@ export default {
 			dialogImageUrl: '',
 			dialogVisible: false,
 			imageData: {},
+			previewUrl: [],
 			url: '',
 			news: {
 				title: '',
@@ -177,6 +182,7 @@ export default {
 			this.listLoading = false;
 			this.data = this.currentNews;
 			this.url = `http://ih.yourstartup.by/${this.data.image}`;
+			this.previewUrl.push(this.url);
 			console.log(this.data);
 		});
 	},
