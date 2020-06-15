@@ -1,9 +1,5 @@
 <template>
-  <div class="navbar">
- 
-  </div>
+	<div class="navbar"></div>
 </template>
 
-<script>
-
-</script>
+<script></script>

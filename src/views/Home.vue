@@ -1,6 +1,5 @@
 <template>
-<div>Панель управления</div>
+	<div>Панель управления</div>
 </template>
 
-<script>
-</script>
+<script></script>

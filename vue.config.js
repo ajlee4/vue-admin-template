@@ -1,7 +1,7 @@
 module.exports = {
 	configureWebpack: {
-	  optimization: {
-		splitChunks: false
-	  }
-	}
-  }
+		optimization: {
+			splitChunks: false,
+		},
+	},
+};

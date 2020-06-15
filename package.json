@@ -15,8 +15,8 @@
   },
   "lint-staged": {
     "src/**/*.{js,vue}": [
-      "prettier --write '**/*.js'",
-      "prettier --write '**/*.vue'"
+      "prettier --write 'src/**/*.js'",
+      "prettier --write 'src/**/*.vue'"
     ]
   },
   "dependencies": {
@@ -38,6 +38,8 @@
     "@vue/eslint-config-prettier": "^5.0.0",
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-vue": "^5.0.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.10",
@@ -53,7 +55,6 @@
     },
     "extends": [
       "plugin:vue/essential",
-      "plugin:prettier/recommended",
       "@vue/prettier"
     ],
     "rules": {
