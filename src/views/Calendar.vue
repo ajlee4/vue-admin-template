@@ -19,7 +19,7 @@
           <div style="display:flex">
             <el-select
               v-model="categories_id"
-              placeholder="Выберите категорию"
+                                  placeholder="Выберите категорию"
               @change="handleChangeCategory"
               @focus="showTooltip = false"
               class="mb_20"
@@ -27,8 +27,8 @@
             >
               <el-option
                 v-for="item in categories"
-                :key="item.id"
-                :label="item.name"
+                                 :key="item.id"
+                                             :label="item.name"
                 :value="item.id"
               ></el-option>
             </el-select>
