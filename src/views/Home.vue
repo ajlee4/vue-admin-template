@@ -1,5 +1,20 @@
 <template>
-	<div>Панель управления</div>
+	<div class="chart-container">
+		<chart height="100%" width="100%" />
+	</div>
 </template>
 
-<script></script>
+<script>
+import { Chart } from '@/components';
+export default {
+	components: { Chart },
+};
+</script>
+
+<style scoped>
+.chart-container {
+	position: relative;
+	width: 100%;
+	height: calc(100vh - 84px);
+}
+</style>
