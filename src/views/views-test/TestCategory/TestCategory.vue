@@ -1,135 +1,134 @@
 <template>
-  <div class="category-container">
-    <h2>Категории</h2>
+	<div class="category-container">
+		<h2>Категории</h2>
 
-    <router-link to="/test-category/create">
-      <el-button type="primary" class="add-category-button">Создать категорию</el-button>
-    </router-link>
-    <div class="table-wrap">
-      <el-table :data="data" border style="width: 100%" v-loading="listLoading">
-        <el-table-column label="Название категории">
-          <template slot-scope="scope">
-            
-      
-           {{ scope.row.name }}
-          </template>
-        </el-table-column>
-        <el-table-column align="right">
-          <template slot-scope="scope">
-         
-               <router-link
-              :to="{ name: 'test-category-edit', params: { id: scope.row.id } }"
-              class="edit-button"
-            >
-              <el-button size="mini">Edit</el-button>
-            </router-link>
-          
-            <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">Delete</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <pagination
-        v-show="total > 0"
-        :total="total"
-        :page.sync="listQuery.page"
-        :limit.sync="listQuery.limit"
-        @pagination="getDataTestCategory(listQuery.limit)"
-      ></pagination>
-    </div>
-  </div>
+		<router-link to="/test-category/create">
+			<el-button type="primary" class="add-category-button">Создать ресурс</el-button>
+		</router-link>
+		<div class="table-wrap">
+			<el-table :data="data" border style="width: 100%" v-loading="listLoading">
+				<el-table-column label="Название категории">
+					<template slot-scope="scope">
+						{{ scope.row.name }}
+					</template>
+				</el-table-column>
+				<el-table-column align="right">
+					<template slot-scope="scope">
+						<router-link
+							:to="{ name: 'test-category-edit', params: { id: scope.row.id } }"
+							class="edit-button"
+						>
+							<el-button size="mini">Edit</el-button>
+						</router-link>
+
+						<el-button size="mini" type="danger" @click="handleDelete(scope.row.id)"
+							>Delete</el-button
+						>
+					</template>
+				</el-table-column>
+			</el-table>
+			<Pagination
+				v-show="total > 0"
+				:total="total"
+				:page.sync="listQuery.page"
+				:limit.sync="listQuery.limit"
+				@pagination="getDataTestCategory(listQuery.limit)"
+			></Pagination>
+		</div>
+	</div>
 </template>
 
 <script>
-import pagination from "@/components/Pagination";
-import { fetchTestCategoryList, deleteTestCategory } from "@/api/test";
-import { Message } from "element-ui";
+import { Pagination } from '@/components';
+import { fetchTestCategoryList, deleteTestCategory } from '@/api/test';
+import { Message } from 'element-ui';
 
 export default {
-  components: {
-    pagination
-  },
-  data() {
-    return {
-      id: "",
-      categoryName: "",
-      data: [],
-      listLoading: true,
-   
-      listQuery: {
-        page: 1,
-        limit: 20
-      },
+	components: {
+		Pagination,
+	},
+	data() {
+		return {
+			id: '',
+			categoryName: '',
+			data: [],
+			listLoading: true,
 
-      total: 0
-    };
-  },
-  methods: {
-    handleDelete(id) {
-      this.$confirm("Вы хотите удалить этот элемент?", "Warning", {
-        confirmButtonText: "OK",
-        cancelButtonText: "Cancel",
-        type: "warning"
-      })
-        .then(() => {
-          deleteTestCategory(id).then(() => {
-            this.data = this.data.filter(item => item.id !== id);
-            Message({
-              message: "ресурс удален",
-              type: "success",
-              showClose: true
-            });
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "Delete canceled",
-            showClose: true
-          });
-        });
-    },
+			listQuery: {
+				page: 1,
+				limit: 20,
+			},
 
-    getDataTestCategory() {
-      this.listLoading = true;
-      fetchTestCategoryList(this.listQuery).then(response => {
-        this.data = response.data.data;
-        this.total = response.data.total;
-        console.log(this.data)
-        this.listLoading = false;
-      });
-    }
-  },
+			total: 0,
+		};
+	},
+	methods: {
+		handleDelete(id) {
+			this.$confirm('Вы хотите удалить этот элемент?', 'Warning', {
+				confirmButtonText: 'OK',
+				cancelButtonText: 'Cancel',
+				type: 'warning',
+			})
+				.then(() => {
+					deleteTestCategory(id).then(() => {
+						this.data = this.data.filter((item) => item.id !== id);
+						Message({
+							message: 'ресурс удален',
+							type: 'success',
+							showClose: true,
+						});
+					});
+				})
+				.catch(() => {
+					this.$message({
+						type: 'info',
+						message: 'Delete canceled',
+						showClose: true,
+					});
+				});
+		},
 
-  created() {
-    this.getDataTestCategory();
-  }
+		getDataTestCategory() {
+			this.listLoading = true;
+			fetchTestCategoryList(this.listQuery).then((response) => {
+				this.data = response.data.data;
+				this.total = response.data.total;
+				console.log(this.data);
+				this.listLoading = false;
+			});
+		},
+	},
+
+	created() {
+		this.getDataTestCategory();
+	},
 };
 </script>
 
 <style lang="scss">
 .el-table__row {
-  cursor: pointer;
+	cursor: pointer;
 }
 .el-table__empty-block {
-  display: none !important;
+	display: none !important;
 }
 .edit-button {
-  margin-right: 15px;
+	margin-right: 15px;
 }
 .el-pagination {
-  margin-top: 30px;
+	margin-top: 30px;
 }
 .category-form-row {
-  display: flex;
-  align-items: flex-end;
+	display: flex;
+	align-items: flex-end;
 }
 .el-select {
-  width: 100%;
+	width: 100%;
 }
 .category-form {
-  margin-bottom: 30px;
+	margin-bottom: 30px;
 }
 .add-category-button {
-  margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 </style>

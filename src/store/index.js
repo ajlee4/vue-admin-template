@@ -1,22 +1,21 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import news from "./modules/news";
-import course from "./modules/course";
-import reviews from "./modules/reviews";
-import resourse from "./modules/resourse";
-import test from './modules/test'
-import app from "./modules/app";
-
+import Vue from 'vue';
+import Vuex from 'vuex';
+import news from './modules/news';
+import course from './modules/course';
+import reviews from './modules/reviews';
+import resourse from './modules/resourse';
+import test from './modules/test';
+import app from './modules/app';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  modules: {
-    news,
-    course,
-    app,
-    reviews,
-    resourse,
-    test
-  }
+	modules: {
+		news,
+		course,
+		app,
+		reviews,
+		resourse,
+		test,
+	},
 });

@@ -1,71 +1,67 @@
 <template>
-  <div :class="classObj" class="app-wrapper">
-    <Sidebar></Sidebar>
-    <div class="main-container">
-      <Navbar @sidebarShow="sidebarShow"></Navbar>
-
-      <el-main class="app-main">
-        <transition name="fade-transform" mode="out-in">
-          <router-view></router-view>
-        </transition>
-      </el-main>
-    </div>
-  </div>
+	<div :class="classObj" class="app-wrapper">
+		<Sidebar></Sidebar>
+		<div class="main-container">
+			<navbar @sidebarShow="sidebarShow"></navbar>
+			<app-main />
+		</div>
+	</div>
 </template>
 
 <script>
-import Sidebar from "@/components/Sidebar";
-import Navbar from "@/components/Navbar";
+import { Navbar, Sidebar, AppMain } from '@/components';
 
 export default {
-  name: "main-layout",
-  components: {
-    Sidebar,
-    Navbar,
-  },
+	name: 'Layout',
+	components: {
+		Sidebar,
+		Navbar,
+		AppMain,
+	},
 
-  methods: {
-    sidebarShow() {
-      this.sidebarVisible = !this.sidebarVisible;
-    },
-  },
-  computed: {
-    sidebar() {
-      return this.$store.getters.sidebar;
-    },
-    device() {
-      return this.$store.getters.device;
-    },
-    classObj() {
-      return {
-        hideSidebar: !this.sidebar.opened,
-        openSidebar: this.sidebar.opened,
-        withoutAnimation: this.sidebar.withoutAnimation,
-        mobile: this.device === "mobile",
-      };
-    },
-  },
+	methods: {
+		sidebarShow() {
+			this.sidebarVisible = !this.sidebarVisible;
+		},
+	},
+	computed: {
+		sidebar() {
+			return this.$store.getters.sidebar;
+		},
+		device() {
+			return this.$store.getters.device;
+		},
+
+		classObj() {
+			return {
+				hideSidebar: !this.sidebar.opened,
+				openSidebar: this.sidebar.opened,
+				withoutAnimation: this.sidebar.withoutAnimation,
+				mobile: this.device === 'mobile',
+			};
+		},
+	},
 };
 </script>
 
 <style lang="scss">
 .app-main {
-  /*50 = navbar  */
-  min-height: calc(100vh - 50px);
-  width: 100%;
-  position: relative;
-  overflow: hidden !important;
+	/*50 = navbar  */
+	min-height: calc(100vh - 50px);
+	width: 100%;
+	position: relative;
+	overflow: hidden !important;
 }
 .fixed-header + .app-main {
-  padding-top: 50px;
+	padding-top: 50px;
 }
 </style>
 
 <style lang="scss">
 // fix css style bug in open el-dialog
 .el-popup-parent--hidden {
-  .fixed-header {
-    padding-right: 15px;
-  }
+	.fixed-header {
+		padding-right: 15px;
+	}
 }
 </style>

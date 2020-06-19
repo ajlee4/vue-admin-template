@@ -5,6 +5,7 @@
 @import './sidebar.scss';
 @import './navbar.scss';
 @import './project.scss';
+@import './font.scss';
 @import './animation/vue2-animate.scss';
 
 body {
@@ -26,6 +27,7 @@ body {
   
   #app {
     height: 100%;
+    font-family: Formular;
   }
   
   *,
