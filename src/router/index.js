@@ -87,16 +87,39 @@ const routes = [
 			},
 		],
 	},
+
 	{
-		path: '/calendar',
-		name: 'calendar',
-		component: () => import('../views/Calendar.vue'),
+		path: '/records-system',
+		name: 'records-system',
+		component: Layout,
 		meta: {
 			layout: 'main',
-			title: 'Календарь',
+			submenuVisible: true,
+			title: 'Система записи',
 			icon: 'el-icon-date',
 		},
+		children: [
+			{
+				path: '/calendar',
+				name: 'calendar',
+				component: () => import('../views/Calendar.vue'),
+				meta: {
+					layout: 'main',
+					title: 'Календарь',
+				},
+			},
+			{
+				path: '/all-records',
+				name: 'all-records',
+				component: () => import('@/views/views-calendar/AllRecords.vue'),
+				meta: {
+					layout: 'main',
+					title: 'Все записи',
+				},
+			},
+		],
 	},
+
 	{
 		path: '/branch-offices',
 		name: 'branch-offices',
