@@ -119,7 +119,15 @@ const routes = [
 			},
 		],
 	},
-
+	{
+		path: '/all-records/create',
+		name: 'all-records-create',
+		component: () => import('@/views/views-calendar/AllRecordsAdd.vue'),
+		hidden: 'true',
+		meta: {
+			layout: 'main',
+		},
+	},
 	{
 		path: '/branch-offices',
 		name: 'branch-offices',

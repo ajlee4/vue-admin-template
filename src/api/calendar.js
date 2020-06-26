@@ -39,6 +39,21 @@ export function getCategoryRecords(data) {
 	});
 }
 
+export function getOffices(data) {
+	return request({
+		url: `/api/records/all-offices`,
+		method: 'get',
+		params: data,
+	});
+}
+export function getCategory(data) {
+	return request({
+		url: `/api/records/all-categories`,
+		method: 'get',
+		params: data,
+	});
+}
+
 export function deleteRecord(id) {
 	return request({
 		url: `/api/record-deps/${id}/destroy-single-deps`,

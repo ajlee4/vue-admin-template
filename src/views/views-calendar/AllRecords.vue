@@ -2,7 +2,7 @@
 	<div class="category-container">
 		<h2>Все записи</h2>
 
-		<router-link to="/test-question/create">
+		<router-link to="all-records/create">
 			<el-button type="primary" class="add-category-button">Создать ресурс</el-button>
 		</router-link>
 		<el-form :label-position="labelPosition" label-width="100px" ref="courseForm">
@@ -30,21 +30,31 @@
 					<el-form-item label="Выбор Офиса">
 						<el-select
 							ref="selectGrades"
-							v-model="grades"
+							v-model="office"
 							placeholder="Выберите офис"
 							class="course-select"
 							clearable
 							@change="filterCategory"
 						>
 							<el-option
-								v-for="item in dataGrades"
+								v-for="item in dataOffice"
 								:key="item.id"
-								:label="item.name"
+								:label="item.address"
 								:value="item.id"
 							></el-option>
 						</el-select>
 					</el-form-item>
 				</el-col>
+				<el-col :span="6">
+					<el-form-item label="Поиск по фамилии">
+						<el-input v-model="searchSurname"></el-input>
+					</el-form-item>
+				</el-col>
+				<!--				<el-col :span="6">-->
+				<!--					<el-form-item label="Поиск по телефону">-->
+				<!--						<el-input v-model="searchPhone"></el-input>-->
+				<!--					</el-form-item>-->
+				<!--				</el-col>-->
 			</el-row>
 		</el-form>
 		<!-- <div>
@@ -104,23 +114,25 @@
     </el-row>
 		</div>-->
 		<div class="table-wrap">
-			<el-table :data="data" border style="width: 100%" v-loading="listLoading">
+			<el-table :data="filteredData" border style="width: 100%" v-loading="listLoading">
 				<el-table-column label="Офис">
-					<template slot-scope="scope">{{ scope.row.office_id }}</template>
+					<template slot-scope="scope">{{ scope.row.branch_office.address }}</template>
 				</el-table-column>
 				<el-table-column label="Категория">
-					<template slot-scope="scope">{{ scope.row.category_id }}</template>
+					<template slot-scope="scope">{{ scope.row.category.name }}</template>
 				</el-table-column>
 				<el-table-column label="Имя">
-					<template slot-scope="scope">{{ scope.row.name }}</template>
+					<template slot-scope="scope"
+						>{{ scope.row.name }} {{ scope.row.surname }}</template
+					>
 				</el-table-column>
-				<el-table-column label="Фамилия">
-					<template slot-scope="scope">{{ scope.row.surname }}</template>
+				<el-table-column label="Телефон">
+					<template slot-scope="scope">{{ scope.row.phone }}</template>
 				</el-table-column>
 				<el-table-column label="Email">
 					<template slot-scope="scope">{{ scope.row.email }}</template>
 				</el-table-column>
-				<el-table-column label="Название Вопроса"> </el-table-column>
+
 				<el-table-column align="right">
 					<template slot-scope="scope">
 						<router-link
@@ -149,13 +161,8 @@
 
 <script>
 import { Pagination } from '@/components';
-import {
-	deleteTestQuestion,
-	fetchTestCategoryList,
-	fetchTestGradesList,
-	fetchTestLevelList,
-} from '@/api/test';
-import { getCategoryRecords } from '@/api/calendar';
+import { deleteTestQuestion } from '@/api/test';
+import { getCategoryRecords, getCategory, getOffices } from '@/api/calendar';
 
 import { Message } from 'element-ui';
 
@@ -167,18 +174,20 @@ export default {
 		return {
 			id: '',
 			categoryName: '',
+			searchSurname: '',
 			filteredCategory: false,
 			data: [],
 			filteredArr: [],
 			testData: [],
 			dataCategory: [],
-			dataGrades: [],
+			dataOffice: [],
 			dataTestLevel: [],
 			listLoading: true,
 			labelPosition: 'top',
 			category: '',
 			level: '',
 			grades: '',
+			office: '',
 			listQuery: {
 				page: 1,
 				limit: 20,
@@ -190,24 +199,24 @@ export default {
 	computed: {
 		filteredData() {
 			return this.data.filter((item) => {
-				return !this.category || item.category_id == this.category;
+				return item.surname.toLowerCase().includes(this.searchSurname.toLowerCase());
 			});
 		},
 	},
 	methods: {
 		filterCategory() {
 			this.listLoading = true;
-			// fetchTestQuestion({
-			// 	category_id: this.category,
-			// 	grade_id: this.grades,
-			// 	list_id: this.level,
-			// 	...this.listQuery,
-			// }).then((res) => {
-			// 	this.total = res.data.total;
-			// 	this.data = res.data.data;
-			// 	(this.filteredCategory = true), (this.listLoading = false);
-			// 	console.log(res);
-			// });
+			getCategoryRecords({
+				category_id: this.category,
+				office_id: this.office,
+
+				...this.listQuery,
+			}).then((res) => {
+				// this.total = res.data.total;
+				this.data = res;
+				(this.filteredCategory = true), (this.listLoading = false);
+				console.log(res);
+			});
 		},
 		handleDelete(id) {
 			this.$confirm('Вы хотите удалить этот элемент?', 'Warning', {
@@ -234,29 +243,28 @@ export default {
 				});
 		},
 
-		getDataTestQuestion() {
+		getDataRecords() {
 			this.listLoading = true;
 
 			getCategoryRecords(this.listQuery).then((response) => {
 				this.data = response;
 				console.log(this.data);
+
 				this.listLoading = false;
 			});
-			fetchTestCategoryList().then((response) => {
-				this.dataCategory = response.data.data;
+			getCategory().then((response) => {
+				this.dataCategory = response;
+				console.log(response);
 			});
-			fetchTestGradesList().then((response) => {
-				this.dataGrades = response.data.data;
-			});
-			fetchTestLevelList().then((response) => {
-				this.dataTestLevel = response.data.data;
-				console.log(this.dataTestLevel);
+			getOffices().then((response) => {
+				this.dataOffice = response;
+				console.log(response);
 			});
 		},
 	},
 
 	created() {
-		this.getDataTestQuestion();
+		this.getDataRecords();
 	},
 };
 </script>
