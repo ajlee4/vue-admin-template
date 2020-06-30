@@ -12,15 +12,15 @@
 								label="Заголовок"
 								:class="{
 									'is-error':
-										$v.newsData.page_title.$dirty &&
-										!$v.newsData.page_title.required,
+										$v.recordsData.page_title.$dirty &&
+										!$v.recordsData.page_title.required,
 								}"
 							>
-								<el-input v-model="newsData.page_title"></el-input>
+								<el-input v-model="recordsData.page_title"></el-input>
 								<small
 									v-if="
-										$v.newsData.page_title.$dirty &&
-											!$v.newsData.page_title.required
+										$v.recordsData.page_title.$dirty &&
+											!$v.recordsData.page_title.required
 									"
 									class="error-text"
 									>Поле заголовок не должно быть пустым</small
@@ -29,38 +29,19 @@
 						</el-col>
 						<el-col :span="12">
 							<el-form-item label="Псевдоним">
-								<el-input v-model="newsData.title"></el-input>
+								<el-input v-model="recordsData.title"></el-input>
 							</el-form-item>
 						</el-col>
-						<el-col :span="6">
-							<el-form-item label="Изображение новости">
-								<el-upload
-									action="http://ih.yourstartup.by/api/news/store-image"
-									list-type="picture-card"
-									:on-preview="handlePictureCardPreview"
-									:on-change="handlePictureCard"
-									:auto-upload="false"
-									:data="imageData"
-									ref="upload"
-									name="image"
-									:on-remove="handleRemove"
-								>
-									<i class="el-icon-plus"></i>
-								</el-upload>
-								<el-dialog :visible.sync="dialogVisible">
-									<img width="100%" :src="dialogImageUrl" alt="" />
-								</el-dialog>
-							</el-form-item>
-						</el-col>
+
 						<el-col :span="24">
 							<el-form-item label="Вводный текст">
-								<Tinymce v-model="newsData.intro_text"></Tinymce>
+								<Tinymce v-model="recordsData.intro_text"></Tinymce>
 							</el-form-item>
 						</el-col>
 					</el-row>
 
 					<el-form-item label="Контент">
-						<Tinymce v-model="newsData.description"></Tinymce>
+						<Tinymce v-model="recordsData.description"></Tinymce>
 					</el-form-item>
 					<!-- <el-upload
             action="https://jsonplaceholder.typicode.com/posts/"
@@ -122,7 +103,7 @@ export default {
 		Tinymce,
 	},
 	validations: {
-		newsData: {
+		recordsData: {
 			page_title: { required },
 		},
 	},
@@ -133,7 +114,7 @@ export default {
 			dialogImageUrl: '',
 			dialogVisible: false,
 			imageData: {},
-			newsData: {
+			recordsData: {
 				slug: null,
 				page_title: '',
 				intro_text: '',

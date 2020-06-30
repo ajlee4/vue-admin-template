@@ -56,6 +56,33 @@ const routes = [
 			},
 		],
 	},
+
+	{
+		path: '/exam-list',
+		name: 'exam-list',
+		component: Layout,
+		meta: {
+			layout: 'main',
+			submenuVisible: true,
+			title: 'Экзамены',
+			icon: 'el-icon-s-platform',
+		},
+		children: [
+			{
+				path: '/exam-categories',
+				name: 'exam-categories',
+				meta: { layout: 'main', title: 'Категории' },
+				component: () => import('@/views/views-exam/Categories/ExamCategories.vue'),
+			},
+			{
+				path: '/exam',
+				name: 'exam',
+				meta: { layout: 'main', title: 'Экзамены' },
+				component: () => import('@/views/views-exam/Exam/Exam.vue'),
+			},
+		],
+	},
+
 	{
 		path: '/test',
 		name: 'test-list',
@@ -120,9 +147,9 @@ const routes = [
 		],
 	},
 	{
-		path: '/all-records/create',
-		name: 'all-records-create',
-		component: () => import('@/views/views-calendar/AllRecordsAdd.vue'),
+		path: 'all-records/:id/edit',
+		name: 'all-records-edit',
+		component: () => import('@/views/views-calendar/AllRecordsEdit.vue'),
 		hidden: 'true',
 		meta: {
 			layout: 'main',
@@ -165,6 +192,36 @@ const routes = [
 		hidden: true,
 		component: () => import('../views/views-news/NewsAdd.vue'),
 		meta: { layout: 'main' },
+	},
+
+	{
+		path: '/exam-categories/create',
+		name: 'exam-categories-add',
+		hidden: true,
+		component: () => import('../views/views-exam/Categories/ExamCategoriesAdd.vue'),
+		meta: { layout: 'main' },
+	},
+	{
+		path: '/exam-categories/:id/edit',
+		name: 'exam-categories-edit',
+		component: () => import('../views/views-exam/Categories/ExamCategoriesEdit.vue'),
+		meta: { layout: 'main' },
+		hidden: true,
+	},
+
+	{
+		path: '/exam/create',
+		name: 'exam-add',
+		hidden: true,
+		component: () => import('../views/views-exam/Exam/ExamAdd.vue'),
+		meta: { layout: 'main' },
+	},
+	{
+		path: '/exam/:id/edit',
+		name: 'exam-edit',
+		component: () => import('../views/views-exam/Exam/ExamEdit.vue'),
+		meta: { layout: 'main' },
+		hidden: true,
 	},
 
 	{
