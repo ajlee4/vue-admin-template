@@ -209,7 +209,6 @@ export default {
 			getCategoryRecords({
 				category_id: this.category,
 				office_id: this.office,
-
 				...this.listQuery,
 			}).then((res) => {
 				// this.total = res.data.total;

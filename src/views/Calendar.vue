@@ -118,7 +118,7 @@
 							}}</span
 						>
 						<span
-							class="counter warn"
+							class="counter gray"
 							@click="
 								fastDelete(
 									recordById[
@@ -915,6 +915,7 @@
 							required
 							:clearable="false"
 							style="width: 100%; margin-bottom: 0;"
+							:picker-options="pickerOptions"
 						/>
 					</div>
 					<div class="input_50">
@@ -926,6 +927,7 @@
 							:clearable="false"
 							style="width: 100%; margin-bottom: 0;"
 							class="input_50"
+							:picker-options="pickerOptions"
 						/>
 					</div>
 					<button
@@ -1699,5 +1701,8 @@ body {
 		color: #409eff;
 		transition: 0.3s;
 	}
+}
+.calendar_btn .gray {
+	background-color: #9fa0a4;
 }
 </style>

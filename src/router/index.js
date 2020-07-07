@@ -144,6 +144,16 @@ const routes = [
 					title: 'Все записи',
 				},
 			},
+			{
+				path: '/without-experience',
+				name: 'without-experience',
+				component: () =>
+					import('@/views/views-calendar/without-experience/withoutExperience.vue'),
+				meta: {
+					layout: 'main',
+					title: 'Нулевики',
+				},
+			},
 		],
 	},
 	{
@@ -155,6 +165,29 @@ const routes = [
 			layout: 'main',
 		},
 	},
+
+	{
+		path: '/without-experience/:id/edit',
+		name: 'without-experience-edit',
+		component: () =>
+			import('@/views/views-calendar/without-experience/withoutExperienceEdit.vue'),
+		hidden: 'true',
+		meta: {
+			layout: 'main',
+		},
+	},
+
+	{
+		path: '/without-experience/add',
+		name: 'without-experience-add',
+		component: () =>
+			import('@/views/views-calendar/without-experience/withoutExperienceAdd.vue'),
+		hidden: 'true',
+		meta: {
+			layout: 'main',
+		},
+	},
+
 	{
 		path: '/branch-offices',
 		name: 'branch-offices',
