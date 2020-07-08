@@ -1,145 +1,96 @@
 <template>
-	<div>
-		<h2>Создание записи</h2>
-		<el-form :label-position="labelPosition" label-width="100px" :model="newsData">
-			<el-tabs type="card">
-				<el-tab-pane label="Ресурс">
-					<div style="margin: 20px;"></div>
+	<el-form :label-position="labelPosition" label-width="100px">
+		<el-tabs type="card">
+			<el-tab-pane label="Ресурс">
+				<div style="margin: 20px;"></div>
 
-					<el-row>
-						<el-col :span="12">
-							<el-form-item
-								label="Заголовок"
-								:class="{
-									'is-error':
-										$v.recordsData.page_title.$dirty &&
-										!$v.recordsData.page_title.required,
-								}"
+				<el-row>
+					<el-col :span="12">
+						<el-form-item
+							label="Имя"
+							:class="{
+								'is-error': $v.data.name.$dirty && !$v.data.name.required,
+							}"
+						>
+							<el-input v-model="data.name"></el-input>
+							<small
+								v-if="$v.data.name.$dirty && !$v.data.name.required"
+								class="error-text"
+								>Поле "Имя" не должно быть пустым</small
 							>
-								<el-input v-model="recordsData.page_title"></el-input>
-								<small
-									v-if="
-										$v.recordsData.page_title.$dirty &&
-											!$v.recordsData.page_title.required
-									"
-									class="error-text"
-									>Поле заголовок не должно быть пустым</small
-								>
-							</el-form-item>
-						</el-col>
-						<el-col :span="12">
-							<el-form-item label="Псевдоним">
-								<el-input v-model="recordsData.title"></el-input>
-							</el-form-item>
-						</el-col>
+						</el-form-item>
+					</el-col>
+					<el-col :span="12">
+						<el-form-item label="Фамилия">
+							<el-input v-model="data.surname"></el-input>
+						</el-form-item>
+					</el-col>
+					<el-col :span="12">
+						<el-form-item label="Телефон">
+							<el-input v-model="data.phone"></el-input>
+						</el-form-item>
+					</el-col>
+					<el-col :span="12">
+						<el-form-item label="Email">
+							<el-input v-model="data.email"></el-input>
+						</el-form-item>
+					</el-col>
 
-						<el-col :span="24">
-							<el-form-item label="Вводный текст">
-								<Tinymce v-model="recordsData.intro_text"></Tinymce>
-							</el-form-item>
-						</el-col>
-					</el-row>
-
-					<el-form-item label="Контент">
-						<Tinymce v-model="recordsData.description"></Tinymce>
-					</el-form-item>
-					<!-- <el-upload
-            action="https://jsonplaceholder.typicode.com/posts/"
-            list-type="picture-card"
-            :on-preview="handlePictureCardPreview"
-          >
-            <i class="el-icon-plus"></i>
-          </el-upload>
-          <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="" />
-          </el-dialog> -->
-				</el-tab-pane>
-				<el-tab-pane label="SEO">
-					<el-row>
-						<el-col :span="12">
-							<el-form-item label="H1">
-								<el-input v-model="seo.h1"></el-input>
-							</el-form-item>
-						</el-col>
-						<el-col :span="12">
-							<el-form-item label="Title">
-								<el-input v-model="seo.title"></el-input>
-							</el-form-item>
-						</el-col>
-						<el-col :span="24">
-							<el-form-item label="Description">
-								<el-input v-model="seo.description"></el-input>
-							</el-form-item>
-						</el-col>
-					</el-row>
-
-					<el-form-item label="SEO-текст">
-						<Tinymce v-model="seo.seo_text"></Tinymce>
-					</el-form-item>
-					<!-- <el-upload
-            action="https://jsonplaceholder.typicode.com/posts/"
-            list-type="picture-card"
-            :on-preview="handlePictureCardPreview"
-          >
-            <i class="el-icon-plus"></i>
-          </el-upload>
-          <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="" />
-          </el-dialog> -->
-				</el-tab-pane>
-			</el-tabs>
-			<el-button type="success" class="succes-btn" @click="addNews">Создать</el-button>
-		</el-form>
-	</div>
+					<el-col :span="12">
+						<el-form-item label="Дата рождения">
+							<el-date-picker
+								class="date-picker"
+								v-model="data.birth_date"
+								range-separator="|"
+								type="date"
+								placeholder="Дата рождения"
+								format="dd-MM-yyyy"
+							>
+							</el-date-picker>
+						</el-form-item>
+					</el-col>
+				</el-row>
+			</el-tab-pane>
+		</el-tabs>
+		<el-button type="success" class="succes-btn" @click="handleAddReviews">Изменить</el-button>
+	</el-form>
 </template>
 
 <script>
-import { Tinymce } from '@/components';
-import { Message } from 'element-ui';
-import { createNews } from '@/api/news';
+import { fetchAllRecords, updateAllRecords } from '@/api/allRecords';
 import { required } from 'vuelidate/lib/validators';
+import { Message } from 'element-ui';
 export default {
-	components: {
-		Tinymce,
-	},
 	validations: {
-		recordsData: {
-			page_title: { required },
+		data: {
+			name: { required },
 		},
 	},
 	data() {
 		return {
+			data: {
+				name: '',
+			},
 			activeName: 'first',
 			labelPosition: 'top',
 			dialogImageUrl: '',
 			dialogVisible: false,
-			imageData: {},
-			recordsData: {
-				slug: null,
-				page_title: '',
-				intro_text: '',
-				description: '',
-			},
-			seo: {
+			news: {
 				title: '',
+				slug: '',
 				description: '',
-				seo_text: '',
-				h1: '',
 			},
 		};
+	},
+	created() {
+		this.getData();
 	},
 	methods: {
 		handlePictureCardPreview(file) {
 			this.dialogImageUrl = file.url;
 			this.dialogVisible = true;
 		},
-		handleRemove(file, fileList) {
-			console.log(file, fileList);
-		},
-		handlePictureCard(file) {
-			this.image = file;
-		},
-		addNews() {
+		handleAddReviews() {
 			if (this.$v.$invalid) {
 				Message({
 					message: 'Заполните обязательные поля',
@@ -149,31 +100,25 @@ export default {
 				this.$v.$touch();
 				return;
 			}
-			const formData = {
-				page_title: this.newsData.page_title,
-				intro_text: this.newsData.intro_text,
-				content: this.newsData.description,
-				h1: this.seo.h1,
-				title: this.seo.title,
-				description: this.seo.description,
-				seo_text: this.seo_text,
-			};
-
-			createNews(formData).then((res) => {
-				this.$router.push({ name: 'news-list' });
-				this.imageData.id = res.data.id;
-				this.$refs.upload.submit();
-				Message({
-					message: 'Новость создана',
+			updateAllRecords(this.data).then(() => {
+				this.$router.push({ name: 'all-records' });
+				this.$message({
 					type: 'success',
+					message: 'Отзыв добавлен',
 					showClose: true,
 				});
+			});
+		},
+		getData() {
+			fetchAllRecords(this.$route.params.id).then((res) => {
+				console.log(res);
+				this.data = res.data.data;
 			});
 		},
 	},
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .el-row {
 	margin-bottom: 20px;
 	&:last-child {

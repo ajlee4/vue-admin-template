@@ -50,6 +50,11 @@
 						<el-input v-model="searchSurname"></el-input>
 					</el-form-item>
 				</el-col>
+				<el-col :span="6">
+					<el-form-item label="Поиск по телефону">
+						<el-input v-model="searchPhone"></el-input>
+					</el-form-item>
+				</el-col>
 				<!--				<el-col :span="6">-->
 				<!--					<el-form-item label="Поиск по телефону">-->
 				<!--						<el-input v-model="searchPhone"></el-input>-->
@@ -136,7 +141,7 @@
 				<el-table-column align="right">
 					<template slot-scope="scope">
 						<router-link
-							:to="{ name: 'test-question-edit', params: { id: scope.row.id } }"
+							:to="{ name: 'all-records-edit', params: { id: scope.row.id } }"
 							class="edit-button"
 						>
 							<el-button size="mini">Edit</el-button>
@@ -161,8 +166,8 @@
 
 <script>
 import { Pagination } from '@/components';
-import { deleteTestQuestion } from '@/api/test';
-import { getCategoryRecords, getCategory, getOffices } from '@/api/calendar';
+import { getCategory, getOffices } from '@/api/calendar';
+import { fetchAllRecordsList, deleteAllRecords } from '@/api/allRecords';
 
 import { Message } from 'element-ui';
 
@@ -176,6 +181,7 @@ export default {
 			categoryName: '',
 			searchSurname: '',
 			filteredCategory: false,
+			searchPhone: '',
 			data: [],
 			filteredArr: [],
 			testData: [],
@@ -199,20 +205,25 @@ export default {
 	computed: {
 		filteredData() {
 			return this.data.filter((item) => {
-				return item.surname.toLowerCase().includes(this.searchSurname.toLowerCase());
+				if (this.searchSurname) {
+					return item.surname.toLowerCase().includes(this.searchSurname.toLowerCase());
+				}
+				if (this.searchPhone) {
+					return item.phone.toLowerCase().includes(this.searchPhone.toLowerCase());
+				} else return this.data;
 			});
 		},
 	},
 	methods: {
 		filterCategory() {
 			this.listLoading = true;
-			getCategoryRecords({
+			fetchAllRecordsList({
 				category_id: this.category,
 				office_id: this.office,
 				...this.listQuery,
 			}).then((res) => {
-				// this.total = res.data.total;
-				this.data = res;
+				this.total = res.data.total;
+				this.data = res.data.data;
 				(this.filteredCategory = true), (this.listLoading = false);
 				console.log(res);
 			});
@@ -224,7 +235,7 @@ export default {
 				type: 'warning',
 			})
 				.then(() => {
-					deleteTestQuestion(id).then(() => {
+					deleteAllRecords(id).then(() => {
 						this.data = this.data.filter((item) => item.id !== id);
 						Message({
 							message: 'ресурс удален',
@@ -245,10 +256,10 @@ export default {
 		getDataRecords() {
 			this.listLoading = true;
 
-			getCategoryRecords(this.listQuery).then((response) => {
-				this.data = response;
-				console.log(this.data);
-
+			fetchAllRecordsList(this.listQuery).then((response) => {
+				this.data = response.data.data;
+				console.log(response);
+				this.total = response.data.total;
 				this.listLoading = false;
 			});
 			getCategory().then((response) => {

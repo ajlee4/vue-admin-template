@@ -132,7 +132,7 @@
 <script>
 import { Tinymce } from '@/components';
 import { Message } from 'element-ui';
-import { fetchExam, editExam } from '@/api/exam';
+import { fetchExam, editExam, fetchExamCategories } from '@/api/exam';
 import { required } from 'vuelidate/lib/validators';
 export default {
 	components: {
@@ -190,6 +190,11 @@ export default {
 			this.listLoading = false;
 			this.data = res.data;
 			// this.categories = this.currentSubCourse.categories;
+		});
+
+		fetchExamCategories(this.listQuery).then((response) => {
+			console.log(response);
+			this.categories = response.data.data;
 		});
 	},
 	computed: {

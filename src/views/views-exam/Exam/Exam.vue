@@ -6,11 +6,11 @@
 		</router-link>
 		<el-table :data="data" border style="width: 100%" v-loading="listLoading">
 			<el-table-column label="Название Категории">
-				<!--                <template slot-scope="scope">-->
-				<!--					<span class="course">-->
-				<!--						{{ scope.row.category.name }}-->
-				<!--					</span>-->
-				<!--                </template>-->
+				<template slot-scope="scope">
+					<span class="course">
+						{{ scope.row.category.name }}
+					</span>
+				</template>
 			</el-table-column>
 			<el-table-column label="Название Экзамена">
 				<template slot-scope="scope">
