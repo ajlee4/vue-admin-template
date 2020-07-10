@@ -18,7 +18,7 @@ export function deleteAllRecords(id) {
 
 export function fetchAllRecords(id) {
 	return request({
-		url: `/api/records/all-records-list/${id}/edit`,
+		url: `/api/records/${id}/edit`,
 		method: 'get',
 	});
 }

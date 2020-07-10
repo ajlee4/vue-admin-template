@@ -62,11 +62,14 @@
 								{{ ++idx }}. {{ item.name }} {{ item.surname }}
 							</div>
 							<div class="cell">
-								<a href="/api/records/generate-pdf" class="download_icon"></a>
+								<a
+									:href="`/api/records/${item.id}/generate-pdf`"
+									class="download_icon"
+								></a>
 							</div>
 							<div class="cell">
 								<a
-									href="/api/records/open-pdf"
+									:href="`/api/records/${item.id}/open-pdf`"
 									target="_blank"
 									class="download_icon_v2"
 								></a>
@@ -149,6 +152,7 @@ export default {
 
 			this.maxRecordCount = '';
 		},
+
 		submitFastEdit() {
 			console.log(this.radio);
 			if (this.radio == 2 || this.maxRecordCount) {

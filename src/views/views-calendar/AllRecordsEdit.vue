@@ -6,6 +6,42 @@
 
 				<el-row>
 					<el-col :span="12">
+						<el-form-item label="Категория">
+							<el-select
+								ref="select"
+								v-model="data.category_id"
+								placeholder="Select"
+								class="course-select"
+							>
+								<el-option
+									v-for="item in dataCategory"
+									:key="item.id"
+									:label="item.name"
+									:value="item.id"
+								>
+								</el-option>
+							</el-select>
+						</el-form-item>
+					</el-col>
+					<el-col :span="12">
+						<el-form-item label="Офис">
+							<el-select
+								ref="select"
+								v-model="data.office_id"
+								placeholder="Select"
+								class="course-select"
+							>
+								<el-option
+									v-for="item in dataOffice"
+									:key="item.id"
+									:label="item.address"
+									:value="item.id"
+								>
+								</el-option>
+							</el-select>
+						</el-form-item>
+					</el-col>
+					<el-col :span="12">
 						<el-form-item
 							label="Имя"
 							:class="{
@@ -35,7 +71,11 @@
 							<el-input v-model="data.email"></el-input>
 						</el-form-item>
 					</el-col>
-
+					<el-col :span="12">
+						<el-form-item label="Результат теста">
+							<el-input v-model="data.test_result"></el-input>
+						</el-form-item>
+					</el-col>
 					<el-col :span="12">
 						<el-form-item label="Дата рождения">
 							<el-date-picker
@@ -50,6 +90,44 @@
 						</el-form-item>
 					</el-col>
 				</el-row>
+				<el-row v-if="data.category_id == 4 || data.category_id == 9">
+					<el-col :span="12">
+						<el-form-item label="Имя родителя">
+							<el-input v-model="data.parent_name"></el-input>
+						</el-form-item>
+					</el-col>
+					<el-col :span="12">
+						<el-form-item label="Телефон родителя">
+							<el-input v-model="data.parent_phone"></el-input>
+						</el-form-item>
+					</el-col>
+					<el-col :span="12">
+						<el-form-item label="Email родителя">
+							<el-input v-model="data.parent_email"></el-input>
+						</el-form-item>
+					</el-col>
+				</el-row>
+
+				<el-row>
+					<el-col :span="6">
+						<el-form-item label="Дата интервью">
+							<el-date-picker
+								class="date-picker"
+								v-model="data.interview_date"
+								range-separator="|"
+								type="date"
+								placeholder="Дата рождения"
+								format="dd-MM-yyyy"
+							>
+							</el-date-picker>
+						</el-form-item>
+					</el-col>
+					<el-col :span="6">
+						<el-form-item label="Время интервью">
+							<el-input v-model="data.interview_time"></el-input>
+						</el-form-item>
+					</el-col>
+				</el-row>
 			</el-tab-pane>
 		</el-tabs>
 		<el-button type="success" class="succes-btn" @click="handleAddReviews">Изменить</el-button>
@@ -58,6 +136,7 @@
 
 <script>
 import { fetchAllRecords, updateAllRecords } from '@/api/allRecords';
+import { getCategory, getOffices } from '@/api/calendar';
 import { required } from 'vuelidate/lib/validators';
 import { Message } from 'element-ui';
 export default {
@@ -75,6 +154,8 @@ export default {
 			labelPosition: 'top',
 			dialogImageUrl: '',
 			dialogVisible: false,
+			dataCategory: '',
+			dataOffice: '',
 			news: {
 				title: '',
 				slug: '',
@@ -112,7 +193,15 @@ export default {
 		getData() {
 			fetchAllRecords(this.$route.params.id).then((res) => {
 				console.log(res);
-				this.data = res.data.data;
+				this.data = res.data;
+			});
+			getCategory().then((response) => {
+				this.dataCategory = response;
+				console.log(response);
+			});
+			getOffices().then((response) => {
+				this.dataOffice = response;
+				console.log(response);
 			});
 		},
 	},
