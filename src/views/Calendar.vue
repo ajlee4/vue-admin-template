@@ -1085,6 +1085,7 @@ export default {
 				],
 				data: {
 					office: null,
+					categories_id: null,
 					from: {
 						date: null,
 						hours: null,
@@ -1112,7 +1113,6 @@ export default {
 	watch: {
 		dependencies: function() {
 			this.dependencies.map((dep) => {
-				console.log(dep);
 				let key = String(dep.record_date + dep.record_time + dep.office_id);
 				this.depsByKey[key] = true;
 			});
@@ -1391,6 +1391,9 @@ export default {
 			let currentMonth = this.$moment(this.moduleData).format('MM');
 
 			this.getRecDeps(this.office, currentMonth, this.categories_id);
+			this.createRecordModal.data.office = this.office;
+			this.createRecordModal.data.categories_id = this.categories_id;
+			console.log(this.createRecordModal.data, 'DATA');
 		},
 		handleChangeCategory() {
 			let data = {

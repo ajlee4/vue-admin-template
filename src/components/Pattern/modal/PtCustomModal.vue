@@ -105,9 +105,7 @@ export default {
 	data() {
 		return {
 			formValid: true,
-			formData: {
-				...this.addFields, // additional fields prop from parent
-			},
+			formData: this.addFields,
 			showErr: false,
 			errMsg: 'Заполните необходимые поля!',
 		};

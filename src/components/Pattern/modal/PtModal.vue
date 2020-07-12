@@ -65,6 +65,7 @@
 								<a
 									:href="`/api/records/${item.id}/generate-pdf`"
 									class="download_icon"
+									@click.prevent="download(item.id, 'generate')"
 								></a>
 							</div>
 							<div class="cell">
@@ -72,6 +73,7 @@
 									:href="`/api/records/${item.id}/open-pdf`"
 									target="_blank"
 									class="download_icon_v2"
+									@click.prevent="download(item.id, 'open')"
 								></a>
 							</div>
 							<div class="cell res">{{ item.test_result }}</div>
@@ -116,6 +118,7 @@
 </template>
 
 <script>
+import { downloadPdf, openPdf } from '@/api/pdf';
 export default {
 	name: 'modal',
 	props: {
@@ -152,7 +155,19 @@ export default {
 
 			this.maxRecordCount = '';
 		},
-
+		download(id, status) {
+			console.log(status);
+			if (status === 'generate') {
+				downloadPdf(id).then((res) => {
+					console.log(res);
+				});
+			}
+			if (status === 'open') {
+				openPdf(id).then((res) => {
+					console.log(res);
+				});
+			}
+		},
 		submitFastEdit() {
 			console.log(this.radio);
 			if (this.radio == 2 || this.maxRecordCount) {

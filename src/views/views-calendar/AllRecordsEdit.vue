@@ -77,6 +77,11 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
+						<el-form-item label="Комментарий">
+							<el-input type="textarea" v-model="data.comment"></el-input>
+						</el-form-item>
+					</el-col>
+					<el-col :span="12">
 						<el-form-item label="Дата рождения">
 							<el-date-picker
 								class="date-picker"
@@ -130,7 +135,9 @@
 				</el-row>
 			</el-tab-pane>
 		</el-tabs>
-		<el-button type="success" class="succes-btn" @click="handleAddReviews">Изменить</el-button>
+		<el-button type="success" class="succes-btn" @click="handleAddReviews(data.id)"
+			>Изменить</el-button
+		>
 	</el-form>
 </template>
 
@@ -171,7 +178,7 @@ export default {
 			this.dialogImageUrl = file.url;
 			this.dialogVisible = true;
 		},
-		handleAddReviews() {
+		handleAddReviews(id) {
 			if (this.$v.$invalid) {
 				Message({
 					message: 'Заполните обязательные поля',
@@ -181,11 +188,11 @@ export default {
 				this.$v.$touch();
 				return;
 			}
-			updateAllRecords(this.data).then(() => {
+			updateAllRecords(id, this.data).then(() => {
 				this.$router.push({ name: 'all-records' });
 				this.$message({
 					type: 'success',
-					message: 'Отзыв добавлен',
+					message: 'Данные изменены',
 					showClose: true,
 				});
 			});

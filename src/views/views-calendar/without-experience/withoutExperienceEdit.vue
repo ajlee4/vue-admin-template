@@ -52,7 +52,9 @@
 				</el-row>
 			</el-tab-pane>
 		</el-tabs>
-		<el-button type="success" class="succes-btn" @click="handleAddReviews">Изменить</el-button>
+		<el-button type="success" class="succes-btn" @click="handleAddReviews(data.id)"
+			>Изменить</el-button
+		>
 	</el-form>
 </template>
 
@@ -90,7 +92,7 @@ export default {
 			this.dialogImageUrl = file.url;
 			this.dialogVisible = true;
 		},
-		handleAddReviews() {
+		handleAddReviews(id) {
 			if (this.$v.$invalid) {
 				Message({
 					message: 'Заполните обязательные поля',
@@ -100,11 +102,11 @@ export default {
 				this.$v.$touch();
 				return;
 			}
-			updateWithoutExperience(this.data).then(() => {
+			updateWithoutExperience(id, this.data).then(() => {
 				this.$router.push({ name: 'without-experience' });
 				this.$message({
 					type: 'success',
-					message: 'Отзыв добавлен',
+					message: 'Данные изменены',
 					showClose: true,
 				});
 			});
